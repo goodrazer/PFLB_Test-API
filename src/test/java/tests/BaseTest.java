@@ -9,10 +9,17 @@ import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
+import pages.LoginPage;
+import utils.PropertyReader;
 import utils.TestListener;
 
 @Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {
+
+    protected String validUser = System.getProperty("User", PropertyReader.getProperty("user"));
+    protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
+    protected LoginPage loginPage;
+
 
     @BeforeSuite(alwaysRun = true)
     public void initAllureListener() {
@@ -22,11 +29,11 @@ public class BaseTest {
         );
     }
 
-    @Parameters({"browser"})
+
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
+    @Parameters({"browser"})
     @Step("Настройка браузера: {browser}")
     public void setUp(@Optional("chrome") String browser) {
-        // Глобальные настройки Selenide
         Configuration.timeout = 20000;
         Configuration.baseUrl = "http://82.142.167.37:4881";
         Configuration.clickViaJs = true;
@@ -36,7 +43,6 @@ public class BaseTest {
         if (browser.equalsIgnoreCase("chrome")) {
             Configuration.browser = "chrome";
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--incognito");
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-popup-blocking");
             Configuration.browserCapabilities = options;
@@ -48,6 +54,8 @@ public class BaseTest {
             options.addPreference("privacy.popups.showBrowserMessage", false);
             Configuration.browserCapabilities = options;
         }
+
+        loginPage = new LoginPage();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")

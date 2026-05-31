@@ -15,9 +15,9 @@
         <testng.version>7.12.0</testng.version>
         <selenide.version>7.16.1</selenide.version>
         <maven-surefire.version>3.5.5</maven-surefire.version>
-        <plugin.Allure.version>2.12.0</plugin.Allure.version>
+        <plugin.Allure.version>2.14.0</plugin.Allure.version>
         <allure.version>2.24.0</allure.version>
-        <aspectj.version>1.9.20.1</aspectj.version>
+        <aspectj.version>1.9.22</aspectj.version>
         <plugin.aspectj.version>3.1.2</plugin.aspectj.version>
         <plugin.lombok.version>1.18.42</plugin.lombok.version>
         <javafaker.version>1.0.2</javafaker.version>
@@ -88,6 +88,11 @@
             <artifactId>log4j-core</artifactId>
             <version>${slf4j.core.simple.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${slf4j.api.simple.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -98,24 +103,18 @@
                 <version>${maven-surefire.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/CrossBrowserTestSuite.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>${plugin.Allure.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${plugin.aspectj.version}</version>
                 <configuration>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
+                    <reportVersion>${allure.version}</reportVersion>
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
         </plugins>
