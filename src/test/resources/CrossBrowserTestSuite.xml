@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="CrossBrowserTestSuite" parallel="tests" thread-count="2">
+
+    <listeners>
+        <listener class-name="utils.RetryTransformer"/>
+    </listeners>
+
+    <test name="AllTests-Chrome">
+        <parameter name="browser" value="chrome"/>
+        <packages>
+            <package name="tests"/>
+        </packages>
+    </test>
+
+    <test name="AllTests-Firefox">
+        <parameter name="browser" value="firefox"/>
+        <packages>
+            <package name="tests"/>
+        </packages>
+    </test>
+</suite>
