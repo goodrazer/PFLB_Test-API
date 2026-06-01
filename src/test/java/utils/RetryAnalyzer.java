@@ -1,9 +1,7 @@
 package utils;
 
-import lombok.extern.log4j.Log4j2;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
-
 
 public class RetryAnalyzer implements IRetryAnalyzer {
     private static final org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(RetryAnalyzer.class);
