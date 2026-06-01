@@ -2,21 +2,20 @@ package tests;
 
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
-
 import static com.codeborne.selenide.Selenide.switchTo;
 import static org.testng.Assert.assertEquals;
 
 public class PositiveLoginTest extends BaseTest{
 
     @Test(testName = "Positive authorization",
-            description = "User authorization by entering valid credentials",
+            description = "Авторизация пользователя с валидными данными 'Email' и 'Password'",
             priority = 1,
             groups = "Positive",
             enabled = true)
-    @Description("User authorization by entering valid credentials")
+    @Description("Авторизация пользователя с валидными данными 'Email' и 'Password'")
     @Epic("01.Authorization")
     @Feature("User authorization")
-    @Story("User authorization by entering valid credentials")
+    @Story("Авторизация пользователя с валидными данными 'Email' и 'Password'")
     @Severity(SeverityLevel.CRITICAL)
     @Link ("DocumentationLink")
     @TmsLink("TestCaseLink")
@@ -26,7 +25,7 @@ public class PositiveLoginTest extends BaseTest{
     public void positiveAuthorization() {
         loginPage.openPage()
                 .isPageOpened()
-                .positiveLogin(validUser,validPassword);
+                .positiveLogin(validEmail,validPassword);
         String alertText = switchTo().alert().getText();
         assertEquals(alertText, "Successful authorization");
         switchTo().alert().accept();
