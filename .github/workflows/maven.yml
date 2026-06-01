@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL: ${{secrets.VALID_USER}}
-      PASSWORD: ${{secrets.VALID_PASSWORD}}
+      EMAIL: ${{secrets.EMAIL}}
+      PASSWORD: ${{secrets.PASSWORD}}
 
     steps:
     - uses: actions/checkout@v4
