@@ -20,7 +20,7 @@ public class LoginPage extends BasePage {
     @Step("Открытие страницы 'Login'")
     public LoginPage openPage() {
         log.info("Opening the 'Login' start page");
-        open ("http://82.142.167.37:4881");
+        open (BASE_URL);
         return this;
     }
 
