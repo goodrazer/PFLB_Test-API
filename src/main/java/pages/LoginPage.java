@@ -26,14 +26,6 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    @Override
-    @Step("Проверка открытия страницы авторизации.")
-    public LoginPage isPageOpened() {
-        log.info("Checking the display of the 'Login' page");
-        TITLE.shouldBe(Condition.visible);
-        return this;
-    }
-
     @Step("Авторизация пользователя с валидными данными: 'Email' и 'Password'.")
     public LoginPage positiveLogin(
             @Param(mode = Parameter.Mode.MASKED) String email,

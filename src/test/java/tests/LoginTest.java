@@ -24,7 +24,6 @@ public class LoginTest extends BaseTest{
     @Owner("Malevaniy Anton")
     public void positiveAuthorization() {
         loginPage.openPage()
-                .isPageOpened()
                 .positiveLogin(validEmail,validPassword);
         String alertText = switchTo().alert().getText();
         Assert.assertEquals(alertText, "Successful authorization");
@@ -48,7 +47,6 @@ public class LoginTest extends BaseTest{
     @Owner("Malevaniy Anton")
     public void checkForTheEmailField() {
         loginPage.openPage()
-                .isPageOpened()
                 .enterEmail("notemail.com")
                 .enterPassword("12345");
         Assert.assertEquals(loginPage.getErrorMessageEmail(), "incorrect Email");
@@ -71,7 +69,6 @@ public class LoginTest extends BaseTest{
     @Owner("Malevaniy Anton")
     public void checkValidationForPasswordFieldWithValueLessThanThree() {
         loginPage.openPage()
-                .isPageOpened()
                 .enterPassword("1!")
                 .enterEmail("ayay@yandex.ru");
         Assert.assertEquals(loginPage.getErrorMessagePassword(),
@@ -95,7 +92,6 @@ public class LoginTest extends BaseTest{
     @Owner("Malevaniy Anton")
     public void checkThePasswordFieldIfTheValueIsGreaterThanEight() {
         loginPage.openPage()
-                .isPageOpened()
                 .enterPassword("12TY5!7O9")
                 .enterEmail("ayay@yandex.ru");
         Assert.assertEquals(loginPage.getErrorMessagePassword(),
