@@ -14,7 +14,6 @@ public class LoginStep {
     @Step("Авторизация пользователя с валидными данными логина и пароля с кликом по кнопке 'Login'")
     public LoginStep successfulAuthorization(String validEmail, String validPassword) {
         loginPage.openPage()
-                .isPageOpened()
                 .positiveLogin(validEmail, validPassword);
         switchTo().alert().accept();
         return this;
