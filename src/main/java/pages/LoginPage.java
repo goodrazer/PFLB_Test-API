@@ -15,6 +15,7 @@ public class LoginPage extends BasePage {
     private final SelenideElement INPUT_EMAIL = $x("//input[@name='email']");
     private final SelenideElement INPUT_PASSWORD = $x("//input[@name='password']");
     private final SelenideElement GO_BUTTON = $x("//button[@class='Nav-btn btn btn-primary']");
+    private final SelenideElement LOGOUT_BUTTON = $x("//button[@class='Nav-btn btn btn-danger']");
     private final SelenideElement ERROR_MASSAGE_INVALID_EMAIL = $x("//div[text()='incorrect Email']");
     private final SelenideElement ERROR_MASSAGE_INVALID_PASSWORD = $x("//div[text()='password length must be more than 3 symbols and less than 8 symbols']");
 
@@ -65,13 +66,52 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+    @Step("Нажатие кнопки 'LOGOUT'")
+    public LoginPage clickLogoutButton() {
+        log.info("Click the 'LOGOUT' button");
+        LOGOUT_BUTTON.click();
+        return this;
+    }
+
     @Step("Получение текста ошибки при вводе невалидного 'Email'.")
     public String getErrorMessageEmail() {
+        log.info("Receiving error text when entering an invalid 'Email'.");
         return ERROR_MASSAGE_INVALID_EMAIL.getText();
     }
 
     @Step("Получение текста ошибки при вводе невалидного 'Password'.")
     public String getErrorMessagePassword() {
+        log.info("Receiving error text when entering an invalid 'Password'.");
         return ERROR_MASSAGE_INVALID_PASSWORD.getText();
+    }
+
+    @Step("Проверка отображения заголовка на странице 'Authorization'.")
+    public boolean isTitleVisible() {
+        log.info("Checking the display title on the 'Authorization' page.");
+        return TITLE.is(Condition.visible);
+    }
+
+    @Step("Проверка отображения поля для ввода 'Email' на странице 'Authorization'.")
+    public boolean isEmailFieldVisible() {
+        log.info("Checking the display of the 'Email' input field on the 'Authorization' page.");
+        return INPUT_EMAIL.is(Condition.visible);
+    }
+
+    @Step("Проверка отображения поля для ввода 'Password' на странице 'Authorization'.")
+    public boolean isPasswordFieldVisible() {
+        log.info("Checking the display of the 'Password' input field on the 'Authorization' page.");
+        return INPUT_PASSWORD.is(Condition.visible);
+    }
+
+    @Step("Проверка отображения кнопки 'GO' на странице 'Authorization'.")
+    public boolean isGoButtonVisible() {
+        log.info("Checking whether the 'GO' button is displayed on the 'Authorization' page.");
+        return GO_BUTTON.is(Condition.visible);
+    }
+
+    @Step("Проверка отображения кнопки 'LOGOUT' на странице 'Authorization'.")
+    public boolean isLogoutButtonVisible() {
+        log.info("Checking whether the 'LOGOUT' button is displayed on the 'Authorization' page.");
+        return LOGOUT_BUTTON.is(Condition.visible);
     }
 }
