@@ -3,7 +3,7 @@
 <suite name="CrossBrowserTestSuite" parallel="none" configfailurepolicy="continue">
 
 <listeners>
-    <listener class-name="utils.RetryTransformer"/>
+    <listener class-name="ui.utils.RetryTransformer"/>
 </listeners>
 
 <test name="AllTests-Chrome">

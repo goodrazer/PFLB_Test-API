@@ -1,4 +1,4 @@
-package tests;
+package ui.tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
@@ -13,10 +13,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
-import pages.LoginPage;
-import steps.LoginStep;
-import utils.PropertyReader;
-import utils.TestListener;
+import ui.pages.LoginPage;
+import ui.steps.LoginStep;
+import ui.utils.PropertyReader;
+import ui.utils.TestListener;
 
 @Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {

@@ -1,7 +1,7 @@
-package steps;
+package ui.steps;
 
 import io.qameta.allure.Step;
-import pages.LoginPage;
+import ui.pages.LoginPage;
 import static com.codeborne.selenide.Selenide.switchTo;
 
 public class LoginStep {

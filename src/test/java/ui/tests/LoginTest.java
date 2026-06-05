@@ -1,6 +1,5 @@
-package tests;
+package ui.tests;
 
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
