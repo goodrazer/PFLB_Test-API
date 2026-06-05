@@ -30,6 +30,17 @@ public class LoginPage extends BasePage {
     public LoginPage positiveLogin(
             @Param(mode = Parameter.Mode.MASKED) String email,
             @Param(mode = Parameter.Mode.MASKED) String password) {
+
+        return positiveLogin(email, password, false);
+    }
+
+    // Обрабатывает Alert, если передавать третий параметр True
+    @Step("Авторизация пользователя с валидными данными: 'Email' и 'Password' (с обработкой алерта).")
+    public LoginPage positiveLogin(
+            @Param(mode = Parameter.Mode.MASKED) String email,
+            @Param(mode = Parameter.Mode.MASKED) String password,
+            boolean acceptAlert) {
+
         log.info("User authorization with valid data");
 
         SelenideLogger.removeListener("AllureSelenide");
@@ -37,6 +48,10 @@ public class LoginPage extends BasePage {
         INPUT_EMAIL.setValue(email);
         INPUT_PASSWORD.setValue(password);
         GO_BUTTON.click();
+
+        if (acceptAlert) {
+            switchTo().alert().accept();
+        }
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)

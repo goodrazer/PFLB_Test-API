@@ -1,6 +1,11 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
+import dto.User;
 import io.qameta.allure.Step;
+import wrappers.ButtonWrapper;
+import wrappers.InputWrapper;
+import wrappers.RadioWrapper;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
@@ -19,6 +24,7 @@ public class AllPostPage extends BasePage{
     //Локаторы для блока User (1-ая таблица)
     private static final String USER_BLOCK = "//section[@class='workspace']/div/div[1]/table";
     private static final String INPUT_USER_FIRST_NAME = USER_BLOCK + "//input[@id='first_name_send']";
+    private static final String INPUT_USER_LAST_NAME = USER_BLOCK + "//input[@id='last_name_send']";
     private static final String INPUT_USER_AGE = USER_BLOCK + "//input[@id='age_send']";
     private static final String RADIO_USER_MALE = USER_BLOCK + "//input[@name='sex_send' and @value='MALE']";
     private static final String RADIO_USER_FEMALE = USER_BLOCK + "//input[@name='sex_send' and @value='FEMALE']";
@@ -94,5 +100,32 @@ public class AllPostPage extends BasePage{
             throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
         }
         return this;
+    }
+
+    @Step("Создание пользователя: {0}")
+    public AllPostPage createUser(User user) {
+        log.info("Creating user: {}", user);
+        new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
+        new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
+        new InputWrapper(INPUT_USER_AGE).setNumberValue(String.valueOf(user.getAge()));
+
+        if ("MALE".equalsIgnoreCase(user.getSex())) {
+            new RadioWrapper(RADIO_USER_MALE).select();
+        } else {
+            new RadioWrapper(RADIO_USER_FEMALE).select();
+        }
+
+        new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
+        new ButtonWrapper(BTN_USER_PUSH).click();
+
+        $x(STATUS_USER).shouldHave(Condition.text("201"));
+        return this;
+    }
+
+    @Step("Получение сгенерированного ID пользователя")
+    public String getGeneratedUserId() {
+        String text = $x(NEW_ID_USER).getText();
+        // Парсим "New user ID: 12345" в "12345"
+        return text.replaceAll("[^0-9]", "");
     }
 }
