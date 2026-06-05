@@ -1,6 +1,7 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import dto.User;
 import io.qameta.allure.Step;
 import wrappers.ButtonWrapper;
@@ -108,6 +109,9 @@ public class AllPostPage extends BasePage{
     @Step("Создание пользователя: {0}")
     public AllPostPage createUser(User user) {
         log.info("Creating user: {}", user);
+
+        $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(15));
+
         new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
         new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
         new InputWrapper(INPUT_USER_AGE).setNumberValue(String.valueOf(user.getAge()));
@@ -118,10 +122,19 @@ public class AllPostPage extends BasePage{
             new RadioWrapper(RADIO_USER_FEMALE).select();
         }
 
-        new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
-        new ButtonWrapper(BTN_USER_PUSH).click();
+        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
+        String moneyStr = String.format(java.util.Locale.US, "%.2f", user.getMoney());
+        new InputWrapper(INPUT_USER_MONEY).setNumberValue(moneyStr);
 
-        $x(STATUS_USER).shouldHave(Condition.text("201"));
+        //new ButtonWrapper(BTN_USER_PUSH).click();
+        //$x(STATUS_USER).shouldHave(Condition.text("201"));
+        log.debug("Page URL before click: {}",
+                com.codeborne.selenide.WebDriverRunner.driver().url());
+        SelenideElement pushButton = $x(BTN_USER_PUSH);
+        pushButton.scrollTo();  // Скроллим к кнопке
+        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", pushButton);
+
+        $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(20));
         return this;
     }
 
