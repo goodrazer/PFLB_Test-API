@@ -159,9 +159,9 @@ public class AllPostPage extends BasePage{
         pushButton.click();
         log.info("Clicked Push to API");
         // Кнопки (текст)
-        log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
-        log.info("Status button text: '{}'", $x(STATUS_USER).getText());
-        log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
+        //log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
+        //log.info("Status button text: '{}'", $x(STATUS_USER).getText());
+        //log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
 
         $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
         return this;

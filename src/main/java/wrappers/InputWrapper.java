@@ -3,6 +3,7 @@ package wrappers;
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.sleep;
 
 //Wrapper для текстовых/числовых полей ввода (возвращает this для цепочки)
 public class InputWrapper {
@@ -17,6 +18,7 @@ public class InputWrapper {
         //field.setValue(value);
         field.clear();
         field.sendKeys(value);
+        sleep(1000);
         return this;
     }
 
@@ -25,6 +27,7 @@ public class InputWrapper {
         //field.setValue(value);
         field.clear();
         field.sendKeys(value);
+        sleep(1000);
         return this;
     }
 
