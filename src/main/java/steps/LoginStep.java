@@ -5,10 +5,10 @@ import pages.LoginPage;
 import static com.codeborne.selenide.Selenide.switchTo;
 
 public class LoginStep {
-    private final LoginPage loginPage;
+    LoginPage loginPage;
 
-    public LoginStep(LoginPage loginPage) {
-        this.loginPage = loginPage;
+    public LoginStep() {
+        loginPage = new LoginPage();
     }
 
     @Step("Авторизация пользователя с валидными данными логина и пароля с кликом по кнопке 'Login'")
