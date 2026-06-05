@@ -15,13 +15,13 @@ public class User {
     private final String lastName;
     private final int age;
     private final String sex;  // "MALE" или "FEMALE"
-    private final double money;
+    private final int money;
 
     // Поле для хранения сгенерированного ID (не используется в форме)
     @Builder.Default
     private String generatedId = null;
 
-    public User(String firstName, String lastName, int age, String sex, double money) {
+    public User(String firstName, String lastName, int age, String sex, int money) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;

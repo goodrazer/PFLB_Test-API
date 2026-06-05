@@ -26,7 +26,7 @@ public class AllPostTest extends BaseTest{
                 .lastName("Testov")
                 .age(30)
                 .sex("MALE")
-                .money(10000.00)
+                .money(10000)
                 .build();
         // Данные для создания автомобиля
         Car car = Car.builder()

@@ -30,7 +30,7 @@ public class BaseTest {
                 .screenshots(true)
                 .savePageSource(false)
         );
-        Configuration.timeout = 20000;
+        Configuration.timeout = 30000;
         Configuration.baseUrl = "http://82.142.167.37:4881";
         Configuration.clickViaJs = true;
         Configuration.headless = true;

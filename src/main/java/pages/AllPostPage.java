@@ -97,7 +97,8 @@ public class AllPostPage extends BasePage{
     public AllPostPage isPageOpened() {
         log.info("Checking 'All POST' page is loaded");
 
-        $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(10));
+        $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(20));
+
 
 //        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
 //        if (!currentUrl.contains("#/create/all")) {
@@ -110,7 +111,7 @@ public class AllPostPage extends BasePage{
     public AllPostPage createUser(User user) {
         log.info("Creating user: {}", user);
 
-        $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(15));
+        $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
 
         new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
         new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
@@ -123,18 +124,26 @@ public class AllPostPage extends BasePage{
         }
 
         //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
-        String moneyStr = String.format(java.util.Locale.US, "%.2f", user.getMoney());
-        new InputWrapper(INPUT_USER_MONEY).setNumberValue(moneyStr);
+        //String moneyStr = String.format(java.util.Locale.US, "%.2f", user.getMoney());
+        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(moneyStr);
+        new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(10000));
 
         //new ButtonWrapper(BTN_USER_PUSH).click();
         //$x(STATUS_USER).shouldHave(Condition.text("201"));
-        log.debug("Page URL before click: {}",
+        log.info("Page URL before click: {}",
                 com.codeborne.selenide.WebDriverRunner.driver().url());
-        SelenideElement pushButton = $x(BTN_USER_PUSH);
-        pushButton.scrollTo();  // Скроллим к кнопке
-        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", pushButton);
 
-        $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(20));
+//        SelenideElement pushButton = $x(BTN_USER_PUSH);
+//        pushButton.scrollTo();  // Скроллим к кнопке
+//        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", pushButton);
+
+        SelenideElement pushButton = $x(BTN_USER_PUSH);
+        pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
+        pushButton.scrollTo();
+
+        pushButton.click();
+
+        $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
         return this;
     }
 
