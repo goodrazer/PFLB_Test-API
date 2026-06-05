@@ -1,3 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Авторизация пользователя с валидными данными 'Email' и 'Password'","2685","Авторизация пользователя с валидными данными 'Email' и 'Password'","CrossBrowserTestSuite","2026-06-01","failed","2026-06-01","tests.PositiveLoginTest","AllTests-Firefox","tests.PositiveLoginTest","positiveAuthorization"
-"Авторизация пользователя с валидными данными 'Email' и 'Password'","2701","Авторизация пользователя с валидными данными 'Email' и 'Password'","CrossBrowserTestSuite","2026-06-01","failed","2026-06-01","tests.PositiveLoginTest","AllTests-Chrome","tests.PositiveLoginTest","positiveAuthorization"
