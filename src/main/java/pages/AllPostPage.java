@@ -22,6 +22,21 @@ public class AllPostPage extends BasePage{
     private static final String NEW_ID_USER = USER_BLOCK +
             "//following-sibling::div/button[contains(@class,'newId')]";
 
+    //Локаторы для блока House
+    private static final String HOUSE_BLOCK = "//section[@class='workspace']/div/div[6]/table[1]";
+    private static final String INPUT_HOUSE_FLOORS = HOUSE_BLOCK + "//input[@id='floor_send']";
+    private static final String INPUT_HOUSE_PRICE = HOUSE_BLOCK + "//input[@id='price_send']";
+    private static final String INPUT_PARKING_1 = "//input[@id='parking_first_send']";
+    private static final String INPUT_PARKING_2 = "//input[@id='parking_second_send']";
+    private static final String INPUT_PARKING_3 = "//input[@id='parking_third_send']";
+    private static final String INPUT_PARKING_4 = "//input[@id='parking_fourth_send']";
+    private static final String BTN_HOUSE_PUSH = HOUSE_BLOCK +
+            "//following-sibling::div/button[contains(., 'PUSH') and contains(., 'API')]";
+    private static final String STATUS_HOUSE = HOUSE_BLOCK +
+            "//following-sibling::div/button[contains(@class,'status')]";
+    private static final String NEW_ID_HOUSE = HOUSE_BLOCK +
+            "//following-sibling::div/button[contains(@class,'newId')]";
+
     public AllPostPage() {super();}
 
     @Override
