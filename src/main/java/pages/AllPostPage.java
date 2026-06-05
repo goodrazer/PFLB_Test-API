@@ -98,8 +98,6 @@ public class AllPostPage extends BasePage{
         log.info("Checking 'All POST' page is loaded");
 
         $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(20));
-
-
 //        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
 //        if (!currentUrl.contains("#/create/all")) {
 //            throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
@@ -139,9 +137,31 @@ public class AllPostPage extends BasePage{
 
         SelenideElement pushButton = $x(BTN_USER_PUSH);
         pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
-        pushButton.scrollTo();
+        //pushButton.scrollTo();
+        log.info("--Current form values--");
+        // Поля ввода
+        log.info("First name: '{}'", $x(INPUT_USER_FIRST_NAME).getValue());
+        log.info("Last name: '{}'", $x(INPUT_USER_LAST_NAME).getValue());
+        log.info("Age: '{}'", $x(INPUT_USER_AGE).getValue());
+        log.info("Money: '{}'", $x(INPUT_USER_MONEY).getValue());
+        // Радиокнопки (проверяем, какая выбрана)
+        boolean maleSelected = $x(RADIO_USER_MALE).isSelected();
+        boolean femaleSelected = $x(RADIO_USER_FEMALE).isSelected();
+        String selectedSex = maleSelected ? "MALE" : (femaleSelected ? "FEMALE" : "none");
+        log.info("Sex (selected): '{}'", selectedSex);
+        // Кнопки (текст)
+        log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
+        log.info("Status button text: '{}'", $x(STATUS_USER).getText());
+        log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
 
+        //String formHtml = $x(USER_BLOCK).getAttribute("outerHTML");
+        //log.info("Form HTML snippet:\n{}", formHtml);
         pushButton.click();
+        log.info("Clicked Push to API");
+        // Кнопки (текст)
+        log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
+        log.info("Status button text: '{}'", $x(STATUS_USER).getText());
+        log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
 
         $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
         return this;
