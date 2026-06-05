@@ -52,9 +52,8 @@ public class AllPostTest extends BaseTest{
         // Открытие страницы All POST
         log.info("Step 3: Opening All POST page");
         AllPostPage allPostPage = new AllPostPage();
-        allPostPage.openPage();
-        sleep(1000);
-        allPostPage.isPageOpened();
+        allPostPage.openPage()
+                .isPageOpened();
 
         // Создание пользователя
         log.info("Step 4: Creating user");
@@ -63,6 +62,5 @@ public class AllPostTest extends BaseTest{
         Assert.assertNotNull(userId, "User ID должен быть сгенерирован");
         Assert.assertTrue(userId.matches("\\d+"), "User ID должен быть числовой");
         log.info("Created user with ID: {}", userId);
-        sleep(1000);
     }
 }

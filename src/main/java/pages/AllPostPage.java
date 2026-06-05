@@ -95,10 +95,13 @@ public class AllPostPage extends BasePage{
     @Step("Проверка открытия страницы 'All POST'.")
     public AllPostPage isPageOpened() {
         log.info("Checking 'All POST' page is loaded");
-        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
-        if (!currentUrl.contains("#/create/all")) {
-            throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
-        }
+
+        $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(10));
+
+//        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
+//        if (!currentUrl.contains("#/create/all")) {
+//            throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
+//        }
         return this;
     }
 
