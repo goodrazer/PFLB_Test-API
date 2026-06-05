@@ -14,13 +14,17 @@ public class InputWrapper {
 
     //вводит значение
     public InputWrapper setValue(String value) {
-        field.setValue(value);
+        //field.setValue(value);
+        field.clear();
+        field.sendKeys(value);
         return this;
     }
 
     //вводит числовое значение
     public InputWrapper setNumberValue(String value) {
-        field.setValue(value);
+        //field.setValue(value);
+        field.clear();
+        field.sendKeys(value);
         return this;
     }
 
