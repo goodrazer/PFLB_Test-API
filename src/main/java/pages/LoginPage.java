@@ -51,6 +51,7 @@ public class LoginPage extends BasePage {
 
         if (acceptAlert) {
             switchTo().alert().accept();
+            sleep(1000);
         }
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()

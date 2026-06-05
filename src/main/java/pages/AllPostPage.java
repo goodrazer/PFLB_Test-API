@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import dto.User;
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 import wrappers.ButtonWrapper;
 import wrappers.InputWrapper;
 import wrappers.RadioWrapper;
@@ -89,7 +90,9 @@ public class AllPostPage extends BasePage{
     @Step("Открытие страницы 'All POST'.")
     public AllPostPage openPage() {
         log.info("Opening 'All POST' page");
-        open(BASE_URL + "/#/create/all");
+        WebDriver driver = com.codeborne.selenide.WebDriverRunner.getWebDriver();
+        driver.get(BASE_URL + "/#/create/all");
+        //open(BASE_URL + "/#/create/all");
         return this;
     }
 
@@ -97,11 +100,18 @@ public class AllPostPage extends BasePage{
     public AllPostPage isPageOpened() {
         log.info("Checking 'All POST' page is loaded");
 
+        // Ждём появления элемента — это надёжнее проверки URL в SPA
         $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(20));
-//        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
-//        if (!currentUrl.contains("#/create/all")) {
-//            throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
-//        }
+
+        // Опционально: логируем URL для отладки
+        String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
+        log.info("Current URL after load: {}", currentUrl);
+
+        // Не выбрасываем ошибку, если элемент виден — страница готова
+        if (!currentUrl.contains("create/all")) {
+            log.warn("URL doesn't contain 'create/all', but page elements are visible. Continuing...");
+        }
+
         return this;
     }
 
@@ -110,32 +120,32 @@ public class AllPostPage extends BasePage{
         log.info("Creating user: {}", user);
 
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
+
         // Получаем каждый элемент
         SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
         SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
         SelenideElement ageField = $x(INPUT_USER_AGE);
         SelenideElement moneyField = $x(INPUT_USER_MONEY);
-        // Ждём каждое поле
+
+        // Заполняем firstName
         firstNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
         firstNameField.clear();
         firstNameField.sendKeys(user.getFirstName());
-        // Проверяем, что значение записалось
         firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
 
+        // Заполняем lastName
         lastNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
         lastNameField.clear();
         lastNameField.sendKeys(user.getLastName());
         lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
 
+        // Заполняем age
         ageField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
         ageField.clear();
         ageField.sendKeys(String.valueOf(user.getAge()));
         ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
 
-        new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
-        new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
-        new InputWrapper(INPUT_USER_AGE).setNumberValue(String.valueOf(user.getAge()));
-
+        // Выбор пола
         if ("MALE".equalsIgnoreCase(user.getSex())) {
             SelenideElement maleRadio = $x(RADIO_USER_MALE);
             maleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
@@ -146,46 +156,29 @@ public class AllPostPage extends BasePage{
             femaleRadio.click();
         }
 
+        // Заполняем money
         moneyField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
         moneyField.clear();
         moneyField.sendKeys(String.valueOf((long) user.getMoney()));
         moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
 
-
-        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
-        //String moneyStr = String.format(java.util.Locale.US, "%.2f", user.getMoney());
-        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(moneyStr);
-
-        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(10000));
-
-        //new ButtonWrapper(BTN_USER_PUSH).click();
-        //$x(STATUS_USER).shouldHave(Condition.text("201"));
-        log.info("Page URL before click: {}",
-                com.codeborne.selenide.WebDriverRunner.driver().url());
-
-//        SelenideElement pushButton = $x(BTN_USER_PUSH);
-//        pushButton.scrollTo();  // Скроллим к кнопке
-//        com.codeborne.selenide.Selenide.executeJavaScript("arguments[0].click();", pushButton);
-
-        SelenideElement pushButton = $x(BTN_USER_PUSH);
-        pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
-        //pushButton.scrollTo();
+        // Логирование значений перед отправкой
         log.info("--Верификация полей в форме перед отправкой --");
         log.info("First name: '{}'", firstNameField.getValue());
         log.info("Last name: '{}'", lastNameField.getValue());
         log.info("Age: '{}'", ageField.getValue());
         log.info("Money: '{}'", moneyField.getValue());
 
-        //String formHtml = $x(USER_BLOCK).getAttribute("outerHTML");
-        //log.info("Form HTML snippet:\n{}", formHtml);
+        // Клик по кнопке
+        SelenideElement pushButton = $x(BTN_USER_PUSH);
+        pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
         pushButton.click();
-        log.info("Clicked Push to API");
-        // Кнопки (текст)
-        //log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
-        //log.info("Status button text: '{}'", $x(STATUS_USER).getText());
-        //log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
 
+        log.info("Clicked Push to API");
+
+        // Ожидаем успешный статус
         $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
+
         return this;
     }
 

@@ -33,7 +33,7 @@ public class BaseTest {
         Configuration.timeout = 30000;
         Configuration.baseUrl = "http://82.142.167.37:4881";
         Configuration.clickViaJs = true;
-        Configuration.headless = true;
+        Configuration.headless = false;
         Configuration.browserSize = "1920x1080";
     }
 
