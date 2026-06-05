@@ -18,7 +18,7 @@ public class InputWrapper {
         //field.setValue(value);
         field.clear();
         field.sendKeys(value);
-        sleep(1000);
+        //sleep(1000);
         return this;
     }
 
@@ -27,7 +27,7 @@ public class InputWrapper {
         //field.setValue(value);
         field.clear();
         field.sendKeys(value);
-        sleep(1000);
+        //sleep(1000);
         return this;
     }
 

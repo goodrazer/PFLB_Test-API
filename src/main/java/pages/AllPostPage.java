@@ -110,21 +110,53 @@ public class AllPostPage extends BasePage{
         log.info("Creating user: {}", user);
 
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
+        // Получаем каждый элемент
+        SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
+        SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
+        SelenideElement ageField = $x(INPUT_USER_AGE);
+        SelenideElement moneyField = $x(INPUT_USER_MONEY);
+        // Ждём каждое поле
+        firstNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
+        firstNameField.clear();
+        firstNameField.sendKeys(user.getFirstName());
+        // Проверяем, что значение записалось
+        firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
+
+        lastNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        lastNameField.clear();
+        lastNameField.sendKeys(user.getLastName());
+        lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
+
+        ageField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        ageField.clear();
+        ageField.sendKeys(String.valueOf(user.getAge()));
+        ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
 
         new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
         new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
         new InputWrapper(INPUT_USER_AGE).setNumberValue(String.valueOf(user.getAge()));
 
         if ("MALE".equalsIgnoreCase(user.getSex())) {
-            new RadioWrapper(RADIO_USER_MALE).select();
+            SelenideElement maleRadio = $x(RADIO_USER_MALE);
+            maleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+            maleRadio.click();
         } else {
-            new RadioWrapper(RADIO_USER_FEMALE).select();
+            SelenideElement femaleRadio = $x(RADIO_USER_FEMALE);
+            femaleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+            femaleRadio.click();
         }
+
+        moneyField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        moneyField.clear();
+        moneyField.sendKeys(String.valueOf((long) user.getMoney()));
+        moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
+
 
         //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(user.getMoney()));
         //String moneyStr = String.format(java.util.Locale.US, "%.2f", user.getMoney());
         //new InputWrapper(INPUT_USER_MONEY).setNumberValue(moneyStr);
-        new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(10000));
+
+        //new InputWrapper(INPUT_USER_MONEY).setNumberValue(String.valueOf(10000));
 
         //new ButtonWrapper(BTN_USER_PUSH).click();
         //$x(STATUS_USER).shouldHave(Condition.text("201"));
@@ -138,21 +170,11 @@ public class AllPostPage extends BasePage{
         SelenideElement pushButton = $x(BTN_USER_PUSH);
         pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
         //pushButton.scrollTo();
-        log.info("--Current form values--");
-        // Поля ввода
-        log.info("First name: '{}'", $x(INPUT_USER_FIRST_NAME).getValue());
-        log.info("Last name: '{}'", $x(INPUT_USER_LAST_NAME).getValue());
-        log.info("Age: '{}'", $x(INPUT_USER_AGE).getValue());
-        log.info("Money: '{}'", $x(INPUT_USER_MONEY).getValue());
-        // Радиокнопки (проверяем, какая выбрана)
-        boolean maleSelected = $x(RADIO_USER_MALE).isSelected();
-        boolean femaleSelected = $x(RADIO_USER_FEMALE).isSelected();
-        String selectedSex = maleSelected ? "MALE" : (femaleSelected ? "FEMALE" : "none");
-        log.info("Sex (selected): '{}'", selectedSex);
-        // Кнопки (текст)
-        log.info("Push button text: '{}'", $x(BTN_USER_PUSH).getText());
-        log.info("Status button text: '{}'", $x(STATUS_USER).getText());
-        log.info("New ID button text: '{}'", $x(NEW_ID_USER).getText());
+        log.info("--Верификация полей в форме перед отправкой --");
+        log.info("First name: '{}'", firstNameField.getValue());
+        log.info("Last name: '{}'", lastNameField.getValue());
+        log.info("Age: '{}'", ageField.getValue());
+        log.info("Money: '{}'", moneyField.getValue());
 
         //String formHtml = $x(USER_BLOCK).getAttribute("outerHTML");
         //log.info("Form HTML snippet:\n{}", formHtml);
