@@ -35,6 +35,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Setup Latest Firefox
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: 'latest'
+
       - name: Build with Maven
         run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
 
