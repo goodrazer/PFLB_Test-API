@@ -132,8 +132,8 @@ import static com.codeborne.selenide.Selenide.switchTo;
         @Test(testName = "АТ.01.06.Проверка доступности выполнений действий для авторизованного пользователя",
                 description = "Проверка доступности выполнений действий для авторизованного пользователя " +
                         "(создать пользователя)",
-                priority = 3,
-                groups = {"Negative", "Regression"},
+                priority = 1,
+                groups = {"Positive", "Regression", "Smoke"},
                 enabled = true)
         @Description("Проверка доступности выполнений действий для авторизованного пользователя (создать пользователя)")
         @Epic("Epic01_Авторизация")
