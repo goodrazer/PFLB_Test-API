@@ -1,5 +1,6 @@
 package ui.tests;
 
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -148,6 +149,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
         @Owner("Malevaniy Anton")
         public void checkingTheAvailabilityOfActionsForAnAuthorizedUser() {
             loginStep.successfulAuthorization(validEmail, validPassword);
+            Selenide.sleep(3000);
             allPostPage.clickUsersButton()
                             .clickCreateNewButton();
             Assert.assertEquals(allPostPage.getTextElementIDWillBeGenerated(),"ID will be generated" ,
