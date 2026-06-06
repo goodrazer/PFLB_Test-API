@@ -4,7 +4,6 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.innerText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
@@ -36,7 +35,7 @@ public class AllPostPage extends BasePage {
     private final SelenideElement DROPDOWN_HOUSES_CREATE_NEW = $("a[href='#/create/house']");
     private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
     //Локатор первого поля 'ID will be generated' таблицы открытой по дропдауну Users --> Create new:
-    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED = $x("//td[text()='ID will be generated']");
+    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED = $x("//td[contains(text(), 'ID')]");
 
     //Локаторы кнопок для отправки, получения статуса и получения ID
     private static final String BTN_PUSH =
@@ -153,7 +152,7 @@ public class AllPostPage extends BasePage {
     public String getTextElementIDWillBeGenerated() {
         log.info("Displaying the 'ID will be generated' item in the 'Create new' table from the 'Users' drop-down list");
         return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED
-                .shouldHave(innerText("ID will be generated"))
+                .shouldHave(Condition.text("ID will be generated"))
                 .getText();
     }
 }
