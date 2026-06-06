@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.clickable;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
@@ -137,14 +138,14 @@ public class AllPostPage extends BasePage {
     @Step("Выбор опции 'Read all' из выпадающего списка 'Users'")
     public AllPostPage clickReadAllButton() {
         log.info("Select the 'Read all' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_READ_ALL.click();
+        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click();
         return this;
     }
 
     @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
     public AllPostPage clickCreateNewButton() {
         log.info("Select the 'Create new' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(visible).click();
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(visible).shouldBe(clickable).click();
         return this;
     }
 
