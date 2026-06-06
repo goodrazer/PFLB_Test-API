@@ -41,7 +41,7 @@ jobs:
           firefox-version: 'latest'
 
       - name: Build with Maven
-        run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test -U
+        run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
 
       - name: Get Allure history
         uses: actions/checkout@v6

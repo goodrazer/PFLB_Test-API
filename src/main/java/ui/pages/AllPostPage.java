@@ -1,5 +1,6 @@
 package ui.pages;
 
+import com.codeborne.selenide.ClickMethod;
 import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -11,6 +12,7 @@ import static com.codeborne.selenide.Condition.clickable;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class AllPostPage extends BasePage {
 
@@ -134,7 +136,7 @@ public class AllPostPage extends BasePage {
     @Step("Раскрытие выпадающего списка 'Users'")
     public AllPostPage clickUsersButton() {
         log.info("Click the 'Users' button");
-        DROPDOWN_USERS.click();
+        DROPDOWN_USERS.click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
@@ -148,7 +150,7 @@ public class AllPostPage extends BasePage {
     @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
     public AllPostPage clickCreateNewButton() {
         log.info("Select the 'Create new' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(Condition.exist, Duration.ofSeconds(10));
+        DROPDOWN_USERS_ITEM_CREATE_NEW.click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
