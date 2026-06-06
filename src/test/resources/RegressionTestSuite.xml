@@ -3,7 +3,7 @@
 <suite name="Regression Test Suite">
 
     <listeners>
-        <listener class-name="utils.RetryTransformer"/>
+        <listener class-name="ui.utils.RetryTransformer"/>
     </listeners>
 
     <test name="Regression Tests">
@@ -14,7 +14,7 @@
             </run>
         </groups>
         <packages>
-            <package name="tests"/>
+            <package name="ui.tests"/>
         </packages>
     </test>
 </suite>
