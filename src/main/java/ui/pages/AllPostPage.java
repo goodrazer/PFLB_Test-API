@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.innerText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
@@ -152,7 +153,7 @@ public class AllPostPage extends BasePage {
     public String getTextElementIDWillBeGenerated() {
         log.info("Displaying the 'ID will be generated' item in the 'Create new' table from the 'Users' drop-down list");
         return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED
-                .shouldHave(Condition.text("ID will be generated"))
+                .shouldHave(innerText("ID will be generated"))
                 .getText();
     }
 }
