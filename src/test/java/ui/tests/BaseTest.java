@@ -13,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
+import ui.pages.AllPostPage;
 import ui.pages.LoginPage;
 import ui.steps.LoginStep;
 import ui.utils.PropertyReader;
@@ -25,6 +26,7 @@ public class BaseTest {
     protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
     protected LoginPage loginPage;
     protected LoginStep loginStep;
+    protected AllPostPage allPostPage;
 
     @BeforeSuite(alwaysRun = true)
     public void initSuite() {
@@ -66,6 +68,7 @@ public class BaseTest {
         WebDriverRunner.setWebDriver(driver);
         loginPage = new LoginPage();
         loginStep = new LoginStep();
+        allPostPage = new AllPostPage();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")

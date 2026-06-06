@@ -1,11 +1,41 @@
 package ui.pages;
 
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Selenide.*;
 
-public class AllPostPage extends BasePage{
+public class AllPostPage extends BasePage {
+
+    //Локаторы для дропдаунов Users, Cars, Houses:
+    //Дропдаун Users:
+    private final SelenideElement DROPDOWN_USERS = $("#basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_USERS_ITEM_READ_ALL = $("a[href='#/read/users']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_READ_USER_WITH_CARS = $("a[href='#/read/userInfo']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_CREATE_NEW = $("a[href='#/create/user']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_ADD_MONEY = $("a[href='#/update/users/plusMoney']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_SETTLE_TO_HOUSE = $("a[href='#/update/houseAndUser']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_ISSUE_A_LOAN = $("a[href='#/update/Issue_A_Loan']");
+    //Дропдаун Cars:
+    private final SelenideElement DROPDOWN_CARS = $("basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_CARS_ITEM_READ_ALL = $("a[href='#/read/cars']");
+    private final SelenideElement DROPDOWN_CARS_ITEM_CREATE_NEW = $("a[href='#/create/cars']");
+    private final SelenideElement DROPDOWN_CARS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
+    //Дропдаун Houses:
+    private final SelenideElement DROPDOWN_HOUSES = $("#basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_HOUSES_ITEM_READ_ALL = $("a[href='#/read/houses']");
+    private final SelenideElement DROPDOWN_HOUSES_READ_ONE_BY_ID = $("a[href='#/read/house']");
+    private final SelenideElement DROPDOWN_HOUSES_CREATE_NEW = $("a[href='#/create/house']");
+    private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
+    //Локатор первого поля 'ID will be generated' таблицы открытой по дропдауну Users --> Create new:
+    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED =
+            $(withText("ID will be generated"));
 
     //Локаторы кнопок для отправки, получения статуса и получения ID
     private static final String BTN_PUSH =
@@ -75,7 +105,9 @@ public class AllPostPage extends BasePage{
     private static final String STATUS_HOUSE = HOUSE_BLOCK + BTN_STATUS;
     private static final String NEW_ID_HOUSE = HOUSE_BLOCK + BTN_ID;
 
-    public AllPostPage() {super();}
+    public AllPostPage() {
+        super();
+    }
 
     @Override
     @Step("Открытие страницы 'All POST'.")
@@ -93,5 +125,32 @@ public class AllPostPage extends BasePage{
             throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
         }
         return this;
+    }
+
+    @Step("Раскрытие выпадающего списка 'Users'")
+    public AllPostPage clickUsersButton() {
+        log.info("Click the 'Users' button");
+        DROPDOWN_USERS.click();
+        return this;
+    }
+
+    @Step("Выбор опции 'Read all' из выпадающего списка 'Users'")
+    public AllPostPage clickReadAllButton() {
+        log.info("Select the 'Read all' option from the 'Users' drop-down list");
+        DROPDOWN_USERS_ITEM_READ_ALL.click();
+        return this;
+    }
+
+    @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
+    public AllPostPage clickCreateNewButton() {
+        log.info("Select the 'Create new' option from the 'Users' drop-down list");
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(visible).click();
+        return this;
+    }
+
+    @Step("Отображение элемента 'ID will be generated' в таблице 'Create new' из выпадающего списка 'Users'")
+    public String getTextElementIDWillBeGenerated() {
+        log.info("Displaying the 'ID will be generated' item in the 'Create new' table from the 'Users' drop-down list");
+        return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED.shouldBe(visible).getText();
     }
 }

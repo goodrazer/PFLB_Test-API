@@ -128,4 +128,29 @@ import static com.codeborne.selenide.Selenide.switchTo;
             Assert.assertEquals(loginPage.getErrorMessagePassword(),
                     "password length must be more than 3 symbols and less than 8 symbols");
         }
+
+        @Test(testName = "АТ.01.06.Проверка доступности выполнений действий для авторизованного пользователя",
+                description = "Проверка доступности выполнений действий для авторизованного пользователя " +
+                        "(создать пользователя)",
+                priority = 3,
+                groups = {"Negative", "Regression"},
+                enabled = true)
+        @Description("Проверка доступности выполнений действий для авторизованного пользователя (создать пользователя)")
+        @Epic("Epic01_Авторизация")
+        @Feature("Проверка доступности выполнений действий для авторизованного пользователя")
+        @Story("Проверка доступности выполнений действий для авторизованного пользователя (создать пользователя)")
+        @Severity(SeverityLevel.CRITICAL)
+        @Link("https://docs.google.com/document/d/1B4ltZQEx8C6b-EhSGyezA49Jc2IlCrqgGhXlRugrYdY" +
+                "/edit?tab=t.1g932z60l1u6#heading=h.kry4ansadogj")
+        @TmsLink("TestCaseLink")
+        @Issue("BugLink")
+        @Flaky
+        @Owner("Malevaniy Anton")
+        public void checkingTheAvailabilityOfActionsForAnAuthorizedUser() {
+            loginStep.successfulAuthorization(validEmail, validPassword);
+            allPostPage.clickUsersButton()
+                            .clickCreateNewButton();
+            Assert.assertEquals(allPostPage.getTextElementIDWillBeGenerated(),"ID will be generated" ,
+                    "Ошибка!!! Создание пользователя недоступно для неавторизованного пользователя!");
+        }
     }
