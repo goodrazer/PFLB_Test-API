@@ -1,5 +1,6 @@
 package ui.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -150,6 +151,8 @@ public class AllPostPage extends BasePage {
     @Step("Отображение элемента 'ID will be generated' в таблице 'Create new' из выпадающего списка 'Users'")
     public String getTextElementIDWillBeGenerated() {
         log.info("Displaying the 'ID will be generated' item in the 'Create new' table from the 'Users' drop-down list");
-        return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED.shouldBe(visible).getText();
+        return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED
+                .shouldHave(Condition.text("ID will be generated"))
+                .getText();
     }
 }

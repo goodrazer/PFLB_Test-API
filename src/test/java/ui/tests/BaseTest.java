@@ -51,7 +51,6 @@ public class BaseTest {
             options.addArguments("-private");
             options.addPreference("dom.webnotifications.enabled", false);
             options.addPreference("privacy.popups.showBrowserMessage", false);
-            Configuration.browserSize = "1920x1080";
             if (Configuration.headless) {
                 options.addArguments("-headless");
             }
@@ -60,7 +59,7 @@ public class BaseTest {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-popup-blocking");
-            Configuration.browserSize = "1920x1080";
+            options.addArguments("--window-size=1920,1080");
             if (Configuration.headless) {
                 options.addArguments("--headless=new");
             }
