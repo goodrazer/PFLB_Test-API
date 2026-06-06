@@ -34,8 +34,7 @@ public class AllPostPage extends BasePage {
     private final SelenideElement DROPDOWN_HOUSES_CREATE_NEW = $("a[href='#/create/house']");
     private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
     //Локатор первого поля 'ID will be generated' таблицы открытой по дропдауну Users --> Create new:
-    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED =
-            $(withText("ID will be generated"));
+    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED = $(withText("ID will be generated"));
 
     //Локаторы кнопок для отправки, получения статуса и получения ID
     private static final String BTN_PUSH =
