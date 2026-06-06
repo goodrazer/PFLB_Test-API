@@ -23,6 +23,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     env:
       EMAIL: ${{secrets.EMAIL}}
       PASSWORD: ${{secrets.PASSWORD}}
@@ -58,6 +61,6 @@ jobs:
       if: always()
       uses: peaceiris/actions-gh-pages@v4
       env:
-        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_BRANCH: gh-pages
         PUBLISH_DIR: allure-history
