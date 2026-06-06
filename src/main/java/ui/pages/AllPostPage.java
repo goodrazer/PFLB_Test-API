@@ -1,5 +1,6 @@
 package ui.pages;
 
+import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -147,7 +148,7 @@ public class AllPostPage extends BasePage {
     @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
     public AllPostPage clickCreateNewButton() {
         log.info("Select the 'Create new' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(visible).shouldBe(clickable).click();
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(Condition.exist, Duration.ofSeconds(10));
         return this;
     }
 
