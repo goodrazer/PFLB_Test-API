@@ -44,7 +44,7 @@ public class BaseTest {
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
     @Parameters({"browser"})
     @Step("Настройка браузера: {browser}")
-    public void setUp(@Optional("chrome") String browser) {
+    public void setUp(@Optional("firefox") String browser) {
         WebDriver driver;
         if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
