@@ -39,6 +39,7 @@ public class BaseTest {
         Configuration.clickViaJs = true;
         Configuration.headless = true;
         Configuration.browserSize = "1920x1080";
+        Configuration.webdriverLogsEnabled = false;
     }
 
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
