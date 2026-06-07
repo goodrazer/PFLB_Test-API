@@ -149,7 +149,7 @@ public class LoginTest extends BaseTest {
         @Owner("Malevaniy Anton")
         public void checkingTheAvailabilityOfActionsForAnAuthorizedUser() {
             loginStep.successfulAuthorization(validEmail, validPassword);
-            Selenide.sleep(3000);
+            Selenide.sleep(5000);
             allPostPage.clickUsersButton()
                             .clickCreateNewButton();
             assertEquals(allPostPage.getTextElementIDWillBeGenerated(),"ID will be generated" ,
