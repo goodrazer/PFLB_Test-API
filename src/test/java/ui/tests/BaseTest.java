@@ -13,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
+import ui.pages.AllPostPage;
 import ui.pages.LoginPage;
 import ui.steps.LoginStep;
 import ui.utils.PropertyReader;
@@ -25,6 +26,7 @@ public class BaseTest {
     protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
     protected LoginPage loginPage;
     protected LoginStep loginStep;
+    protected AllPostPage allPostPage;
 
     @BeforeSuite(alwaysRun = true)
     public void initSuite() {
@@ -37,12 +39,13 @@ public class BaseTest {
         Configuration.clickViaJs = true;
         Configuration.headless = true;
         Configuration.browserSize = "1920x1080";
+        Configuration.webdriverLogsEnabled = false;
     }
 
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
     @Parameters({"browser"})
     @Step("Настройка браузера: {browser}")
-    public void setUp(@Optional("chrome") String browser) {
+    public void setUp(@Optional("firefox") String browser) {
         WebDriver driver;
         if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
@@ -57,7 +60,6 @@ public class BaseTest {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-popup-blocking");
-            options.addArguments("--window-size=1920,1080");
             if (Configuration.headless) {
                 options.addArguments("--headless=new");
             }
@@ -66,6 +68,7 @@ public class BaseTest {
         WebDriverRunner.setWebDriver(driver);
         loginPage = new LoginPage();
         loginStep = new LoginStep();
+        allPostPage = new AllPostPage();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")
