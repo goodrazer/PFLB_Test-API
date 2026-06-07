@@ -1,12 +1,13 @@
 package ui.pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
 import io.qameta.allure.selenide.AllureSelenide;
+
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class LoginPage extends BasePage {
@@ -17,7 +18,12 @@ public class LoginPage extends BasePage {
     private final SelenideElement GO_BUTTON = $x("//button[@class='Nav-btn btn btn-primary']");
     private final SelenideElement LOGOUT_BUTTON = $x("//button[@class='Nav-btn btn btn-danger']");
     private final SelenideElement ERROR_MASSAGE_INVALID_EMAIL = $x("//div[text()='incorrect Email']");
-    private final SelenideElement ERROR_MASSAGE_INVALID_PASSWORD = $x("//div[text()='password length must be more than 3 symbols and less than 8 symbols']");
+    private final SelenideElement ERROR_MASSAGE_INVALID_PASSWORD = $x("//div[text()='password length " +
+            "must be more than 3 symbols and less than 8 symbols']");
+    private final SelenideElement ERROR_MASSAGE_EMAIL_CANNOT_BE_EMPTY = $x("//div[text()=" +
+            "'email cannot be empty']");
+    private final SelenideElement ERROR_MASSAGE_PASSWORD_CANNOT_BE_EMPTY = $x("//div[text()=" +
+            "'password cannot be empty']");
 
     @Override
     @Step("Открытие страницы авторизации.")
@@ -88,30 +94,56 @@ public class LoginPage extends BasePage {
     @Step("Проверка отображения заголовка на странице 'Authorization'.")
     public boolean isTitleVisible() {
         log.info("Checking the display title on the 'Authorization' page.");
-        return TITLE.is(Condition.visible);
+        return TITLE.is(visible);
     }
 
     @Step("Проверка отображения поля для ввода 'Email' на странице 'Authorization'.")
     public boolean isEmailFieldVisible() {
         log.info("Checking the display of the 'Email' input field on the 'Authorization' page.");
-        return INPUT_EMAIL.is(Condition.visible);
+        return INPUT_EMAIL.is(visible);
     }
 
     @Step("Проверка отображения поля для ввода 'Password' на странице 'Authorization'.")
     public boolean isPasswordFieldVisible() {
         log.info("Checking the display of the 'Password' input field on the 'Authorization' page.");
-        return INPUT_PASSWORD.is(Condition.visible);
+        return INPUT_PASSWORD.is(visible);
     }
 
     @Step("Проверка отображения кнопки 'GO' на странице 'Authorization'.")
     public boolean isGoButtonVisible() {
         log.info("Checking whether the 'GO' button is displayed on the 'Authorization' page.");
-        return GO_BUTTON.is(Condition.visible);
+        return GO_BUTTON.is(visible);
     }
 
     @Step("Проверка отображения кнопки 'LOGOUT' на странице 'Authorization'.")
     public boolean isLogoutButtonVisible() {
         log.info("Checking whether the 'LOGOUT' button is displayed on the 'Authorization' page.");
-        return LOGOUT_BUTTON.is(Condition.visible);
+        return LOGOUT_BUTTON.is(visible);
+    }
+
+    @Step("Проверка отображения ошибки при вводе пустого 'Email' на странице 'Authorization'.")
+    public String getTextMessageEmailCannotBeEmpty() {
+        log.info("Check if an error is displayed when entering an empty 'Email' on the 'Authorization' page.");
+        return ERROR_MASSAGE_EMAIL_CANNOT_BE_EMPTY.shouldBe(visible).getText();
+    }
+
+    @Step("Проверка отображения ошибки при вводе пустого 'Password' на странице 'Authorization'.")
+    public String getTextMessagePasswordCannotBeEmpty() {
+        log.info("Check if an error is displayed when entering an empty 'Password' on the 'Authorization' page.");
+        return ERROR_MASSAGE_PASSWORD_CANNOT_BE_EMPTY.shouldBe(visible).getText();
+    }
+
+    @Step("Клик клавиши 'Tab' на поле ввода 'Email'")
+    public LoginPage clickTabKeyEmailField() {
+        log.info("Click the 'Tab' key on the 'Email' input field.");
+        INPUT_EMAIL.pressTab();
+        return this;
+    }
+
+    @Step("Клик клавиши 'Tab' на поле ввода 'Password'")
+    public LoginPage clickTabKeyPasswordField() {
+        log.info("Click the 'Tab' key on the 'Password' input field.");
+        INPUT_PASSWORD.pressTab();
+        return this;
     }
 }

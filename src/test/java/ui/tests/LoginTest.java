@@ -7,8 +7,10 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static com.codeborne.selenide.Selenide.switchTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-    public class LoginTest extends BaseTest {
+public class LoginTest extends BaseTest {
 
         @Test(testName = "АТ.01.01.Проверка валидации страницы 'Authorization' на наличие всех элементов",
                 description = "Проверка валидации страницы 'Authorization' на наличие всех элементов",
@@ -56,7 +58,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
             loginPage.openPage()
                     .positiveLogin(validEmail, validPassword);
             String alertText = switchTo().alert().getText();
-            Assert.assertEquals(alertText, "Successful authorization");
+            assertEquals(alertText, "Successful authorization");
             switchTo().alert().accept();
         }
 
@@ -80,7 +82,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
             loginPage.openPage()
                     .enterEmail("notemail.com")
                     .enterPassword("12345");
-            Assert.assertEquals(loginPage.getErrorMessageEmail(), "incorrect Email");
+            assertEquals(loginPage.getErrorMessageEmail(), "incorrect Email");
         }
 
         @Test(testName = "АТ.01.04.Проверка валидации поля 'Password' при вводе значений < 3 символов",
@@ -102,7 +104,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
             loginPage.openPage()
                     .enterPassword("1!")
                     .enterEmail("ayay@yandex.ru");
-            Assert.assertEquals(loginPage.getErrorMessagePassword(),
+            assertEquals(loginPage.getErrorMessagePassword(),
                     "password length must be more than 3 symbols and less than 8 symbols");
         }
 
@@ -116,8 +118,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
         @Feature("Проверка валидации поля 'Password'")
         @Story("Проверка валидации поля 'Password' при вводе значений > 8 символов.")
         @Severity(SeverityLevel.CRITICAL)
-        @Link("https://docs.google.com/document/d/1B4ltZQEx8C6b-EhSGyezA49Jc2IlCrqgGhXlRugrYdY" +
-                "/edit?tab=t.1g932z60l1u6#heading=h.kry4ansadogj")
+        @Link(value = "docs.google", name = "Чек-лист PFLB")
         @TmsLink("TestCaseLink")
         @Issue("BugLink")
         @Flaky
@@ -126,7 +127,7 @@ import static com.codeborne.selenide.Selenide.switchTo;
             loginPage.openPage()
                     .enterPassword("12TY5!7O9")
                     .enterEmail("ayay@yandex.ru");
-            Assert.assertEquals(loginPage.getErrorMessagePassword(),
+            assertEquals(loginPage.getErrorMessagePassword(),
                     "password length must be more than 3 symbols and less than 8 symbols");
         }
 
@@ -140,9 +141,8 @@ import static com.codeborne.selenide.Selenide.switchTo;
         @Epic("Epic01_Авторизация")
         @Feature("Проверка доступности выполнений действий для авторизованного пользователя")
         @Story("Проверка доступности выполнений действий для авторизованного пользователя (создать пользователя)")
-        @Severity(SeverityLevel.CRITICAL)
-        @Link("https://docs.google.com/document/d/1B4ltZQEx8C6b-EhSGyezA49Jc2IlCrqgGhXlRugrYdY" +
-                "/edit?tab=t.1g932z60l1u6#heading=h.kry4ansadogj")
+        @Severity(SeverityLevel.BLOCKER)
+        @Link(value = "docs.google", name = "Чек-лист PFLB")
         @TmsLink("TestCaseLink")
         @Issue("BugLink")
         @Flaky
@@ -152,7 +152,114 @@ import static com.codeborne.selenide.Selenide.switchTo;
             Selenide.sleep(3000);
             allPostPage.clickUsersButton()
                             .clickCreateNewButton();
-            Assert.assertEquals(allPostPage.getTextElementIDWillBeGenerated(),"ID will be generated" ,
+            assertEquals(allPostPage.getTextElementIDWillBeGenerated(),"ID will be generated" ,
                     "Ошибка!!! Создание пользователя недоступно для неавторизованного пользователя!");
+        }
+
+        @Test(testName = "АТ.01.07.Проверка недоступности выполнений действий для неавторизованного пользователя",
+                description = "Проверка недоступности выполнений действий для неавторизованного пользователя" +
+                        "(создать пользователя)",
+                priority = 1,
+                groups = {"Negative", "Regression", "Smoke"},
+                enabled = true)
+        @Description("Проверка недоступности выполнений действий для неавторизованного пользователя " +
+                "(создать пользователя)")
+        @Epic("Epic01_Авторизация")
+        @Feature("Проверка недоступности выполнений действий для неавторизованного пользователя")
+        @Story("Проверка недоступности выполнений действий для неавторизованного пользователя (создать пользователя)")
+        @Severity(SeverityLevel.CRITICAL)
+        @Link(value = "docs.google", name = "Чек-лист PFLB")
+        @TmsLink("TestCaseLink")
+        @Issue("BugLink")
+        @Flaky
+        @Owner("Malevaniy Anton")
+        public void checkingWhetherActionsCanBePerformedByAnUnauthorizedUser() {
+            loginPage.openPage()
+                    .enterEmail(validEmail)
+                    .enterPassword(validPassword)
+                    .clickLogoutButton();
+            Selenide.sleep(3000);
+            allPostPage.clickUsersButton()
+                    .clickCreateNewButton();
+            assertTrue(allPostPage.isVisibleElementIDWillBeGenerated(), "Ошибка!!! Операции доступны для неавторизованного пользователя");
+        }
+
+        @Test(testName = "АТ.01.08.Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'",
+                description = "Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'",
+                priority = 2,
+                groups = {"Negative", "Regression"},
+                enabled = true)
+        @Description("Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'")
+        @Epic("Epic01_Авторизация")
+        @Feature("Проверка отображения сообщений об ошибке на форме 'Authorization'")
+        @Story("Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'")
+        @Severity(SeverityLevel.NORMAL)
+        @Link(value = "docs.google", name = "Чек-лист PFLB")
+        @TmsLink("TestCaseLink")
+        @Issue("BugLink")
+        @Flaky
+        @Owner("Malevaniy Anton")
+        public void checkingTheDisplayOfErrorMessagesOnTheAuthorizationPage() {
+            SoftAssert softAssert = new SoftAssert();
+            loginPage.openPage()
+                    .clickTabKeyEmailField();
+            softAssert.assertEquals(loginPage.getTextMessageEmailCannotBeEmpty(),
+                    "email cannot be empty" ,
+                    "Ошибка!!! Сообщение об ошибке 'email cannot be empty' не отображено!");
+                    loginPage.clickTabKeyPasswordField();
+            softAssert.assertEquals(
+                    loginPage.getTextMessagePasswordCannotBeEmpty(),
+                    "password cannot be empty",
+                    "Ошибка!!! Сообщение об ошибке 'password cannot be empty' не отображено!"
+            );
+            softAssert.assertAll();
+        }
+
+    @Test(testName = "АТ.01.09.Проверка авторизации с пустым значением 'Email' и валидным 'Password'",
+            description = "Проверка авторизации с пустым значением 'Email' и валидным 'Password'",
+            priority = 2,
+            groups = {"Negative", "Regression"},
+            enabled = true)
+    @Description("Проверка авторизации с пустым значением 'Email' и валидным 'Password'")
+    @Epic("Epic01_Авторизация")
+    @Feature("Проверка авторизации с пустым значением")
+    @Story("Проверка авторизации с пустым значением 'Email' и валидным 'Password'")
+    @Severity(SeverityLevel.NORMAL)
+    @Link(value = "docs.google", name = "Чек-лист PFLB")
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Flaky
+    @Owner("Malevaniy Anton")
+    public void checkingAuthorizationWithAnEmptyEmailValueAndAValidPassword() {
+        loginPage.openPage()
+                .clickTabKeyEmailField()
+                .enterPassword(validPassword);
+        Assert.assertEquals(loginPage.getTextMessageEmailCannotBeEmpty(),
+                "email cannot be empty" ,
+                "Ошибка!!! Сообщение об ошибке 'email cannot be empty' не отображено!");
+        }
+
+    @Test(testName = "АТ.01.10.Проверка авторизации с пустым значением 'Password' и валидным 'Email'",
+            description = "Проверка авторизации с пустым значением 'Password' и валидным 'Email'",
+            priority = 2,
+            groups = {"Negative", "Regression"},
+            enabled = true)
+    @Description("Проверка авторизации с пустым значением 'Password' и валидным 'Email'")
+    @Epic("Epic01_Авторизация")
+    @Feature("Проверка авторизации с пустым значением")
+    @Story("Проверка авторизации с пустым значением 'Password' и валидным 'Email'")
+    @Severity(SeverityLevel.NORMAL)
+    @Link(value = "docs.google", name = "Чек-лист PFLB")
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Flaky
+    @Owner("Malevaniy Anton")
+    public void checkingAuthorizationWithAnEmptyPasswordValueAndAValidEmail() {
+        loginPage.openPage()
+                .enterEmail(validEmail)
+                .clickTabKeyPasswordField();
+        Assert.assertEquals(loginPage.getTextMessagePasswordCannotBeEmpty(),
+                "password cannot be empty" ,
+                "Ошибка!!! Сообщение об ошибке 'password cannot be empty' не отображено!");
         }
     }
