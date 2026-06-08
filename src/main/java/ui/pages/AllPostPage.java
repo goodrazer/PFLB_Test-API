@@ -135,14 +135,14 @@ public class AllPostPage extends BasePage {
     @Step("Раскрытие выпадающего списка 'Users'")
     public AllPostPage clickUsersButton() {
         log.info("Click the 'Users' button");
-        DROPDOWN_USERS.click(ClickOptions.using(ClickMethod.JS));
+        DROPDOWN_USERS.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
     @Step("Выбор опции 'Read all' из выпадающего списка 'Users'")
     public AllPostPage clickReadAllButton() {
         log.info("Select the 'Read all' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click();
+        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
