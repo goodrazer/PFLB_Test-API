@@ -2,14 +2,10 @@ package ui.tests;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-
-import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.switchTo;
 import static org.testng.Assert.*;
 
