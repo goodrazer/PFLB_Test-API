@@ -135,7 +135,7 @@ public class AllPostPage extends BasePage {
     @Step("Раскрытие выпадающего списка 'Users'")
     public AllPostPage clickUsersButton() {
         log.info("Click the 'Users' button");
-        DROPDOWN_USERS.click();
+        DROPDOWN_USERS.click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
@@ -149,7 +149,7 @@ public class AllPostPage extends BasePage {
     @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
     public AllPostPage clickCreateNewButton() {
         log.info("Select the 'Create new' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(clickable).click();
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 

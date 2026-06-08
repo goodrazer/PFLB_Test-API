@@ -152,9 +152,11 @@ public class LoginTest extends BaseTest {
     @Owner("Malevaniy Anton")
     public void checkingTheAvailabilityOfActionsForAnAuthorizedUser() {
         loginStep.successfulAuthorization(validEmail, validPassword);
-        Selenide.sleep(6000);
-        allPostPage.clickUsersButton()
-                .clickCreateNewButton();
+        Selenide.sleep(5000);
+        allPostPage.clickUsersButton();
+        Selenide.sleep(2000);
+        allPostPage.clickCreateNewButton();
+        Selenide.sleep(2000);
         assertEquals(allPostPage.getTextElementIDWillBeGenerated(), "ID will be generated",
                 "Ошибка!!! Создание пользователя недоступно для неавторизованного пользователя!");
     }
