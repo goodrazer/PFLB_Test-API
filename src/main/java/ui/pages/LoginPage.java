@@ -6,7 +6,6 @@ import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
 import io.qameta.allure.selenide.AllureSelenide;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -38,30 +37,35 @@ public class LoginPage extends BasePage {
             @Param(mode = Parameter.Mode.MASKED) String email,
             @Param(mode = Parameter.Mode.MASKED) String password) {
         log.info("User authorization with valid data");
-
         SelenideLogger.removeListener("AllureSelenide");
-
         INPUT_EMAIL.setValue(email);
         INPUT_PASSWORD.setValue(password);
         GO_BUTTON.click();
-
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(false));
         return this;
     }
 
-    @Step("Заполнение поля 'Email'")
-    public LoginPage enterEmail(String email) {
+    @Step("Заполнение поля 'Email' значением: ******")
+    public LoginPage enterEmail(@Param(mode = Parameter.Mode.MASKED) String email) {
         log.info("Filling in the 'Email' field");
+        SelenideLogger.removeListener("AllureSelenide");
         INPUT_EMAIL.setValue(email);
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(false));
         return this;
     }
 
-    @Step("Заполнение поля 'Password'")
-    public LoginPage enterPassword(String password) {
+    @Step("Заполнение поля 'Password' значением: ******")
+    public LoginPage enterPassword(@Param(mode = Parameter.Mode.MASKED) String password) {
         log.info("Filling in the 'Password' field");
+        SelenideLogger.removeListener("AllureSelenide");
         INPUT_PASSWORD.setValue(password);
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(false));
         return this;
     }
 
