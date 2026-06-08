@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Positive Test Suite">
+
+    <listeners>
+        <listener class-name="ui.utils.RetryTransformer"/>
+    </listeners>
+
+    <test name="Positive Tests">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="Positive"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="ui.tests"/>
+        </packages>
+    </test>
+</suite>

@@ -5,13 +5,9 @@ import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-
 import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class AllPostPage extends BasePage {
 
@@ -135,21 +131,21 @@ public class AllPostPage extends BasePage {
     @Step("Раскрытие выпадающего списка 'Users'")
     public AllPostPage clickUsersButton() {
         log.info("Click the 'Users' button");
-        DROPDOWN_USERS.click(ClickOptions.using(ClickMethod.JS));
+        DROPDOWN_USERS.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
     @Step("Выбор опции 'Read all' из выпадающего списка 'Users'")
     public AllPostPage clickReadAllButton() {
         log.info("Select the 'Read all' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click();
+        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
     @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
     public AllPostPage clickCreateNewButton() {
         log.info("Select the 'Create new' option from the 'Users' drop-down list");
-        DROPDOWN_USERS_ITEM_CREATE_NEW.click(ClickOptions.using(ClickMethod.JS));
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
         return this;
     }
 
