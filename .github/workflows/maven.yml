@@ -41,10 +41,10 @@ jobs:
           firefox-version: 'latest'
       - name: Install latest geckodriver
         run: |
-            curl -L -O https://github.com
-            tar -xzf geckodriver-v0.37.0-linux64.tar.gz
-            sudo mv geckodriver /usr/bin/geckodriver
-            chmod +x /usr/bin/geckodriver
+          curl -L -O https://github.com
+          tar -xzf geckodriver-v0.37.0-linux64.tar.gz
+          sudo mv geckodriver /usr/bin/geckodriver
+          chmod +x /usr/bin/geckodriver
 
       - name: Build with Maven
         run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
