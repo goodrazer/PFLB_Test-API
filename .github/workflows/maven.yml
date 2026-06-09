@@ -39,12 +39,10 @@ jobs:
         uses: browser-actions/setup-firefox@v1
         with:
           firefox-version: 'latest'
-      - name: Install latest geckodriver
-        run: |
-          wget https://github.com
-          tar -xzf geckodriver-v0.37.0-linux64.tar.gz
-          sudo mv geckodriver /usr/bin/geckodriver
-          chmod +x /usr/bin/geckodriver
+      - name: Setup geckodriver
+        uses: bcomnes/setup-geckodriver@v3
+        with:
+            deploy-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build with Maven
         run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
