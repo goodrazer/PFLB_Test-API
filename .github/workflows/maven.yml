@@ -40,6 +40,11 @@ jobs:
         with:
           firefox-version: 'latest'
 
+      - name: Setup Geckodriver
+        uses: browser-actions/setup-geckodriver@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build with Maven
         run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
 
