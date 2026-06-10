@@ -2,16 +2,12 @@ package ui.pages;
 
 import com.codeborne.selenide.ClickMethod;
 import com.codeborne.selenide.ClickOptions;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
 import io.qameta.allure.selenide.AllureSelenide;
-
-import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.clickable;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;

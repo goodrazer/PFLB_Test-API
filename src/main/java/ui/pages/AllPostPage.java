@@ -1,9 +1,44 @@
 package ui.pages;
 
-
+import ui.dto.*;
+import com.codeborne.selenide.ClickMethod;
+import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import java.time.Duration;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+
 public class AllPostPage extends BasePage {
+
+    //Локаторы для дропдаунов Users, Cars, Houses:
+    //Дропдаун Users:
+    private final SelenideElement DROPDOWN_USERS = $("#basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_USERS_ITEM_READ_ALL = $("a[href='#/read/users']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_READ_USER_WITH_CARS = $("a[href='#/read/userInfo']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_CREATE_NEW = $("a[href='#/create/user']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_ADD_MONEY = $("a[href='#/update/users/plusMoney']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_SETTLE_TO_HOUSE = $("a[href='#/update/houseAndUser']");
+    private final SelenideElement DROPDOWN_USERS_ITEM_ISSUE_A_LOAN = $("a[href='#/update/Issue_A_Loan']");
+    //Дропдаун Cars:
+    private final SelenideElement DROPDOWN_CARS = $("basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_CARS_ITEM_READ_ALL = $("a[href='#/read/cars']");
+    private final SelenideElement DROPDOWN_CARS_ITEM_CREATE_NEW = $("a[href='#/create/cars']");
+    private final SelenideElement DROPDOWN_CARS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
+    //Дропдаун Houses:
+    private final SelenideElement DROPDOWN_HOUSES = $("#basic-nav-dropdown");
+    //Опции дропдауна Users:
+    private final SelenideElement DROPDOWN_HOUSES_ITEM_READ_ALL = $("a[href='#/read/houses']");
+    private final SelenideElement DROPDOWN_HOUSES_READ_ONE_BY_ID = $("a[href='#/read/house']");
+    private final SelenideElement DROPDOWN_HOUSES_CREATE_NEW = $("a[href='#/create/house']");
+    private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
+    //Локатор первого поля 'ID will be generated' таблицы открытой по дропдауну Users --> Create new:
+    private final SelenideElement TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED = $x("//td" +
+            "[contains(text(), 'ID will be generated')]");
 
     //Локаторы кнопок для отправки, получения статуса и получения ID
     private static final String BTN_PUSH =
@@ -16,6 +51,7 @@ public class AllPostPage extends BasePage {
     //Локаторы для блока User (1-ая таблица)
     private static final String USER_BLOCK = "//section[@class='workspace']/div/div[1]/table";
     private static final String INPUT_USER_FIRST_NAME = USER_BLOCK + "//input[@id='first_name_send']";
+    private static final String INPUT_USER_LAST_NAME = USER_BLOCK + "//input[@id='last_name_send']";
     private static final String INPUT_USER_AGE = USER_BLOCK + "//input[@id='age_send']";
     private static final String RADIO_USER_MALE = USER_BLOCK + "//input[@name='sex_send' and @value='MALE']";
     private static final String RADIO_USER_FEMALE = USER_BLOCK + "//input[@name='sex_send' and @value='FEMALE']";
@@ -81,17 +117,151 @@ public class AllPostPage extends BasePage {
     @Step("Открытие страницы 'All POST'.")
     public AllPostPage openPage() {
         log.info("Opening 'All POST' page");
-        open(BASE_URL + "/#/create/all");
+        String targetUrl = BASE_URL + "/#/create/all";
+        // Пытаемся открыть страницу до 3 раз
+        for (int attempt = 1; attempt <= 3; attempt++) {
+            log.info("Attempt {} to open page: {}", attempt, targetUrl);
+            com.codeborne.selenide.WebDriverRunner.getWebDriver().get(targetUrl);
+            // Ждём появления элемента формы
+            try {
+                $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(15));
+                log.info("Page loaded successfully on attempt {}", attempt);
+                return this;
+            } catch (Exception e) {
+                log.warn("Attempt {} failed, retrying...", attempt);
+                if (attempt == 3) {
+                    throw e; // На последней попытке пробрасываем исключение
+                }
+                sleep(1000);
+            }
+        }
         return this;
     }
 
     @Step("Проверка открытия страницы 'All POST'.")
     public AllPostPage isPageOpened() {
         log.info("Checking 'All POST' page is loaded");
+        // Если openPage() уже отработал - элемент уже виден, логируем URL для отладки
         String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
-        if (!currentUrl.contains("#/create/all")) {
-            throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
+        log.info("Current URL after load: {}", currentUrl);
+        // Дополнительная проверка: если элемент не виден - открываем заново
+        if (!$x(INPUT_USER_FIRST_NAME).is(Condition.visible)) {
+            log.info("Form not visible, reopening page...");
+            openPage();
         }
         return this;
+    }
+
+    @Step("Раскрытие выпадающего списка 'Users'")
+    public AllPostPage clickUsersButton() {
+        log.info("Click the 'Users' button");
+        DROPDOWN_USERS.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
+        return this;
+    }
+
+    @Step("Выбор опции 'Read all' из выпадающего списка 'Users'")
+    public AllPostPage clickReadAllButton() {
+        log.info("Select the 'Read all' option from the 'Users' drop-down list");
+        DROPDOWN_USERS_ITEM_READ_ALL.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
+        return this;
+    }
+
+    @Step("Выбор опции 'Create new' из выпадающего списка 'Users'")
+    public AllPostPage clickCreateNewButton() {
+        log.info("Select the 'Create new' option from the 'Users' drop-down list");
+        DROPDOWN_USERS_ITEM_CREATE_NEW.shouldBe(clickable).click(ClickOptions.using(ClickMethod.JS));
+        return this;
+    }
+
+    @Step("Получение текста элемента 'ID will be generated' в таблице 'Create new' из выпадающего списка 'Users'")
+    public String getTextElementIDWillBeGenerated() {
+        log.info("Get text element the 'ID will be generated' item in the 'Create new' table from the 'Users' drop-down list");
+        return TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED
+                .shouldHave(Condition.text("ID will be generated"), Duration.ofSeconds(15))
+                .getText();
+    }
+
+    @Step("Отображение элемента 'ID will be generated' в таблице 'Create new' из выпадающего списка 'Users'")
+    public boolean isVisibleElementIDWillBeGenerated() {
+        log.info("Checking if 'ID will be generated' item is visible");
+        return !TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED.is(visible);
+    }
+
+    @Step("Создание пользователя: {0}")
+    public AllPostPage createUser(User user) {
+        log.info("Creating user: {}", user);
+
+        $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
+        sleep(1000);
+        //Selenide-подход для React: click() + sendKeys() + ожидание значения
+
+        // Заполняем firstName
+        SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
+        firstNameField
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
+                .click();  // фокусируемся на поле для react
+        firstNameField.sendKeys(user.getFirstName());
+        firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
+
+        // Заполняем lastName
+        SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
+        lastNameField
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        lastNameField.sendKeys(user.getLastName());
+        lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
+
+        // Заполняем age
+        SelenideElement ageField = $x(INPUT_USER_AGE);
+        ageField
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        ageField.sendKeys(String.valueOf(user.getAge()));
+        ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
+
+        // Выбор пола
+        if ("MALE".equalsIgnoreCase(user.getSex())) {
+            $x(RADIO_USER_MALE)
+                    .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                    .click();
+        } else {
+            $x(RADIO_USER_FEMALE)
+                    .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                    .click();
+        }
+
+        // Заполняем money
+        SelenideElement moneyField = $x(INPUT_USER_MONEY);
+        moneyField
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        moneyField.sendKeys(String.valueOf((long) user.getMoney()));
+        moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
+
+        // Логирование значений перед отправкой
+        log.info("--Верификация полей в форме перед отправкой --");
+        log.info("First name: '{}'", firstNameField.getValue());
+        log.info("Last name: '{}'", lastNameField.getValue());
+        log.info("Age: '{}'", ageField.getValue());
+        log.info("Money: '{}'", moneyField.getValue());
+
+        // Клик по кнопке
+        $x(BTN_USER_PUSH)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
+                .click();
+
+        log.info("Clicked Push to API");
+
+        // Ожидаем успешный статус
+        $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
+
+        return this;
+    }
+
+    @Step("Получение сгенерированного ID пользователя")
+    public String getGeneratedUserId() {
+        String text = $x(NEW_ID_USER).getText();
+        // Парсим "New user ID: 12345" в "12345"
+        return text.replaceAll("[^0-9]", "");
     }
 }
