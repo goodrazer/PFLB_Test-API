@@ -173,23 +173,31 @@ public class AllPostPage extends BasePage {
 
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
 
-        // Заполняем firstName (Selenide-подход: setValue() триггерит input/change события)
-        $x(INPUT_USER_FIRST_NAME)
+        //Selenide-подход для React: click() + sendKeys() + ожидание значения
+
+        // Заполняем firstName
+        SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
+        firstNameField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
-                .setValue(user.getFirstName())
-                .shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
+                .click();  // фокусируемся на поле для react
+        firstNameField.sendKeys(user.getFirstName());
+        firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
 
         // Заполняем lastName
-        $x(INPUT_USER_LAST_NAME)
+        SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
+        lastNameField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
-                .setValue(user.getLastName())
-                .shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
+                .click();
+        lastNameField.sendKeys(user.getLastName());
+        lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
 
         // Заполняем age
-        $x(INPUT_USER_AGE)
+        SelenideElement ageField = $x(INPUT_USER_AGE);
+        ageField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
-                .setValue(String.valueOf(user.getAge()))
-                .shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
+                .click();
+        ageField.sendKeys(String.valueOf(user.getAge()));
+        ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
 
         // Выбор пола
         if ("MALE".equalsIgnoreCase(user.getSex())) {
@@ -203,17 +211,19 @@ public class AllPostPage extends BasePage {
         }
 
         // Заполняем money
-        $x(INPUT_USER_MONEY)
+        SelenideElement moneyField = $x(INPUT_USER_MONEY);
+        moneyField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
-                .setValue(String.valueOf((long) user.getMoney()))
-                .shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
+                .click();
+        moneyField.sendKeys(String.valueOf((long) user.getMoney()));
+        moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
 
         // Логирование значений перед отправкой
         log.info("--Верификация полей в форме перед отправкой --");
-        log.info("First name: '{}'", $x(INPUT_USER_FIRST_NAME).getValue());
-        log.info("Last name: '{}'", $x(INPUT_USER_LAST_NAME).getValue());
-        log.info("Age: '{}'", $x(INPUT_USER_AGE).getValue());
-        log.info("Money: '{}'", $x(INPUT_USER_MONEY).getValue());
+        log.info("First name: '{}'", firstNameField.getValue());
+        log.info("Last name: '{}'", lastNameField.getValue());
+        log.info("Age: '{}'", ageField.getValue());
+        log.info("Money: '{}'", moneyField.getValue());
 
         // Клик по кнопке
         $x(BTN_USER_PUSH)
