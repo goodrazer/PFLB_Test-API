@@ -21,6 +21,7 @@ public class LoginStep {
         //switchTo().alert().accept();
         sleep(2000);
         Selenide.confirm("Successful authorization");
+        sleep(1000);
         return this;
     }
 }
