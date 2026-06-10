@@ -56,6 +56,7 @@ public class BaseTest {
         Configuration.headless = true;
         Configuration.browserSize = "1920x1080";
         Configuration.webdriverLogsEnabled = false;
+        // ОТКЛЮЧАЕМ быструю установку значений - критично для React!
         Configuration.fastSetValue = false;
     }
 
