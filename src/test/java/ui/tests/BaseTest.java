@@ -40,6 +40,8 @@ public class BaseTest {
         Configuration.headless = true;
         Configuration.browserSize = "1920x1080";
         Configuration.webdriverLogsEnabled = false;
+        // ОТКЛЮЧАЕМ быструю установку значений - критично для React!
+        Configuration.fastSetValue = false;
     }
 
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
@@ -49,7 +51,7 @@ public class BaseTest {
         WebDriver driver;
         if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
-            options.addArguments("-private");
+            //options.addArguments("-private");
             options.addPreference("dom.webnotifications.enabled", false);
             options.addPreference("privacy.popups.showBrowserMessage", false);
             options.addArguments("--no-sandbo");
