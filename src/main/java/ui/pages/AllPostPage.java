@@ -1,5 +1,6 @@
 package ui.pages;
 
+import ui.dto.*;
 import com.codeborne.selenide.ClickMethod;
 import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.Condition;
@@ -49,6 +50,7 @@ public class AllPostPage extends BasePage {
     //Локаторы для блока User (1-ая таблица)
     private static final String USER_BLOCK = "//section[@class='workspace']/div/div[1]/table";
     private static final String INPUT_USER_FIRST_NAME = USER_BLOCK + "//input[@id='first_name_send']";
+    private static final String INPUT_USER_LAST_NAME = USER_BLOCK + "//input[@id='last_name_send']";
     private static final String INPUT_USER_AGE = USER_BLOCK + "//input[@id='age_send']";
     private static final String RADIO_USER_MALE = USER_BLOCK + "//input[@name='sex_send' and @value='MALE']";
     private static final String RADIO_USER_FEMALE = USER_BLOCK + "//input[@name='sex_send' and @value='FEMALE']";
@@ -121,7 +123,9 @@ public class AllPostPage extends BasePage {
     @Step("Проверка открытия страницы 'All POST'.")
     public AllPostPage isPageOpened() {
         log.info("Checking 'All POST' page is loaded");
+        $x(INPUT_USER_FIRST_NAME).shouldBe(Condition.visible, java.time.Duration.ofSeconds(20));
         String currentUrl = com.codeborne.selenide.WebDriverRunner.driver().url();
+        log.info("Current URL after load: {}", currentUrl);
         if (!currentUrl.contains("#/create/all")) {
             throw new AssertionError("Expected URL to contain '#/create/all', but got: " + currentUrl);
         }
@@ -161,5 +165,79 @@ public class AllPostPage extends BasePage {
     public boolean isVisibleElementIDWillBeGenerated() {
         log.info("Checking if 'ID will be generated' item is visible");
         return !TABLE_FIELD_CREATE_NEW_FIELD_ID_WILL_BE_GENERATED.is(visible);
+    }
+
+    @Step("Создание пользователя: {0}")
+    public AllPostPage createUser(User user) {
+        log.info("Creating user: {}", user);
+
+        $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
+
+        // Получаем каждый элемент
+        SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
+        SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
+        SelenideElement ageField = $x(INPUT_USER_AGE);
+        SelenideElement moneyField = $x(INPUT_USER_MONEY);
+
+        // Заполняем firstName
+        firstNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
+        firstNameField.clear();
+        firstNameField.sendKeys(user.getFirstName());
+        firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
+
+        // Заполняем lastName
+        lastNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        lastNameField.clear();
+        lastNameField.sendKeys(user.getLastName());
+        lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
+
+        // Заполняем age
+        ageField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        ageField.clear();
+        ageField.sendKeys(String.valueOf(user.getAge()));
+        ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
+
+        // Выбор пола
+        if ("MALE".equalsIgnoreCase(user.getSex())) {
+            SelenideElement maleRadio = $x(RADIO_USER_MALE);
+            maleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+            maleRadio.click();
+        } else {
+            SelenideElement femaleRadio = $x(RADIO_USER_FEMALE);
+            femaleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+            femaleRadio.click();
+        }
+
+        // Заполняем money
+        moneyField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
+        moneyField.clear();
+        moneyField.sendKeys(String.valueOf((long) user.getMoney()));
+        moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
+
+        // Логирование значений перед отправкой
+        log.info("--Верификация полей в форме перед отправкой --");
+        log.info("First name: '{}'", firstNameField.getValue());
+        log.info("Last name: '{}'", lastNameField.getValue());
+        log.info("Age: '{}'", ageField.getValue());
+        log.info("Money: '{}'", moneyField.getValue());
+
+        // Клик по кнопке
+        SelenideElement pushButton = $x(BTN_USER_PUSH);
+        pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
+        pushButton.click();
+
+        log.info("Clicked Push to API");
+
+        // Ожидаем успешный статус
+        $x(STATUS_USER).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
+
+        return this;
+    }
+
+    @Step("Получение сгенерированного ID пользователя")
+    public String getGeneratedUserId() {
+        String text = $x(NEW_ID_USER).getText();
+        // Парсим "New user ID: 12345" в "12345"
+        return text.replaceAll("[^0-9]", "");
     }
 }
