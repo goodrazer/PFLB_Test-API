@@ -172,7 +172,7 @@ public class AllPostPage extends BasePage {
         log.info("Creating user: {}", user);
 
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
-
+        sleep(1000);
         //Selenide-подход для React: click() + sendKeys() + ожидание значения
 
         // Заполняем firstName
