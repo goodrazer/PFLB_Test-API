@@ -149,11 +149,11 @@ public class LoginTest extends BaseTest {
     public void checkingTheAvailabilityOfActionsForAnAuthorizedUser() {
         loginStep.successfulAuthorization(validEmail, validPassword);
         Selenide.sleep(5000);
-        allPostPage.clickUsersButton();
+        loginPage.clickUsersButton();
         Selenide.sleep(2000);
-        allPostPage.clickCreateNewButton();
+        loginPage.clickCreateNewButton();
         Selenide.sleep(2000);
-        assertEquals(allPostPage.getTextElementIDWillBeGenerated(), "ID will be generated",
+        assertEquals(usersCreateNewPage.getTextElementIDWillBeGenerated(), "ID will be generated",
                 "Ошибка!!! Создание пользователя недоступно для неавторизованного пользователя!");
     }
 
@@ -180,9 +180,9 @@ public class LoginTest extends BaseTest {
                 .enterPassword(validPassword)
                 .clickLogoutButton();
         Selenide.sleep(3000);
-        allPostPage.clickUsersButton()
+        loginPage.clickUsersButton()
                 .clickCreateNewButton();
-        assertTrue(allPostPage.isVisibleElementIDWillBeGenerated(), "Ошибка!!! Операции доступны для неавторизованного пользователя");
+        assertTrue(usersCreateNewPage.isVisibleElementIDWillBeGenerated(), "Ошибка!!! Операции доступны для неавторизованного пользователя");
     }
 
     @Test(testName = "АТ.01.08.Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'",

@@ -13,8 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
-import ui.pages.AllPostPage;
-import ui.pages.LoginPage;
+import ui.pages.*;
 import ui.steps.LoginStep;
 import ui.utils.PropertyReader;
 import ui.utils.TestListener;
@@ -27,6 +26,23 @@ public class BaseTest {
     protected LoginPage loginPage;
     protected LoginStep loginStep;
     protected AllPostPage allPostPage;
+    protected HousesCreateNewPage housesCreateNewPage;
+    protected UsersCreateNewPage usersCreateNewPage;
+    protected UsersReadAllPage usersReadAllPage;
+    protected UsersReadUserWithCarsPage usersReadUserWithCarsPage;
+    protected UsersAddMoneyPage usersAddMoneyPage;
+    protected UsersBuyOrSellCarPage usersBuyOrSellCarPage;
+    protected UsersSettleToHousePage usersSettleToHousePage;
+    protected UsersIssueALoanPage usersIssueALoanPage;
+    protected CarsReadAllPage carsReadAllPage;
+    protected CarsCreateNewPage carsCreateNewPage;
+    protected HousesReadAllPage housesReadAllPage;
+    protected HousesReadOneByIdPage housesReadOneByIdPage;
+    protected HousesSettleOrEvictUser housesSettleOrEvictUser;
+    protected AllDeletePage allDeletePage;
+    protected SwaggerDevJsDeprecatedPage swaggerDevJsDeprecatedPage;
+    protected SwaggerDevMvcPage swaggerDevMvcPage;
+    protected SwaggerMasterMvcPage swaggerMasterMvcPage;
 
     @BeforeSuite(alwaysRun = true)
     public void initSuite() {
@@ -72,6 +88,23 @@ public class BaseTest {
         loginPage = new LoginPage();
         loginStep = new LoginStep();
         allPostPage = new AllPostPage();
+        housesCreateNewPage = new HousesCreateNewPage();
+        usersCreateNewPage = new UsersCreateNewPage();
+        usersReadAllPage = new UsersReadAllPage();
+        usersReadUserWithCarsPage = new UsersReadUserWithCarsPage();
+        usersAddMoneyPage = new UsersAddMoneyPage();
+        usersBuyOrSellCarPage = new UsersBuyOrSellCarPage();
+        usersSettleToHousePage = new UsersSettleToHousePage();
+        usersIssueALoanPage = new UsersIssueALoanPage();
+        carsReadAllPage = new CarsReadAllPage();
+        carsCreateNewPage = new CarsCreateNewPage();
+        housesReadAllPage = new HousesReadAllPage();
+        housesReadOneByIdPage = new HousesReadOneByIdPage();
+        housesSettleOrEvictUser = new HousesSettleOrEvictUser();
+        allDeletePage = new AllDeletePage();
+        swaggerDevJsDeprecatedPage = new SwaggerDevJsDeprecatedPage();
+        swaggerDevMvcPage = new SwaggerDevMvcPage();
+        swaggerMasterMvcPage = new SwaggerMasterMvcPage();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")
