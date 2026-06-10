@@ -4,11 +4,8 @@ import ui.dto.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ui.pages.AllPostPage;
-import ui.pages.LoginPage;
 import lombok.extern.log4j.Log4j2;
 import ui.steps.LoginStep;
-
-import static com.codeborne.selenide.Selenide.$x;
 
 @Log4j2
 public class AllPostTest extends BaseTest{
