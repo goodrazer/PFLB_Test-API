@@ -49,7 +49,7 @@ public class BaseTest {
         WebDriver driver;
         if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
-            options.addArguments("-private");
+            //options.addArguments("-private");
             options.addPreference("dom.webnotifications.enabled", false);
             options.addPreference("privacy.popups.showBrowserMessage", false);
             if (Configuration.headless) {

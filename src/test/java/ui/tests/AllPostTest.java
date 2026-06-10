@@ -17,9 +17,9 @@ public class AllPostTest extends BaseTest{
         log.info("Step 1: Authorizing user");
         LoginStep loginStep = new LoginStep();
         loginStep.successfulAuthorization(validEmail, validPassword);
-        new LoginPage()
-                .openPage()
-                .positiveLogin(validEmail, validPassword);
+//        //new LoginPage()
+//                .openPage()
+//                .positiveLogin(validEmail, validPassword);
 
         // Подготовка тестовых данных
         log.info("Step 2: Preparing test data");
