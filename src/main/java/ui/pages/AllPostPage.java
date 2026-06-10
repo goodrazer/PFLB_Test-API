@@ -173,58 +173,52 @@ public class AllPostPage extends BasePage {
 
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
 
-        // Получаем каждый элемент
-        SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
-        SelenideElement lastNameField = $x(INPUT_USER_LAST_NAME);
-        SelenideElement ageField = $x(INPUT_USER_AGE);
-        SelenideElement moneyField = $x(INPUT_USER_MONEY);
-
-        // Заполняем firstName
-        firstNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
-        firstNameField.clear();
-        firstNameField.sendKeys(user.getFirstName());
-        firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
+        // Заполняем firstName (Selenide-подход: setValue() триггерит input/change события)
+        $x(INPUT_USER_FIRST_NAME)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
+                .setValue(user.getFirstName())
+                .shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
 
         // Заполняем lastName
-        lastNameField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
-        lastNameField.clear();
-        lastNameField.sendKeys(user.getLastName());
-        lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
+        $x(INPUT_USER_LAST_NAME)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .setValue(user.getLastName())
+                .shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
 
         // Заполняем age
-        ageField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
-        ageField.clear();
-        ageField.sendKeys(String.valueOf(user.getAge()));
-        ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
+        $x(INPUT_USER_AGE)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .setValue(String.valueOf(user.getAge()))
+                .shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
 
         // Выбор пола
         if ("MALE".equalsIgnoreCase(user.getSex())) {
-            SelenideElement maleRadio = $x(RADIO_USER_MALE);
-            maleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
-            maleRadio.click();
+            $x(RADIO_USER_MALE)
+                    .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                    .click();
         } else {
-            SelenideElement femaleRadio = $x(RADIO_USER_FEMALE);
-            femaleRadio.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
-            femaleRadio.click();
+            $x(RADIO_USER_FEMALE)
+                    .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                    .click();
         }
 
         // Заполняем money
-        moneyField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10));
-        moneyField.clear();
-        moneyField.sendKeys(String.valueOf((long) user.getMoney()));
-        moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
+        $x(INPUT_USER_MONEY)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .setValue(String.valueOf((long) user.getMoney()))
+                .shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
 
         // Логирование значений перед отправкой
         log.info("--Верификация полей в форме перед отправкой --");
-        log.info("First name: '{}'", firstNameField.getValue());
-        log.info("Last name: '{}'", lastNameField.getValue());
-        log.info("Age: '{}'", ageField.getValue());
-        log.info("Money: '{}'", moneyField.getValue());
+        log.info("First name: '{}'", $x(INPUT_USER_FIRST_NAME).getValue());
+        log.info("Last name: '{}'", $x(INPUT_USER_LAST_NAME).getValue());
+        log.info("Age: '{}'", $x(INPUT_USER_AGE).getValue());
+        log.info("Money: '{}'", $x(INPUT_USER_MONEY).getValue());
 
         // Клик по кнопке
-        SelenideElement pushButton = $x(BTN_USER_PUSH);
-        pushButton.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15));
-        pushButton.click();
+        $x(BTN_USER_PUSH)
+                .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
+                .click();
 
         log.info("Clicked Push to API");
 
