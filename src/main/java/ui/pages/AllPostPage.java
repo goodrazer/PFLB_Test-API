@@ -7,6 +7,17 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
+/*
+Создать пользователя -> получить ID
+Пополнить пользователю баланс
+Создать автомобиль -> получить ID
+Купить авто пользователем
+Продать авто пользователем
+Создать дом -> получить ID
+Заселить пользователя в дом
+Проверить: пользователь отображается в жильцах дома
+Выселить пользователя из дома
+ */
 public class AllPostPage extends BasePage {
 
     //Локаторы кнопок для отправки, получения статуса и получения ID
@@ -78,9 +89,7 @@ public class AllPostPage extends BasePage {
     private static final String STATUS_HOUSE = HOUSE_BLOCK + BTN_STATUS;
     private static final String NEW_ID_HOUSE = HOUSE_BLOCK + BTN_ID;
 
-    public AllPostPage() {
-        super();
-    }
+    public AllPostPage() {super();}
 
     @Override
     @Step("Открытие страницы 'All POST'.")
@@ -128,12 +137,12 @@ public class AllPostPage extends BasePage {
         $x(USER_BLOCK).shouldBe(visible, java.time.Duration.ofSeconds(20));
         sleep(1000);
         //Selenide-подход для React: click() + sendKeys() + ожидание значения
-
         // Заполняем firstName
         SelenideElement firstNameField = $x(INPUT_USER_FIRST_NAME);
         firstNameField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(15))
                 .click();  // фокусируемся на поле для react
+        firstNameField.clear();
         firstNameField.sendKeys(user.getFirstName());
         firstNameField.shouldHave(Condition.value(user.getFirstName()), java.time.Duration.ofSeconds(5));
 
@@ -142,6 +151,7 @@ public class AllPostPage extends BasePage {
         lastNameField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
                 .click();
+        lastNameField.clear();
         lastNameField.sendKeys(user.getLastName());
         lastNameField.shouldHave(Condition.value(user.getLastName()), java.time.Duration.ofSeconds(5));
 
@@ -150,6 +160,7 @@ public class AllPostPage extends BasePage {
         ageField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
                 .click();
+        ageField.clear();
         ageField.sendKeys(String.valueOf(user.getAge()));
         ageField.shouldHave(Condition.value(String.valueOf(user.getAge())), java.time.Duration.ofSeconds(5));
 
@@ -169,10 +180,11 @@ public class AllPostPage extends BasePage {
         moneyField
                 .shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
                 .click();
+        moneyField.clear();
         moneyField.sendKeys(String.valueOf((long) user.getMoney()));
         moneyField.shouldHave(Condition.value(String.valueOf((long) user.getMoney())), java.time.Duration.ofSeconds(5));
 
-        // Логирование значений перед отправкой
+        // Логирование значений перед отправкой формы
         log.info("--Верификация полей в форме перед отправкой --");
         log.info("First name: '{}'", firstNameField.getValue());
         log.info("Last name: '{}'", lastNameField.getValue());
@@ -197,5 +209,247 @@ public class AllPostPage extends BasePage {
         String text = $x(NEW_ID_USER).getText();
         // Парсим "New user ID: 12345" в "12345"
         return text.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Пополнение баланса пользователя {0} на сумму {1}")
+    public AllPostPage addMoneyToUser(String userId, double amount) {
+        log.info("Adding money {} to user {}", amount, userId);
+        SelenideElement userIdField = $x(INPUT_MONEY_USER_ID);
+        SelenideElement amountField = $x(INPUT_MONEY_AMOUNT);
+
+        userIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        userIdField.clear();
+        userIdField.sendKeys(userId);
+        userIdField.shouldHave(Condition.value(userId), java.time.Duration.ofSeconds(5));
+
+        amountField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        amountField.clear();
+        amountField.sendKeys(String.valueOf((long) amount));
+        amountField.shouldHave(Condition.value(String.valueOf((long) amount)), java.time.Duration.ofSeconds(5));
+
+        $x(BTN_MONEY_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_MONEY).shouldHave(Condition.text("200"), java.time.Duration.ofSeconds(30));
+        log.info("Money added successfully");
+        return this;
+    }
+
+    @Step("Получение текущего баланса пользователя")
+    public String getCurrentBalance() {
+        String text = $x(MONEY_BALANCE).getText();
+        log.info("Current balance: {}", text);
+        return text;
+    }
+
+    @Step("Создание автомобиля: {0}")
+    public AllPostPage createCar(Car car) {
+        log.info("Creating car: {}", car);
+        SelenideElement engineField = $x(INPUT_CAR_ENGINE);
+        SelenideElement markField = $x(INPUT_CAR_MARK);
+        SelenideElement modelField = $x(INPUT_CAR_MODEL);
+        SelenideElement priceField = $x(INPUT_CAR_PRICE);
+
+        engineField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        engineField.clear();
+        engineField.sendKeys(car.getEngineType());
+        engineField.shouldHave(Condition.value(car.getEngineType()), java.time.Duration.ofSeconds(5));
+
+        markField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        markField.sendKeys(car.getMark());
+        markField.shouldHave(Condition.value(car.getMark()), java.time.Duration.ofSeconds(5));
+
+        modelField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        modelField.sendKeys(car.getModel());
+        modelField.shouldHave(Condition.value(car.getModel()), java.time.Duration.ofSeconds(5));
+
+        priceField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        priceField.sendKeys(String.valueOf((long) car.getPrice()));
+        priceField.shouldHave(Condition.value(String.valueOf((long) car.getPrice())), java.time.Duration.ofSeconds(5));
+
+        $x(BTN_CAR_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_CAR).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
+        log.info("Car created successfully");
+        return this;
+    }
+
+    @Step("Получение сгенерированного ID автомобиля")
+    public String getGeneratedCarId() {
+        String text = $x(NEW_ID_CAR).getText();
+        return text.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Покупка автомобиля {0} пользователем {1}")
+    public AllPostPage buyCar(String userId, String carId) {
+        log.info("User {} buying car {}", userId, carId);
+        SelenideElement userIdField = $x(INPUT_TRADE_USER_ID);
+        SelenideElement carIdField = $x(INPUT_TRADE_CAR_ID);
+
+        userIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        userIdField.clear();
+        userIdField.sendKeys(userId);
+        userIdField.shouldHave(Condition.value(userId), java.time.Duration.ofSeconds(5));
+
+        carIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        carIdField.clear();
+        carIdField.sendKeys(carId);
+        carIdField.shouldHave(Condition.value(carId), java.time.Duration.ofSeconds(5));
+
+        $x(RADIO_BUY).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(BTN_TRADE_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_TRADE).shouldHave(Condition.text("200"), java.time.Duration.ofSeconds(30));
+        log.info("Car purchased successfully");
+        return this;
+    }
+
+    @Step("Продажа автомобиля {0} пользователем {1}")
+    public AllPostPage sellCar(String userId, String carId) {
+        log.info("User {} selling car {}", userId, carId);
+        SelenideElement userIdField = $x(INPUT_TRADE_USER_ID);
+        SelenideElement carIdField = $x(INPUT_TRADE_CAR_ID);
+
+        userIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        userIdField.clear();
+        userIdField.sendKeys(userId);
+        userIdField.shouldHave(Condition.value(userId), java.time.Duration.ofSeconds(5));
+
+        carIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        carIdField.clear();
+        carIdField.sendKeys(carId);
+        carIdField.shouldHave(Condition.value(carId), java.time.Duration.ofSeconds(5));
+
+        $x(RADIO_SELL).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(BTN_TRADE_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_TRADE).shouldHave(Condition.text("200"), java.time.Duration.ofSeconds(30));
+        log.info("Car sold successfully");
+        return this;
+    }
+
+    @Step("Создание дома: {0}")
+    public AllPostPage createHouse(House house) {
+        log.info("Creating house: {}", house);
+
+        SelenideElement floorsField = $x(INPUT_HOUSE_FLOORS);
+        SelenideElement priceField = $x(INPUT_HOUSE_PRICE);
+
+        floorsField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        floorsField.clear();
+        floorsField.sendKeys(String.valueOf(house.getFloors()));
+        floorsField.shouldHave(Condition.value(String.valueOf(house.getFloors())), java.time.Duration.ofSeconds(5));
+
+        priceField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        priceField.clear();
+        priceField.sendKeys(String.valueOf((long) house.getPrice()));
+        priceField.shouldHave(Condition.value(String.valueOf((long) house.getPrice())), java.time.Duration.ofSeconds(5));
+
+        // Парковки
+        SelenideElement parking1 = $x(INPUT_PARKING_1);
+        parking1.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        parking1.clear();
+        parking1.sendKeys(String.valueOf(house.getParkingWarmCovered().getPlacesCount()));
+
+        SelenideElement parking2 = $x(INPUT_PARKING_2);
+        parking2.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        parking2.clear();
+        parking2.sendKeys(String.valueOf(house.getParkingWarmNotCovered().getPlacesCount()));
+
+        SelenideElement parking3 = $x(INPUT_PARKING_3);
+        parking3.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        parking3.clear();
+        parking3.sendKeys(String.valueOf(house.getParkingColdCovered().getPlacesCount()));
+
+        SelenideElement parking4 = $x(INPUT_PARKING_4);
+        parking4.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        parking4.clear();
+        parking4.sendKeys(String.valueOf(house.getParkingColdNotCovered().getPlacesCount()));
+
+        $x(BTN_HOUSE_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_HOUSE).shouldHave(Condition.text("201"), java.time.Duration.ofSeconds(30));
+        log.info("House created successfully");
+        return this;
+    }
+
+    @Step("Получение сгенерированного ID дома")
+    public String getGeneratedHouseId() {
+        String text = $x(NEW_ID_HOUSE).getText();
+        return text.replaceAll("[^0-9]", "");
+    }
+
+    // ========== Заселение/выселение ==========
+    @Step("Заселение пользователя {0} в дом {1}")
+    public AllPostPage settleUserInHouse(String userId, String houseId) {
+        log.info("Settling user {} in house {}", userId, houseId);
+
+        SelenideElement userIdField = $x(INPUT_SETTLE_USER_ID);
+        SelenideElement houseIdField = $x(INPUT_SETTLE_HOUSE_ID);
+
+        userIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        userIdField.clear();
+        userIdField.sendKeys(userId);
+        userIdField.shouldHave(Condition.value(userId), java.time.Duration.ofSeconds(5));
+
+        houseIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        houseIdField.clear();
+        houseIdField.sendKeys(houseId);
+        houseIdField.shouldHave(Condition.value(houseId), java.time.Duration.ofSeconds(5));
+
+        $x(RADIO_SETTLE).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(BTN_SETTLE_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_SETTLE).shouldHave(Condition.text("200"), java.time.Duration.ofSeconds(30));
+        log.info("User settled successfully");
+        return this;
+    }
+
+    @Step("Выселение пользователя {0} из дома {1}")
+    public AllPostPage evictUserFromHouse(String userId, String houseId) {
+        log.info("Evicting user {} from house {}", userId, houseId);
+
+        SelenideElement userIdField = $x(INPUT_SETTLE_USER_ID);
+        SelenideElement houseIdField = $x(INPUT_SETTLE_HOUSE_ID);
+
+        userIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        userIdField.clear();
+        userIdField.sendKeys(userId);
+        userIdField.shouldHave(Condition.value(userId), java.time.Duration.ofSeconds(5));
+
+        houseIdField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
+                .click();
+        houseIdField.clear();
+        houseIdField.sendKeys(houseId);
+        houseIdField.shouldHave(Condition.value(houseId), java.time.Duration.ofSeconds(5));
+
+        $x(RADIO_EVICT).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(BTN_SETTLE_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+
+        $x(STATUS_SETTLE).shouldHave(Condition.text("200"), java.time.Duration.ofSeconds(30));
+        log.info("User evicted successfully");
+        return this;
     }
 }
