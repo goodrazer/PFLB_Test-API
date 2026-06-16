@@ -6,16 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ui.dto.Car;
-import ui.dto.House;
-import ui.dto.Parking;
-import ui.dto.User;
-import ui.pages.AllDeletePage;
-import ui.pages.AllPostPage;
-import ui.pages.CarsCreateNewPage;
-import ui.steps.LoginStep;
-import ui.steps.wrappers.InputCars;
-
-import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
 @Epic("Cars")

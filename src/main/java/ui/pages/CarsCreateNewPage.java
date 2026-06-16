@@ -1,12 +1,8 @@
 package ui.pages;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import ui.dto.Car;
-import ui.steps.wrappers.InputCars;
-import ui.steps.wrappers.InputWrapper;
+import ui.wrappers.InputCars;
 
 import static com.codeborne.selenide.Selenide.*;
 
