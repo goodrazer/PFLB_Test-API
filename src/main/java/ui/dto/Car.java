@@ -12,7 +12,7 @@ public class Car {
     private String engineType;
     private String mark;
     private String model;
-    private double price;
+    private String price;
 
     // Поле для хранения сгенерированного ID (не используется в форме)
     @Builder.Default

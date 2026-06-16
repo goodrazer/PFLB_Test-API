@@ -63,7 +63,7 @@ public class AllPostTest extends BaseTest{
                 .engineType("Electric")
                 .mark("Tesla")
                 .model("Model Z")
-                .price(5000.00)
+                .price("5000.00")
                 .build();
         // Данные для создания дома (0 - нет такой парковки)
         House house = House.builder()
