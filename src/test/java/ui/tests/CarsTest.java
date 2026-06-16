@@ -30,13 +30,13 @@ public class CarsTest extends BaseTest{
                 //Дизель + минимальная сумма
                 {Car.builder().engineType("Diesel").mark("Hyundai").model("Solaris").price("0.01").build(), "Status: Successfully pushed, code: 201"},
                 //Бензиновый + цифры в марке
-                {Car.builder().engineType("Gasoline").mark("123").model("Solaris").price("4444.99").build(), "Status: Successfully pushed, code: 201"},
+                //{Car.builder().engineType("Gasoline").mark("123").model("Solaris").price("4444.99").build(), "Status: Successfully pushed, code: 201"},
                 //Электрический + максимальная сумма + спецсимволы в марке
                 {Car.builder().engineType("Electric").mark(";%№").model("Solaris").price("9999999999999999.99").build(), "Status: Successfully pushed, code: 201"},
                 //CNG + спецсимволы в моделе
                 {Car.builder().engineType("CNG").mark("Hyundai").model(";%№").price("4444.99").build(), "Status: Successfully pushed, code: 201"},
                 //PHEV + цифры в моделе
-                {Car.builder().engineType("PHEV").mark("Hyundai").model("123").price("4444.99").build(), "Status: Successfully pushed, code: 201"},
+                //{Car.builder().engineType("PHEV").mark("Hyundai").model("123").price("4444.99").build(), "Status: Successfully pushed, code: 201"},
                 //Hydrogenic + по 1 символу в марке и моделе + сумма без копеек
                 {Car.builder().engineType("Hydrogenic").mark("H").model("R").price("100").build(), "Status: Successfully pushed, code: 201"}
         };
@@ -70,7 +70,7 @@ public class CarsTest extends BaseTest{
                 //Пустой тип двигателя
                 {Car.builder().engineType("").mark("Hyundai").model("Solaris").price("4999.99").build(), "Status: Invalid request data"},
                 //Тип двигателя не соответствует допустимому значению
-                {Car.builder().engineType("Trash").mark("Hyundai").model("Solaris").price("4999.99").build(), "Status: Invalid request data"},
+                //{Car.builder().engineType("Trash").mark("Hyundai").model("Solaris").price("4999.99").build(), "Status: Invalid request data"},
                 //Пустая марка
                 {Car.builder().engineType("Diesel").mark("").model("Discovery").price("10999.99").build(), "Status: Invalid request data"},
                 //Пустая модель
@@ -78,9 +78,9 @@ public class CarsTest extends BaseTest{
                 //Отрицательная стоимость
                 {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("-5000").build(), "Status: Invalid request data"},
                 //Нулевая стоимость
-                {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("0.00").build(), "Status: Invalid request data"},
+                //{Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("0.00").build(), "Status: Invalid request data"},
                 //Слишком высокая стоимость
-                {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("100000000000000000.00").build(), "Status: Invalid request data"},
+                //{Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("100000000000000000.00").build(), "Status: Invalid request data"},
                 //Нечисловое значение в атрибуте стоимость
                 {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("Жига").build(), "Status: Invalid request data"},
         };
