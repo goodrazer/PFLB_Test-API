@@ -16,7 +16,7 @@ public class LoginStep extends BaseStep{
     private final SelenideElement INPUT_PASSWORD = $x("//input[@name='password']");
     private final SelenideElement GO_BUTTON = $x("//button[@class='Nav-btn btn btn-primary']");
 
-    @Step("Авторизация пользователя с валидными данными логина: ****** и пароля: ****** с кликом по кнопке 'Login'")
+    @Step("Авторизация пользователя с валидными данными логина: ****** и пароля: ****** с кликом по кнопке 'GO'")
     public LoginStep successfulAuthorization(
             @Param(mode = Parameter.Mode.MASKED) String email,
             @Param(mode = Parameter.Mode.MASKED) String password) {
