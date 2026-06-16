@@ -269,8 +269,8 @@ public class AllPostPage extends BasePage {
 
         priceField.shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10))
                 .click();
-        priceField.sendKeys(String.valueOf((long) car.getPrice()));
-        priceField.shouldHave(Condition.value(String.valueOf((long) car.getPrice())), java.time.Duration.ofSeconds(5));
+        priceField.sendKeys(car.getPrice());
+        priceField.shouldHave(Condition.value(car.getPrice()), java.time.Duration.ofSeconds(5));
 
         $x(BTN_CAR_PUSH).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
 
