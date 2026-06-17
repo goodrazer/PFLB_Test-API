@@ -13,8 +13,11 @@ public class House {
     private Parking parkingWarmNotCovered;
     private Parking parkingColdCovered;
     private Parking parkingColdNotCovered;
+    private int hasWarmAndCoveredParkingPlaces;
+    private int hasWarmNotCoveredParkingPlaces;
+    private int hasColdButCoveredParkingPlaces;
+    private int hasColdNotCoveredParkingPlaces;
 
-    // Поле для хранения сгенерированного ID (не используется в форме)
     @Builder.Default
     private String generatedId = null;
 }

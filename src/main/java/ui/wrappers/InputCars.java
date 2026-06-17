@@ -1,7 +1,6 @@
 package ui.wrappers;
 
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static com.codeborne.selenide.Selenide.$x;
