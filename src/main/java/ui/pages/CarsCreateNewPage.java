@@ -3,6 +3,7 @@ package ui.pages;
 import io.qameta.allure.Step;
 import ui.dto.Car;
 import ui.steps.wrappers.CarWrapper;
+import ui.wrappers.InputCars;
 
 import static com.codeborne.selenide.Selenide.*;
 

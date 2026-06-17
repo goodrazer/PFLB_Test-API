@@ -1,4 +1,4 @@
-package ui.steps.wrappers;
+package ui.wrappers;
 
 import com.codeborne.selenide.SelenideElement;
 
