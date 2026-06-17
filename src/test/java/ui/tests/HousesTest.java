@@ -51,4 +51,59 @@ public class HousesTest extends BaseTest{
                         actualIdText, expectedRegex));
         softAssert.assertAll();
     }
+
+    @Test(testName = "АТ.04/3.13.Проверка создания дома с заполнением всех полей валидными кредами",
+            description = "Проверка создания дома с заполнением всех полей валидными кредами " +
+                    "(включая необязательные)",
+            priority = 1,
+            groups = {"Positive", "Regression", "Smoke"},
+            enabled = true)
+    @Description("Проверка создания дома с заполнением всех полей валидными кредами " +
+            "(включая необязательные")
+    @Epic("Epic04_Houses")
+    @Feature("Проверка создания дома")
+    @Story("Проверка создания дома с заполнением всех полей валидными кредами " +
+            "(включая необязательные")
+    @Severity(SeverityLevel.CRITICAL)
+    @Link(value = "docs.google", name = "Чек-лист PFLB")
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Flaky
+    @Owner("Malevaniy Anton")
+    public void checkingTheCreationOfAHouseWithAllFieldsFilledWithValidCredits(){
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        housesCreateNewPage.openPage();
+        House house = House.builder()
+                .floors(2)
+                .price(3000000.00)
+                .hasWarmAndCoveredParkingPlaces(1)
+                .hasWarmNotCoveredParkingPlaces(1)
+                .hasColdButCoveredParkingPlaces(0)
+                .hasColdNotCoveredParkingPlaces(0)
+                .build();
+        housesCreateNewPage.creatingAHouseWithAllTheParameters(house)
+                .clickButtonPushToApi();
+        Selenide.sleep(2000);
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(
+                housesCreateNewPage.getTheTextOfTheConservationStatusOfANewProperty(),
+                "Status: Successfully pushed, code: 201",
+                "Ошибка!!! Статус выполнения операции отличается от 'Status: Successfully pushed, code: 201'");
+        softAssert.assertTrue(housesCreateNewPage.isVisibleNewHouseID(),
+                "Ошибка!!! ID нового объекта недвижимости не отображен на странице!");
+        String actualIdText = housesCreateNewPage.getHouseIdText();
+        String expectedRegex = "New house ID: \\d+";
+        softAssert.assertTrue(actualIdText.matches(expectedRegex),
+                String.format("Ошибка: Текст на странице '%s' не соответствует шаблону '%s'!",
+                        actualIdText, expectedRegex));
+        String newHouseID = housesCreateNewPage.getHouseId();
+        housesReadOneByIdPage.openPage()
+                        .fillingInTheHouseInputSearchField(newHouseID)
+                        .clickButtonRead();
+        Selenide.sleep(2000);
+        String idFoundHouse = housesReadOneByIdPage.getIdFoundHouse();
+        softAssert.assertEquals(idFoundHouse, newHouseID,
+                "Ошибка!!! ID созданного объекта недвижимости при поиске через {Houses -> Read One By ID} не совпадает с ожидаемым! ");
+        softAssert.assertAll();
+    }
 }

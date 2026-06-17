@@ -16,6 +16,14 @@ public class HousesCreateNewPage extends BasePage{
             = $x("//button[@disabled and contains(@class, 'status')]");
     private final SelenideElement NEW_HOUSE_ID
             = $x("//button[@disabled and contains(@class, 'newId')]");
+    private final SelenideElement INPUT_HAS_WARM_AND_COVERED_PARKING_PLACES
+            = $x("//table[@class='table table table-striped table-bordered table-hover'][2]//input");
+    private final SelenideElement INPUT_HAS_WARM_NOT_COVERED_PARKING_PLACES
+            = $x("//table[@class='table table table-striped table-bordered table-hover'][3]//input");
+    private final SelenideElement INPUT_HAS_COLD_BUT_COVERED_PARKING_PLACES
+            = $x("//table[@class='table table table-striped table-bordered table-hover'][4]//input");
+    private final SelenideElement INPUT_HAS_COLD_NOT_COVERED_PARKING_PLACES
+            = $x("//table[@class='table table table-striped table-bordered table-hover'][5]//input");
 
     @Override
     public HousesCreateNewPage openPage() {
@@ -59,5 +67,31 @@ public class HousesCreateNewPage extends BasePage{
     public String getHouseIdText() {
         log.info("Checking for the presence of 'New house ID'");
         return NEW_HOUSE_ID.text().trim();
+    }
+
+    @Step("Создание нового дома с заполнением всех полей (включая необязательные) c использованием dto 'House'")
+    public HousesCreateNewPage creatingAHouseWithAllTheParameters(House house) {
+        log.info("Create a new house by filling in all fields (including optional ones) using the dto 'House'");
+        String floorsCount = String.valueOf(house.getFloors());
+        String priceValue = String.valueOf(house.getPrice());
+        String hasWarmAndCoveredParkingPlaces = String.valueOf(house.getHasWarmAndCoveredParkingPlaces());
+        String hasWarmNotCoveredParkingPlaces = String.valueOf(house.getHasWarmNotCoveredParkingPlaces());
+        String hasColdButCoveredParkingPlaces = String.valueOf(house.getHasColdButCoveredParkingPlaces());
+        String hasColdNotCoveredParkingPlaces = String.valueOf(house.getHasColdNotCoveredParkingPlaces());
+        new InputHousesCreateNewOneTable("Floors", "floor_send")
+                .writeInputHousesCreateNewOneTable(floorsCount);
+        new InputHousesCreateNewOneTable("Price", "price_send")
+                .writeInputHousesCreateNewOneTable(priceValue);
+        INPUT_HAS_WARM_AND_COVERED_PARKING_PLACES.setValue(hasWarmAndCoveredParkingPlaces);
+        INPUT_HAS_WARM_NOT_COVERED_PARKING_PLACES.setValue(hasWarmNotCoveredParkingPlaces);
+        INPUT_HAS_COLD_BUT_COVERED_PARKING_PLACES.setValue(hasColdButCoveredParkingPlaces);
+        INPUT_HAS_COLD_NOT_COVERED_PARKING_PLACES.setValue(hasColdNotCoveredParkingPlaces);
+        return this;
+    }
+
+    @Step("Получить ID созданного объекта недвижимости")
+    public String getHouseId() {
+        log.info("Get the ID of the created property");
+        return NEW_HOUSE_ID.text().replaceAll("\\D", "");
     }
 }
