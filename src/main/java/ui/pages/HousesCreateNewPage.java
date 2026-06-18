@@ -26,8 +26,9 @@ public class HousesCreateNewPage extends BasePage{
             = $x("//table[@class='table table table-striped table-bordered table-hover'][5]//input");
 
     @Override
+    @Step("Открытие страницы 'Houses -> Create new'")
     public HousesCreateNewPage openPage() {
-        log.info("Opening the 'HousesCreateNewPage' start page");
+        log.info("Opening the 'Houses -> Create new' start page");
         open (BASE_URL + "/#/create/house");
         return this;
     }
