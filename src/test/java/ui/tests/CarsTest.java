@@ -125,12 +125,12 @@ public class CarsTest extends BaseTest{
                 "Ошибка!!! Сообщение об ошибке 'Status: Invalid request data' не отображено!");
     }
 
-    @Test(testName = "АТ.03.03.Cоздание нового авто c ошибкой",
-            description = "Проверка создания автомобиля с невалидными данными со страницы Cars -> Create new",
+    @Test(testName = "АТ.03.03.Проверка ввода в поле инкту с помощью стрелок",
+            description = "Проверка ввода в поле Price на странице Cars -> Create new, с помощью стрелок",
             priority = 4,
             groups = {"Negative", "E2E", "Regression"},
             enabled = true)
-    @Description("Проверка создания автомобиля с невалидными данными со страницы Cars -> Create new")
+    @Description("Проверка ввода в поле Price на странице Cars -> Create new, с помощью стрелок")
     @Story("Создание авто")
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
@@ -493,6 +493,7 @@ public class CarsTest extends BaseTest{
         softAssert.assertNotEquals(actualValues, valuesAfterSort,
                 "Значение после сортировки соответствует изначальному");
         carsReadAllPage.clickButton("Reload");
+        sleep(1000);
         List<String> valuesAfterReload = carsReadAllPage.getAttribute("1");
         softAssert.assertEquals(actualValues, valuesAfterReload,
                 "Отсортированная таблица после перезагрузи страницы не возвращается в дефолтное состояние");
