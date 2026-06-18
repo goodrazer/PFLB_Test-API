@@ -52,9 +52,9 @@ public class LoginPage extends BasePage {
     private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
 
     @Override
-    @Step("Открытие страницы авторизации.")
+    @Step("Открытие страницы 'Authorization'")
     public LoginPage openPage() {
-        log.info("Opening the 'Login' start page");
+        log.info("Opening the 'Authorization' start page");
         open (BASE_URL);
         return this;
     }

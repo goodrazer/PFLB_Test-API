@@ -3,7 +3,6 @@ package ui.pages;
 import io.qameta.allure.Step;
 import ui.dto.Car;
 import ui.wrappers.InputCars;
-
 import static com.codeborne.selenide.Selenide.*;
 
 public class CarsCreateNewPage extends BasePage{
@@ -12,9 +11,9 @@ public class CarsCreateNewPage extends BasePage{
     private final String PUSH_TO_API_BUTTON = "//*[@id='root']/div/section/div/div/button[1]";
 
     @Override
-    @Step("открытие страницы создания нового авто.")
+    @Step("Открытие страницы 'Cars -> Create new'")
     public CarsCreateNewPage openPage() {
-        log.info("Opening the 'CarsCreateNewPage' start page");
+        log.info("Opening the 'Cars -> Create new' start page");
         open (BASE_URL + "/#/create/cars");
         return this;
     }

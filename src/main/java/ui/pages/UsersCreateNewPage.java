@@ -15,8 +15,9 @@ public class UsersCreateNewPage extends BasePage{
             "[contains(text(), 'ID will be generated')]");
 
     @Override
+    @Step("Открытие страницы 'Users -> Create new'")
     public BasePage openPage() {
-        log.info("Opening the 'UsersCreateNewPage' start page");
+        log.info("Opening the 'Users -> Create new' start page");
         open (BASE_URL + "/#/create/user");
         return this;
     }

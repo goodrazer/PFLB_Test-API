@@ -92,7 +92,7 @@ public class AllPostPage extends BasePage {
     public AllPostPage() {super();}
 
     @Override
-    @Step("Открытие страницы 'All POST'.")
+    @Step("Открытие страницы 'All POST'")
     public AllPostPage openPage() {
         log.info("Opening 'All POST' page");
         String targetUrl = BASE_URL + "/#/create/all";
