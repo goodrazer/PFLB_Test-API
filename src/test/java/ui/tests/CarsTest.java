@@ -190,7 +190,7 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("ID");
         softAssert.assertEquals(textButton,"↑ ID ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
@@ -220,9 +220,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         carsReadAllPage.clickButton("ID");
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("ID");
         softAssert.assertEquals(textButton,"↓ ID ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
@@ -253,7 +253,7 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("Price");
         softAssert.assertEquals(textButton,"↑ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
@@ -284,9 +284,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         carsReadAllPage.clickButton("Price");
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("Price");
         softAssert.assertEquals(textButton,"↓ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
@@ -316,7 +316,7 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("Engine");
         softAssert.assertEquals(textButton,"↑ Engine Type ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttributeEngineType("2");
@@ -343,9 +343,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         carsReadAllPage.clickButton("Engine");
-        sleep(300);
+        sleep(1000);
         String textButton = carsReadAllPage.clickButton("Engine");
         softAssert.assertEquals(textButton,"↓ Engine Type ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttributeEngineType("2");
@@ -486,7 +486,7 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(300);
+        sleep(1000);
         List<String> actualValues = carsReadAllPage.getAttribute("1");
         carsReadAllPage.clickButton("ID");
         List<String> valuesAfterSort = carsReadAllPage.getAttribute("1");
