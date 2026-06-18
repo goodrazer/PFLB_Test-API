@@ -2,6 +2,7 @@ package ui.pages;
 
 import io.qameta.allure.Step;
 import ui.dto.Car;
+import ui.steps.wrappers.CarWrapper;
 import ui.wrappers.InputCars;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -35,10 +36,10 @@ public class CarsCreateNewPage extends BasePage{
 
     @Step("Создание авто с валидными данными")
     public CarsCreateNewPage createNewCar(Car car) {
-        new InputCars("car_engine_type_send").write(car.getEngineType());
-        new InputCars("car_mark_send").write(car.getMark());
-        new InputCars("car_model_send").write(car.getModel());
-        new InputCars("car_price_send").write(car.getPrice());
+        new CarWrapper("car_engine_type_send").write(car.getEngineType());
+        new CarWrapper("car_mark_send").write(car.getMark());
+        new CarWrapper("car_model_send").write(car.getModel());
+        new CarWrapper("car_price_send").write(car.getPrice());
         $x(PUSH_TO_API_BUTTON).click();
         return this;
     }
@@ -49,5 +50,13 @@ public class CarsCreateNewPage extends BasePage{
         //без явного ожидания, так как выведет ошибку, что не нашло нужного элемента по таймауту
         sleep(1000);
         return $x(STATUS_CREATE_MESSAGE).getText();
+    }
+
+    @Step("Проверка открытия страницы 'Create new car'.")
+    public CarsCreateNewPage inputNumberWithButton(int up, int down) {
+        log.info("input with arrowUp {}, arrowDown {}", up, down);
+        // Дополнительная проверка: если элемент не виден - открываем заново
+        new CarWrapper("car_price_send").inputStep(up, down);
+        return this;
     }
 }
