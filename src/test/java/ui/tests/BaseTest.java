@@ -43,6 +43,7 @@ public class BaseTest {
     protected SwaggerDevJsDeprecatedPage swaggerDevJsDeprecatedPage;
     protected SwaggerDevMvcPage swaggerDevMvcPage;
     protected SwaggerMasterMvcPage swaggerMasterMvcPage;
+    protected CarsBuyOrSellCarPage carsBuyOrSellCarPage;
 
     @BeforeSuite(alwaysRun = true)
     public void initSuite() {
@@ -107,6 +108,7 @@ public class BaseTest {
         swaggerDevJsDeprecatedPage = new SwaggerDevJsDeprecatedPage();
         swaggerDevMvcPage = new SwaggerDevMvcPage();
         swaggerMasterMvcPage = new SwaggerMasterMvcPage();
+        carsBuyOrSellCarPage = new CarsBuyOrSellCarPage();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")
