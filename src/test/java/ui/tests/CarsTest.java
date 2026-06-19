@@ -125,7 +125,7 @@ public class CarsTest extends BaseTest{
                 "Ошибка!!! Сообщение об ошибке 'Status: Invalid request data' не отображено!");
     }
 
-    @Test(testName = "АТ.03.03.Проверка ввода в поле инкту с помощью стрелок",
+    @Test(testName = "АТ.03.03.Проверка ввода в поле Price с помощью стрелок",
             description = "Проверка ввода в поле Price на странице Cars -> Create new, с помощью стрелок",
             priority = 4,
             groups = {"Negative", "E2E", "Regression"},
@@ -136,7 +136,7 @@ public class CarsTest extends BaseTest{
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     @Owner("Permyakov Egor")
-    public void test() {
+    public void testArrowNumberInput() {
         log.info("Step 1: Authorizing user and open 'Create new Car' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsCreateNewPage.openPage()
@@ -145,7 +145,6 @@ public class CarsTest extends BaseTest{
         SelenideElement priceField =
                 $x("//table[contains(@class, 'table-striped')]//input[@id='car_price_send']");
         String currentValue = priceField.getValue();
-        System.out.println(currentValue);
         Assert.assertEquals(currentValue,
                 "1.3",
                 "Ошибка!!! Нажатием на стрелки в инпуте, не получилось нужного числа");
@@ -387,8 +386,9 @@ public class CarsTest extends BaseTest{
 //        loginStep.successfulAuthorization(validEmail, validPassword);
 //        carsReadAllPage.openPage()
 //                .isPageOpened();
-//        sleep(300);
+//        sleep(1500);
 //        String textButton = carsReadAllPage.clickButton("Mark");
+    //    sleep(500);
 //        softAssert.assertEquals(textButton,"↑ Mark ", "Кнопка не в том состоянии");
 //        List<String> actualValues = carsReadAllPage.getAttribute("3");
 //        List<String> sortedValues = new ArrayList<>(actualValues);
@@ -415,10 +415,11 @@ public class CarsTest extends BaseTest{
 //        loginStep.successfulAuthorization(validEmail, validPassword);
 //        carsReadAllPage.openPage()
 //                .isPageOpened();
-//        sleep(300);
+//        sleep(1500);
 //        carsReadAllPage.clickButton("Mark");
-//        sleep(300);
+//        sleep(500);
 //        String textButton = carsReadAllPage.clickButton("Mark");
+    //    sleep(500);
 //        softAssert.assertEquals(textButton,"↓ Mark ", "Кнопка не в том состоянии");
 //        List<String> actualValues = carsReadAllPage.getAttribute("3");
 //        List<String> sortedValues = new ArrayList<>(actualValues);
@@ -447,8 +448,9 @@ public class CarsTest extends BaseTest{
 //        loginStep.successfulAuthorization(validEmail, validPassword);
 //        carsReadAllPage.openPage()
 //                .isPageOpened();
-//        sleep(300);
+//        sleep(1500);
 //        String textButton = carsReadAllPage.clickButton("Model");
+    //    sleep(500);
 //        softAssert.assertEquals(textButton,"↑ Model ", "Кнопка не в том состоянии");
 //        List<String> actualValues = carsReadAllPage.getAttribute("4");
 //        List<String> sortedValues = new ArrayList<>(actualValues);
@@ -475,10 +477,11 @@ public class CarsTest extends BaseTest{
 //        loginStep.successfulAuthorization(validEmail, validPassword);
 //        carsReadAllPage.openPage()
 //                .isPageOpened();
-//        sleep(300);
+//        sleep(1500);
 //        carsReadAllPage.clickButton("Model");
-//        sleep(300);
+//        sleep(500);
 //        String textButton = carsReadAllPage.clickButton("Model");
+    //    sleep(500);
 //        softAssert.assertEquals(textButton,"↓ Model ", "Кнопка не в том состоянии");
 //        List<String> actualValues = carsReadAllPage.getAttribute("4");
 //        List<String> sortedValues = new ArrayList<>(actualValues);
@@ -519,22 +522,27 @@ public class CarsTest extends BaseTest{
         softAssert.assertAll();
     }
 
-    @DataProvider(name = "Тестовые данные для ввода на странице Cars -> Buy or Sell")
-    public Object[][] UserCarData() {
-        return new Object[][] {
-                {
-                        UserCar.builder().userId("123").carId("123").build(), new String[]{"123", "123"}
-                }
-        };
+    @DataProvider(name = "Тестовые данные для успешного ввода на странице Cars -> Buy or Sell")
+    public Object[][] userPositiveCarData() {
+        return new Object[][]{
+                {UserCar.builder().userId("1").carId("9999999999999999999999999999999999999999999999999999999999999999")
+                        .build(),
+                        new String[]{"1", "9999999999999999999999999999999999999999999999999999999999999999"}},
+                {UserCar.builder().userId("9999999999999999999999999999999999999999999999999999999999999999")
+                        .carId("1").build(),
+                        new String[]{"9999999999999999999999999999999999999999999999999999999999999999",
+                                "1"}},
+//                {UserCar.builder().userId("1").carId("0,12").build(), new String[]{"1", "0,12"}}
+            };
     }
 
-    @Test(testName = "АТ.03.16.Проверка ввода в поля на странице Cars -> Buy or Sell",
+    @Test(testName = "АТ.03.16.Проверка позитивного ввода в поля на странице Cars -> Buy or Sell",
             description = "Проверка ввода разных значений в поля idUser и idCar на странице Cars -> Buy or Sell",
             priority = 6,
             groups = {"Positive", "E2E", "Regression", "Smoke"},
             enabled = true,
-            dataProvider = "Тестовые данные для ввода на странице Cars -> Buy or Sell")
-    @Description("Проверка ввода разных значений в поля idUser и idCar на странице Cars -> Buy or Sell")
+            dataProvider = "Тестовые данные для успешного ввода на странице Cars -> Buy or Sell")
+    @Description("Проверка ввода валидных значений в поля idUser и idCar на странице Cars -> Buy or Sell")
     @Story("Продажа или покупка авто")
     @Severity(SeverityLevel.CRITICAL)
     @TmsLink("TestCaseLink")
@@ -550,5 +558,136 @@ public class CarsTest extends BaseTest{
         Assert.assertEquals(actualValues,
                 expectedValues,
                 "Ошибка!!! Введенное значение не соответствует ожидаемому");
+    }
+
+    @DataProvider(name = "Тестовые данные для негативного ввода на странице Cars -> Buy or Sell")
+    public Object[][] userNegativeCarData() {
+        return new Object[][] {
+//                {UserCar.builder().userId("Аолтамывлотыавсоы").carId("ВОЫРАылгоываарывлофы").build(),
+//                        new String[]{"", ""}},
+//                {UserCar.builder().userId("123.22").carId("123.222").build(), new String[]{"123", "123"}},
+                {UserCar.builder().userId("$%()+=").carId("!%()+=").build(), new String[]{"", ""}},
+                {UserCar.builder().userId("AUJHSDujsdhfjsa").carId("AIJSHDiuaisd").build(), new String[]{"", ""}},
+                {UserCar.builder().userId(".,/!").carId(".,/!").build(), new String[]{"", ""}},
+//                {UserCar.builder().userId("99999999999999999999999999999999999999999999999999999999999999999")
+//                .carId("-100").build(), new String[]{"9999999999999999999999999999999999999999999999999999999999999999",
+//                        "100"}},
+//                {UserCar.builder().userId("-100")
+//                        .carId("99999999999999999999999999999999999999999999999999999999999999999").build(),
+//                        new String[]{"-100", "9999999999999999999999999999999999999999999999999999999999999999"}},
+        };
+    }
+
+    @Test(testName = "АТ.03.17.Проверка негативного ввода в поля на странице Cars -> Buy or Sell",
+            description = "Проверка ввода невалидных значений в поля idUser и idCar на странице Cars -> Buy or Sell",
+            priority = 6,
+            groups = {"Negative", "E2E", "Regression", "Smoke"},
+            enabled = true,
+            dataProvider = "Тестовые данные для негативного ввода на странице Cars -> Buy or Sell")
+    @Description("Проверка ввода невалидных значений в поля idUser и idCar на странице Cars -> Buy or Sell")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testInputIdUserError(UserCar userCar1, String [] expectedValues) {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        String[] actualValues = carsBuyOrSellCarPage.inputUserId(userCar1);
+        Assert.assertEquals(actualValues,
+                expectedValues,
+                "Ошибка!!! Введенное значение не соответствует ожидаемому");
+    }
+
+    @Test(testName = "АТ.03.18.Проверка ввода в поле UserId и CarId с помощью стрелок",
+            description = "Проверка ввода в поле Price на странице Cars -> Buy or Sell, с помощью стрелок",
+            priority = 5,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка ввода в поле Price на странице Cars -> Create new, с помощью стрелок")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testArrowInputUser() {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened()
+                .inputNumberWithArrow(50, 20, 10, 5);
+        SelenideElement userIdField =
+                $x("//table[contains(@class, 'table-striped')]//input[@id='id_send']");
+        String idUserCurrentValue = userIdField.getValue();
+        softAssert.assertEquals(idUserCurrentValue, "30",
+                "Ошибка!!! Нажатием на стрелки в инпуте, не получилось нужного числа");
+        SelenideElement CarIdField =
+                $x("//table[contains(@class, 'table-striped')]//input[@id='car_send']");
+        String idCarCurrentValue = CarIdField.getValue();
+        softAssert.assertEquals(idCarCurrentValue, "5",
+                "Ошибка!!! Нажатием на стрелки в инпуте, не получилось нужного числа");
+        softAssert.assertAll();
+    }
+
+    @Test(testName = "АТ.03.19.Проверка работы радиокнопки Buy на странице Cars -> Buy or Sell",
+            description = "Проверка корректной работы радиокнопки Buy на странице Cars -> Buy or Sell",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной работы радиокнопки Buy на странице Cars -> Buy or Sell")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testRadioButtonBuy() {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened();
+        Assert.assertTrue(carsBuyOrSellCarPage.checkRadioButtonBuy(), "Радиокнопка Buy не выбрана ");
+    }
+
+    @Test(testName = "АТ.03.20.Проверка работы радиокнопки Sell на странице Cars -> Buy or Sell",
+            description = "Проверка корректной работы радиокнопки Sell на странице Cars -> Buy or Sell",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной работы радиокнопки Sell на странице Cars -> Buy or Sell")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testRadioButtonSell() {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened();
+        Assert.assertTrue(carsBuyOrSellCarPage.checkRadioButtonSell(), "Радиокнопка Sell не выбрана ");
+    }
+
+    @Test(testName = "АТ.03.21.Проверка начального состояние радиокнопок",
+            description = "Проверка, что радиокнопки Buy и Sell на странице Cars -> Buy or Sell в неактивном состоянии",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка, что радиокнопки Buy и Sell на странице Cars -> Buy or Sell в неактивном состоянии")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testRadioButtonDefault() {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened();
+        softAssert.assertFalse(carsBuyOrSellCarPage.checkRadioButtonSellIsNotSelected());
+        softAssert.assertFalse(carsBuyOrSellCarPage.checkRadioButtonBuyIsNotSelected());
+        softAssert.assertAll();
     }
 }
