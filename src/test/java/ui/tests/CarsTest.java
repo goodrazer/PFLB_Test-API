@@ -8,11 +8,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import ui.dto.Car;
-import ui.steps.wrappers.CarWrapper;
-
+import ui.dto.UserCar;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.sleep;
 
@@ -61,6 +59,7 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.CRITICAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void testCreateNewCar(Car car, String statusMessage) {
         log.info("Step 1: Authorizing user and open 'Create new Car' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
@@ -114,6 +113,7 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void testErrorCreateCar(Car car1, String errorMessage) {
         log.info("Step 1: Authorizing user and open 'Create new Car' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
@@ -135,6 +135,7 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void test() {
         log.info("Step 1: Authorizing user and open 'Create new Car' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
@@ -160,6 +161,7 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.CRITICAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void testAttributeCarsTable() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
@@ -185,13 +187,15 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortIdLowHigh() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("ID");
+        sleep(500);
         softAssert.assertEquals(textButton,"↑ ID ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("1");
@@ -215,15 +219,17 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortIdHighLow() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         carsReadAllPage.clickButton("ID");
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("ID");
+        sleep(500);
         softAssert.assertEquals(textButton,"↓ ID ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("1");
@@ -248,13 +254,15 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortPriceLowHigh() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("Price");
+        sleep(500);
         softAssert.assertEquals(textButton,"↑ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("5");
@@ -279,15 +287,17 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortPriceHighLow() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         carsReadAllPage.clickButton("Price");
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("Price");
+        sleep(500);
         softAssert.assertEquals(textButton,"↓ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("5");
@@ -311,13 +321,15 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortEngineAZ() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("Engine");
+        sleep(500);
         softAssert.assertEquals(textButton,"↑ Engine Type ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttributeEngineType("2");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -338,15 +350,17 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkSortEngineZA() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         carsReadAllPage.clickButton("Engine");
-        sleep(1000);
+        sleep(1500);
         String textButton = carsReadAllPage.clickButton("Engine");
+        sleep(500);
         softAssert.assertEquals(textButton,"↓ Engine Type ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttributeEngineType("2");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -368,6 +382,7 @@ public class CarsTest extends BaseTest{
 //    @TmsLink("TestCaseLink")
 //    @Issue("BugLink")
 //    public void checkSortMarkAZ() {
+    //@Owner("Permyakov Egor")
 //        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
 //        loginStep.successfulAuthorization(validEmail, validPassword);
 //        carsReadAllPage.openPage()
@@ -394,6 +409,7 @@ public class CarsTest extends BaseTest{
 //    @Severity(SeverityLevel.NORMAL)
 //    @TmsLink("TestCaseLink")
 //    @Issue("BugLink")
+    //@Owner("Permyakov Egor")
 //    public void checkSortMarkZA() {
 //        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
 //        loginStep.successfulAuthorization(validEmail, validPassword);
@@ -425,6 +441,7 @@ public class CarsTest extends BaseTest{
 //    @Severity(SeverityLevel.NORMAL)
 //    @TmsLink("TestCaseLink")
 //    @Issue("BugLink")
+    //@Owner("Permyakov Egor")
 //    public void checkSortModelAZ() {
 //        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
 //        loginStep.successfulAuthorization(validEmail, validPassword);
@@ -452,6 +469,7 @@ public class CarsTest extends BaseTest{
 //    @Severity(SeverityLevel.NORMAL)
 //    @TmsLink("TestCaseLink")
 //    @Issue("BugLink")
+    //@Owner("Permyakov Egor")
 //    public void checkSortModelZA() {
 //        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
 //        loginStep.successfulAuthorization(validEmail, validPassword);
@@ -481,22 +499,56 @@ public class CarsTest extends BaseTest{
     @Severity(SeverityLevel.MINOR)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
+    @Owner("Permyakov Egor")
     public void checkReloadButton() {
         log.info("Step 1: Authorizing user and open 'Cars - read all' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1000);
+        sleep(1500);
         List<String> actualValues = carsReadAllPage.getAttribute("1");
         carsReadAllPage.clickButton("ID");
         List<String> valuesAfterSort = carsReadAllPage.getAttribute("1");
         softAssert.assertNotEquals(actualValues, valuesAfterSort,
                 "Значение после сортировки соответствует изначальному");
         carsReadAllPage.clickButton("Reload");
-        sleep(1000);
+        sleep(1500);
         List<String> valuesAfterReload = carsReadAllPage.getAttribute("1");
         softAssert.assertEquals(actualValues, valuesAfterReload,
                 "Отсортированная таблица после перезагрузи страницы не возвращается в дефолтное состояние");
         softAssert.assertAll();
+    }
+
+    @DataProvider(name = "Тестовые данные для ввода на странице Cars -> Buy or Sell")
+    public Object[][] UserCarData() {
+        return new Object[][] {
+                {
+                        UserCar.builder().userId("123").carId("123").build(), new String[]{"123", "123"}
+                }
+        };
+    }
+
+    @Test(testName = "АТ.03.16.Проверка ввода в поля на странице Cars -> Buy or Sell",
+            description = "Проверка ввода разных значений в поля idUser и idCar на странице Cars -> Buy or Sell",
+            priority = 6,
+            groups = {"Positive", "E2E", "Regression", "Smoke"},
+            enabled = true,
+            dataProvider = "Тестовые данные для ввода на странице Cars -> Buy or Sell")
+    @Description("Проверка ввода разных значений в поля idUser и idCar на странице Cars -> Buy or Sell")
+    @Story("Продажа или покупка авто")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void testInputIdUser(UserCar userCar, String [] expectedValues) {
+        log.info("Step 1: Authorizing user and open 'Create new Car' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsBuyOrSellCarPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        String[] actualValues = carsBuyOrSellCarPage.inputUserId(userCar);
+        Assert.assertEquals(actualValues,
+                expectedValues,
+                "Ошибка!!! Введенное значение не соответствует ожидаемому");
     }
 }

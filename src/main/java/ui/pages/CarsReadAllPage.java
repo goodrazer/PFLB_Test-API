@@ -1,9 +1,7 @@
 package ui.pages;
 
 import io.qameta.allure.Step;
-import org.testng.annotations.Test;
 import ui.steps.wrappers.CarWrapper;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
