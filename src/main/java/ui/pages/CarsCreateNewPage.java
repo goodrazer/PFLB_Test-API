@@ -52,7 +52,7 @@ public class CarsCreateNewPage extends BasePage{
         return $x(STATUS_CREATE_MESSAGE).getText();
     }
 
-    @Step("Проверка открытия страницы 'Create new car'.")
+    @Step("Нажатие на стрелку в полях, где доступен ввод числового значения")
     public CarsCreateNewPage inputNumberWithButton(int up, int down) {
         log.info("input with arrowUp {}, arrowDown {}", up, down);
         // Дополнительная проверка: если элемент не виден - открываем заново
