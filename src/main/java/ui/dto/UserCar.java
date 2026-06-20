@@ -11,4 +11,8 @@ import lombok.*;
 public class UserCar {
     private String userId;
     private String carId;
+
+    // Поле для хранения сгенерированного ID (не используется в форме)
+    @Builder.Default
+    private String generatedId = null;
 }

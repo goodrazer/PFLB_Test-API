@@ -40,7 +40,7 @@ public class CarWrapper {
         return nameAttribute;
     }
 
-    //Получаем значения атрибутов
+    //Получаем значения атрибутов в таблице Cars read
     public String getValue(Integer number) {
         String valueAttribute = $x(String.format("//*[@id='root']/div/section/div/table/tbody/tr[%s]/td[%s]",
                 number, label)).getText();

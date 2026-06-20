@@ -1,9 +1,12 @@
 package ui.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import ui.dto.UserCar;
 import ui.steps.wrappers.CarWrapper;
+
+import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CarsBuyOrSellCarPage extends BasePage{
@@ -12,6 +15,8 @@ public class CarsBuyOrSellCarPage extends BasePage{
 
     private final String PUSH_TO_API_BUTTON = "//*[@id='root']/div/section/div/div/button[1]";
     private final String INPUT = "//table[contains(@class, 'table-striped')]//input[@id='%s']";
+    private static final String RADIO_BUY = "//input[@name='settleOrEvict' and @value='buyCar']";
+    private static final String RADIO_SELL = "//input[@name='settleOrEvict' and @value='sellCar']";
 
     @Override
     public CarsBuyOrSellCarPage openPage() {
@@ -46,5 +51,49 @@ public class CarsBuyOrSellCarPage extends BasePage{
         String idCar = $x(String.format(INPUT, "car_send")).getValue();
         values[1] = idCar;
         return values;
+    }
+
+    @Step("Нажатие на стрелку в полях, где доступен ввод числового значения")
+    public CarsBuyOrSellCarPage inputNumberWithArrow(int upUserId, int downUserId, int upCarId, int downCarId) {
+        log.info("input UserId with arrowUp {}, arrowDown {}.", upUserId, downUserId);
+        log.info("input CarId with arrowUp {}, arrowDown {}.", upCarId, downCarId);
+        // Дополнительная проверка: если элемент не виден - открываем заново
+        new CarWrapper("id_send").inputStep(upUserId, downUserId);
+        new CarWrapper("car_send").inputStep(upCarId, downCarId);
+        return this;
+    }
+
+    @Step("Проверка радиокнопки Buy")
+    public boolean checkRadioButtonBuy() {
+        log.info("Check work radioButton Buy ");
+        $x(RADIO_SELL).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+        $x(RADIO_BUY).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+        boolean isSelected = $x(RADIO_BUY).isSelected();
+        return isSelected;
+    }
+
+    @Step("Проверка радиокнопки Sell")
+    public boolean checkRadioButtonSell() {
+        log.info("Check work radioButton Buy ");
+        $x(RADIO_BUY).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+        $x(RADIO_SELL).shouldBe(Condition.interactable, java.time.Duration.ofSeconds(10)).click();
+        boolean isSelected = $x(RADIO_SELL).isSelected();
+        return isSelected;
+    }
+
+    @Step("Проверка активности радиокнопки Sell")
+    public boolean checkRadioButtonSellIsNotSelected() {
+        log.info("Check work radioButton isNotSelected");
+        boolean isSelected = true;
+        isSelected = $x(RADIO_SELL).isSelected();
+        return isSelected;
+    }
+
+    @Step("Проверка активности радиокнопки Buy")
+    public boolean checkRadioButtonBuyIsNotSelected() {
+        log.info("Check work radioButton isNotSelected");
+        boolean isSelected = true;
+        isSelected = $x(RADIO_BUY).isSelected();
+        return isSelected;
     }
 }
