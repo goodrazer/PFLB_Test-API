@@ -6,9 +6,7 @@ import io.qameta.allure.Step;
 import ui.wrappers.ButtonWrapper;
 import ui.wrappers.InputWrapper;
 import ui.wrappers.RadioWrapper;
-
 import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
