@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"Полный цикл CRUD: создание, операции и удаление пользователя, автомобиля и дома","16847","E2E-сценарий: создание пользователя -> пополнение баланса -> создание авто -> покупка/продажа авто -> создание дома -> заселение/выселение -> удаление всех сущностей","CrossBrowserTestSuite","Sun Jun 21 20:15:03 UTC 2026","passed","Sun Jun 21 20:15:20 UTC 2026","ui.tests.AllPostTest","AllTests-Chrome","ui.tests.AllPostTest","testFullUserFlow"
