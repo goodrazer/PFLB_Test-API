@@ -1,6 +1,10 @@
 package ui.wrappers;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -13,10 +17,13 @@ public class RadioWrapper {
     }
 
     //Выбирает radio button
-    public void select() {
+    @Step("Выбор radio button")
+    public RadioWrapper select() {
+        radio.shouldBe(Condition.interactable, Duration.ofSeconds(10));
         if (!radio.isSelected()) {
             radio.click();
         }
+        return this;
     }
 
     // Проверяет, выбрана ли radio button
