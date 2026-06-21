@@ -1,4 +1,43 @@
 # Фреймворк автоматизированного тестирования для веб-приложения PFLB Test-API
+## Оглавление
+
+- [Описание проекта](#описание-проекта)
+- [Технологический стек](#технологический-стек)
+- [Структура проекта](#структура-проекта)
+- [Архитектурные паттерны](#архитектурные-паттерны)
+    - [Page Object Model (POM)](#page-object-model-pom)
+    - [Chain of Invocations](#chain-of-invocations)
+    - [Value Object (DTO)](#value-object-dto)
+    - [Wrappers](#wrappers)
+    - [Steps](#steps)
+    - [Loadable Page](#loadable-page)
+    - [Retry Mechanism](#retry-mechanism)
+    - [DataProvider Pattern](#dataprovider-pattern)
+- [Чек-лист UI тестирования](#чек-лист-ui-тестирования)
+    - [Модуль Authorization](#модуль-authorization---страница-авторизации-)
+    - [Модуль All POST / ALL DELETE](#модуль-all-post--all-delete---страница-all-post-createall--all-delete-deleteall)
+    - [Модуль Cars](#модуль-cars)
+    - [Модуль Houses](#модуль-houses)
+    - [Статистика покрытия UI тестов](#статистика-покрытия-ui-тестов)
+- [Чек-лист API тестирования](#чек-лист-api-тестирования)
+    - [Модуль Authorization (API)](#модуль-authorization-api)
+    - [Модуль Users (API)](#модуль-users-api)
+    - [Модуль Cars (API)](#модуль-cars-api)
+    - [Модуль Houses (API)](#модуль-houses-api)
+    - [Модуль User-Car Relations (API)](#модуль-user-car-relations-api)
+    - [Модуль User-House Relations (API)](#модуль-user-house-relations-api)
+    - [Модуль User Money/Loan (API)](#модуль-user-moneyloan-api)
+    - [Модуль Logging (API)](#модуль-logging-api)
+    - [Модуль Criminal Records (API)](#модуль-criminal-records-api)
+    - [Модуль API User Management (API)](#модуль-api-user-management-api)
+    - [Статистика покрытия API тестов](#статистика-покрытия-api-тестов)
+    - [Общие негативные сценарии](#общие-негативные-сценарии-для-всех-модулей)
+- [Команда проекта](#команда-проекта)
+- [Запуск тестов](#запуск-тестов)
+- [Отчётность](#отчётность)
+
+---
+
 ## Описание проекта
 
 **PFLB Test-API** - веб-приложение с REST API и UI-интерфейсом для управления сущностями:
@@ -301,16 +340,190 @@ User user = User.builder()
 | 6 | Переход на страницу Houses -> Read One By ID           | Страница загружена |
 | 7 | Ввод ID дома в поле поиска и клик "Read"               | Найденный дом отображён |
 | 8 | Проверка ID найденного дома                            | ID совпадает с созданным |
----
 
-## Чек лист API тестирования
-### В процессе...
-
----
-## Статистика покрытия
+### Статистика покрытия UI тестов
 
 | Модуль | Позитивные | Негативные | Безопасность | E2E | Всего |
 |--------|-----------|-----------|-------------|-----|-------|
+---
+## Чек-лист API тестирования
+
+### Модуль Authorization (API)
+
+#### Авторизация через JSON
+
+| №         | Тест-кейс | Метод | Эндпоинт | Группа |
+|-----------|-----------|-------|----------|--------|
+| API.01.01 | Авторизация пользователя с валидными данными (JSON) | POST | `/login` | Positive, Smoke |
+| API.01.02 | Проверка получения access_token в ответе | POST | `/login` | Positive |
+| API.01.03 | Авторизация с Content-Type: application/json; charset=UTF-8 | POST | `/login` | Positive |
+| API.01.04 | Авторизация с невалидным email | POST | `/login` | Negative |
+| API.01.05 | Авторизация с невалидным паролем | POST | `/login` | Negative |
+| API.01.06 | Авторизация с пустым телом запроса | POST | `/login` | Negative |
+| API.01.07 | Авторизация без Content-Type заголовка | POST | `/login` | Negative |
+
+### Модуль Users (API)
+
+#### CRUD операции с пользователями
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.02.01 | Создание пользователя с валидными данными | POST | `/user` | Positive, Smoke |
+| API.02.02 | Получение пользователя по ID | GET | `/user/{userId}` | Positive |
+| API.02.03 | Получение списка всех пользователей | GET | `/users` | Positive |
+| API.02.04 | Получение информации о пользователе с имуществом | GET | `/user/{userId}/info` | Positive |
+| API.02.05 | Обновление данных пользователя | PUT | `/user/{userId}` | Positive |
+| API.02.06 | Удаление пользователя | DELETE | `/user/{userId}` | Positive |
+| API.02.07 | Создание пользователя с невалидными данными | POST | `/user` | Negative |
+| API.02.08 | Получение несуществующего пользователя | GET | `/user/{userId}` | Negative |
+| API.02.09 | Обновление несуществующего пользователя | PUT | `/user/{userId}` | Negative |
+| API.02.10 | Удаление несуществующего пользователя | DELETE | `/user/{userId}` | Negative |
+| API.02.11 | Создание пользователя без обязательных полей | POST | `/user` | Negative |
+| API.02.12 | Создание пользователя с невалидным возрастом | POST | `/user` | Negative |
+| API.02.13 | Создание пользователя с отрицательным балансом | POST | `/user` | Negative |
+
+### Модуль Cars (API)
+
+#### CRUD операции с автомобилями
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.03.01 | Создание автомобиля с валидными данными | POST | `/car` | Positive, Smoke |
+| API.03.02 | Получение автомобиля по ID | GET | `/car/{carId}` | Positive |
+| API.03.03 | Получение списка всех автомобилей | GET | `/cars` | Positive |
+| API.03.04 | Получение списка автомобилей пользователя | GET | `/user/{userId}/cars` | Positive |
+| API.03.05 | Обновление данных автомобиля | PUT | `/car/{carId}` | Positive |
+| API.03.06 | Удаление автомобиля | DELETE | `/car/{carId}` | Positive |
+| API.03.07 | Создание автомобиля с невалидными данными | POST | `/car` | Negative |
+| API.03.08 | Получение несуществующего автомобиля | GET | `/car/{carId}` | Negative |
+| API.03.09 | Обновление несуществующего автомобиля | PUT | `/car/{carId}` | Negative |
+| API.03.10 | Удаление несуществующего автомобиля | DELETE | `/car/{carId}` | Negative |
+| API.03.11 | Создание автомобиля с невалидным типом двигателя | POST | `/car` | Negative |
+| API.03.12 | Создание автомобиля с отрицательной ценой | POST | `/car` | Negative |
+| API.03.13 | Создание автомобиля без обязательных полей | POST | `/car` | Negative |
+
+### Модуль Houses (API)
+
+#### CRUD операции с домами
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.04.01 | Создание дома с валидными данными | POST | `/house` | Positive, Smoke |
+| API.04.02 | Получение дома по ID | GET | `/house/{houseId}` | Positive |
+| API.04.03 | Получение списка всех домов | GET | `/houses` | Positive |
+| API.04.04 | Обновление данных дома | PUT | `/house/{houseId}` | Positive |
+| API.04.05 | Удаление дома | DELETE | `/house/{houseId}` | Positive |
+| API.04.06 | Создание дома с невалидными данными | POST | `/house` | Negative |
+| API.04.07 | Получение несуществующего дома | GET | `/house/{houseId}` | Negative |
+| API.04.08 | Обновление несуществующего дома | PUT | `/house/{houseId}` | Negative |
+| API.04.09 | Удаление несуществующего дома | DELETE | `/house/{houseId}` | Negative |
+| API.04.10 | Создание дома с отрицательным количеством этажей | POST | `/house` | Negative |
+| API.04.11 | Создание дома с отрицательной ценой | POST | `/house` | Negative |
+| API.04.12 | Создание дома с невалидными парковочными местами | POST | `/house` | Negative |
+
+### Модуль User-Car Relations (API)
+
+#### Покупка и продажа автомобилей
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.05.01 | Покупка автомобиля пользователем | POST | `/user/{userId}/buyCar/{carId}` | Positive, Smoke |
+| API.05.02 | Продажа автомобиля пользователем | POST | `/user/{userId}/sellCar/{carId}` | Positive |
+| API.05.03 | Покупка автомобиля с недостаточным балансом | POST | `/user/{userId}/buyCar/{carId}` | Negative |
+| API.05.04 | Покупка несуществующего автомобиля | POST | `/user/{userId}/buyCar/{carId}` | Negative |
+| API.05.05 | Продажа автомобиля, который не принадлежит пользователю | POST | `/user/{userId}/sellCar/{carId}` | Negative |
+| API.05.06 | Покупка автомобиля несуществующим пользователем | POST | `/user/{userId}/buyCar/{carId}` | Negative |
+| API.05.07 | Продажа несуществующего автомобиля | POST | `/user/{userId}/sellCar/{carId}` | Negative |
+
+### Модуль User-House Relations (API)
+
+#### Заселение и выселение пользователей
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.06.01 | Заселение пользователя в дом | POST | `/house/{houseId}/settle/{userId}` | Positive, Smoke |
+| API.06.02 | Выселение пользователя из дома | POST | `/house/{houseId}/evict/{userId}` | Positive |
+| API.06.03 | Заселение в несуществующий дом | POST | `/house/{houseId}/settle/{userId}` | Negative |
+| API.06.04 | Выселение из несуществующего дома | POST | `/house/{houseId}/evict/{userId}` | Negative |
+| API.06.05 | Заселение несуществующего пользователя | POST | `/house/{houseId}/settle/{userId}` | Negative |
+| API.06.06 | Выселение несуществующего пользователя | POST | `/house/{houseId}/evict/{userId}` | Negative |
+| API.06.07 | Заселение пользователя без достаточного баланса | POST | `/house/{houseId}/settle/{userId}` | Negative |
+
+### Модуль User Money/Loan (API)
+
+#### Управление балансом и кредитами
+
+| № | Тест-кейс                                   | Метод | Эндпоинт | Группа |
+|---|---------------------------------------------|-------|----------|--------|
+| API.07.01 | Начисление денег пользователю               | POST | `/user/{userId}/money/{amount}` | Positive, Smoke |
+| API.07.02 | Запрос кредита пользователем                | POST | `/user/{userId}/loan/{amount}` | Positive |
+| API.07.03 | Начисление денег несуществующему пользователю | POST | `/user/{userId}/money/{amount}` | Negative |
+| API.07.04 | Запрос кредита несуществующим пользователем | POST | `/user/{userId}/loan/{amount}` | Negative |
+| API.07.05 | Начисление отрицательной суммы              | POST | `/user/{userId}/money/{amount}` | Negative |
+| API.07.06 | Запрос кредита с отрицательной суммой       | POST | `/user/{userId}/loan/{amount}` | Negative |
+| API.07.07 | Начисление нулевой суммы                    | POST | `/user/{userId}/money/{amount}` | Negative |
+
+### Модуль Logging (API)
+
+#### Работа с логами
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.08.01 | Получение информации о логах | GET | `/logs/info` | Positive |
+| API.08.02 | Получение списка файлов логов | GET | `/logs/list` | Positive |
+| API.08.03 | Загрузка логов из файла | GET | `/logs/buffer/load` | Positive |
+| API.08.04 | Загрузка архивных логов | GET | `/logs/buffer/load/archive/{dateAndPart}` | Positive |
+| API.08.05 | Чтение всех загруженных логов | GET | `/logs/buffer/read/all` | Positive |
+| API.08.06 | Чтение логов постранично | GET | `/logs/buffer/read/{page}` | Positive |
+| API.08.07 | Скачивание логов потоком | GET | `/logs/download` | Positive |
+| API.08.08 | Скачивание архивных логов потоком | GET | `/logs/download/archive/{dateAndPart}` | Positive |
+| API.08.09 | Загрузка несуществующих архивных логов | GET | `/logs/buffer/load/archive/{dateAndPart}` | Negative |
+| API.08.10 | Скачивание несуществующих архивных логов | GET | `/logs/download/archive/{dateAndPart}` | Negative |
+| API.08.11 | Чтение несуществующей страницы логов | GET | `/logs/buffer/read/{page}` | Negative |
+
+### Модуль Criminal Records (API)
+
+#### Проверка судимостей пользователей
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.09.01 | Получение списка судимостей пользователя | GET | `/user/{userId}/criminal_records` | Positive |
+| API.09.02 | Получение информации о судимости по ID | GET | `/userCriminalRecord/{userId}` | Positive |
+| API.09.03 | Получение судимостей несуществующего пользователя | GET | `/user/{userId}/criminal_records` | Negative |
+| API.09.04 | Получение несуществующей судимости | GET | `/userCriminalRecord/{userId}` | Negative |
+
+### Модуль API User Management (API)
+
+#### Управление пользователями API
+
+| № | Тест-кейс | Метод | Эндпоинт | Группа |
+|---|-----------|-------|----------|--------|
+| API.10.01 | Создание пользователя API | POST | `/api/user/save` | Positive |
+| API.10.02 | Создание роли API | POST | `/api/role/save` | Positive |
+| API.10.03 | Получение списка пользователей API | GET | `/api/users` | Positive |
+| API.10.04 | Создание пользователя API с невалидными данными | POST | `/api/user/save` | Negative |
+| API.10.05 | Создание роли API с невалидными данными | POST | `/api/role/save` | Negative |
+
+
+### Общие негативные сценарии для всех модулей
+
+| № | Тест-кейс | Группа |
+|---|-----------|--------|
+| API.99.01 | Запрос без авторизации (если требуется) | Negative, Security |
+| API.99.02 | Запрос с невалидным JWT токеном | Negative, Security |
+| API.99.03 | Запрос с истекшим JWT токеном | Negative, Security |
+| API.99.04 | Запрос с невалидным Content-Type | Negative |
+| API.99.05 | Запрос с невалидным JSON телом | Negative |
+| API.99.06 | Запрос с превышением размера тела | Negative |
+| API.99.07 | SQL инъекция в параметрах запроса | Negative, Security |
+| API.99.08 | XSS атака в параметрах запроса | Negative, Security |
+
+### Статистика покрытия API тестов
+
+| Модуль | Позитивные | Негативные | Всего |
+|--------|-----------|-----------|-------|
+
+---
 
 ---
 ## Команда проекта
