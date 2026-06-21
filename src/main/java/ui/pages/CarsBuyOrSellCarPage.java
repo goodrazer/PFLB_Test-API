@@ -4,9 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import ui.dto.UserCar;
-import ui.steps.wrappers.CarWrapper;
-
-import static com.codeborne.selenide.Condition.attribute;
+import ui.wrappers.CarWrapper;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CarsBuyOrSellCarPage extends BasePage{
