@@ -8,9 +8,6 @@ https://github.com/goodrazer/PFLB_Test-API
 **Ссылка на веб-приложение:**
 http://82.142.167.37:4881/  
 
-**Ссылка на дипломное задание:**
-https://docs.google.com/document/d/1LLH7q_UJmw82AEROoT-XAl8qQEHjxOxYExnyvsBg_No/edit?tab=t.0
-
 ## Оглавление
 
 - [Описание проекта](#описание-проекта)
