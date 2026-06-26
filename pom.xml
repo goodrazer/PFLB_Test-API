@@ -147,10 +147,15 @@
                             <artifactId>lombok</artifactId>
                             <version>${plugin.lombok.version}</version>
                         </path>
+
+                        <path>
+                            <groupId>com.google.code.gson</groupId>
+                            <artifactId>gson</artifactId>
+                            <version>${gson.version}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>io.qameta.allure</groupId>
