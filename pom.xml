@@ -105,7 +105,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>${rest.assured.version}</version>
+            <version>6.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
