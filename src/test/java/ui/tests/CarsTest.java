@@ -258,9 +258,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Price");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↑ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("5");
@@ -291,11 +291,11 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         carsReadAllPage.clickButton("Price");
-        sleep(1500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Price");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↓ Price ", "Кнопка не в том состоянии");
         //Получаем список 30 первых атрибутов таблицы cars
         List<String> actualValues = carsReadAllPage.getAttribute("5");
@@ -385,9 +385,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Mark");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↑ Mark ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttribute("3");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -414,11 +414,11 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         carsReadAllPage.clickButton("Mark");
-        sleep(500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Mark");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↓ Mark ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttribute("3");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -447,9 +447,9 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Model");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↑ Model ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttribute("4");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -476,11 +476,11 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         carsReadAllPage.clickButton("Model");
-        sleep(500);
+        sleep(2500);
         String textButton = carsReadAllPage.clickButton("Model");
-        sleep(500);
+        sleep(2500);
         softAssert.assertEquals(textButton,"↓ Model ", "Кнопка не в том состоянии");
         List<String> actualValues = carsReadAllPage.getAttribute("4");
         List<String> sortedValues = new ArrayList<>(actualValues);
@@ -507,14 +507,15 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsReadAllPage.openPage()
                 .isPageOpened();
-        sleep(1500);
+        sleep(2500);
         List<String> actualValues = carsReadAllPage.getAttribute("1");
         carsReadAllPage.clickButton("ID");
+        sleep(2500);
         List<String> valuesAfterSort = carsReadAllPage.getAttribute("1");
         softAssert.assertNotEquals(actualValues, valuesAfterSort,
                 "Значение после сортировки соответствует изначальному");
         carsReadAllPage.clickButton("Reload");
-        sleep(1500);
+        sleep(2500);
         List<String> valuesAfterReload = carsReadAllPage.getAttribute("1");
         softAssert.assertEquals(actualValues, valuesAfterReload,
                 "Отсортированная таблица после перезагрузи страницы не возвращается в дефолтное состояние");
@@ -616,8 +617,9 @@ public class CarsTest extends BaseTest{
         log.info("Step 1: Authorizing user and open 'Create new Car' page");
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsBuyOrSellCarPage.openPage()
-                .isPageOpened()
-                .inputNumberWithArrow(50, 20, 10, 5);
+                .isPageOpened();
+        sleep(2500);
+        carsBuyOrSellCarPage.inputNumberWithArrow(50, 20, 10, 5);
         SelenideElement userIdField =
                 $x("//table[contains(@class, 'table-striped')]//input[@id='id_send']");
         String idUserCurrentValue = userIdField.getValue();
@@ -685,6 +687,7 @@ public class CarsTest extends BaseTest{
         loginStep.successfulAuthorization(validEmail, validPassword);
         carsBuyOrSellCarPage.openPage()
                 .isPageOpened();
+        sleep(2500);
         softAssert.assertFalse(carsBuyOrSellCarPage.checkRadioButtonSellIsNotSelected());
         softAssert.assertFalse(carsBuyOrSellCarPage.checkRadioButtonBuyIsNotSelected());
         softAssert.assertAll();
