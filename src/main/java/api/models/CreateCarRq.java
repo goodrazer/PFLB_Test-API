@@ -10,10 +10,6 @@ import lombok.Data;
 @Builder
 public class CreateCarRq {
 
-
-    @SerializedName("id")
-    @Expose
-    public Integer id;
     @SerializedName("engineType")
     @Expose
     public String engineType;

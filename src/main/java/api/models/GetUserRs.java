@@ -6,25 +6,29 @@ import com.google.gson.annotations.Since;
 import lombok.Data;
 
 @Data
-public class GetCarRs {
+public class GetUserRs {
     @SerializedName("id")
     @Expose
     @Since(1.0)
     public Integer id;
-    @SerializedName("engineType")
+    @SerializedName("firstName")
     @Expose
     @Since(1.0)
-    public String engineType;
-    @SerializedName("mark")
+    public String firstName;
+    @SerializedName("secondName")
     @Expose
     @Since(1.0)
-    public String mark;
-    @SerializedName("model")
+    public String secondName;
+    @SerializedName("age")
     @Expose
     @Since(1.0)
-    public String model;
-    @SerializedName("price")
+    public Integer age;
+    @SerializedName("sex")
     @Expose
     @Since(1.0)
-    public Double price;
+    public String sex;
+    @SerializedName("money")
+    @Expose
+    @Since(1.0)
+    public Double money;
 }

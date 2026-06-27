@@ -74,13 +74,12 @@ public class CarsTest extends BaseTest{
     @DataProvider(name = "Тестовые данные для негативного создания авто")
     public Object[][] carDataNegative() {
         return new Object[][] {
-                //Закомментировал три теста, которые возвращают не тот ответ
                 //Пустой тип двигателя
                 {Car.builder().engineType("").mark("Hyundai").model("Solaris").price("4999.99").build(),
                         "Status: Invalid request data"},
                 //Тип двигателя не соответствует допустимому значению
-                //{Car.builder().engineType("Trash").mark("Hyundai").model("Solaris").price("4999.99").build(),
-                // "Status: Invalid request data"},
+                {Car.builder().engineType("Trash").mark("Hyundai").model("Solaris").price("4999.99").build(),
+                 "Status: Invalid request data"},
                 //Пустая марка
                 {Car.builder().engineType("Diesel").mark("").model("Discovery").price("10999.99").build(),
                         "Status: Invalid request data"},
@@ -91,11 +90,11 @@ public class CarsTest extends BaseTest{
                 {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("-5000.00").build(),
                         "Status: Invalid request data"},
                 //Нулевая стоимость
-                //{Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("0.00").build(),
-                // "Status: Invalid request data"},
+                {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("0.00").build(),
+                 "Status: Invalid request data"},
                 //Слишком высокая стоимость
-                //{Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("100000000000000000.00").
-                // build(), "Status: Invalid request data"},
+                {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("100000000000000000.00").
+                 build(), "Status: Invalid request data"},
                 //Нечисловое значение в атрибуте стоимость
                 {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("Жига").build(),
                         "Status: Invalid request data"},
@@ -370,127 +369,127 @@ public class CarsTest extends BaseTest{
         softAssert.assertAll();
     }
 
-//    @Test(testName = "АТ.03.11.Сортировка Mark по алфавиту А-Я",
-//            description = "Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars А-Я",
-//            priority = 3,
-//            groups = {"Positive", "E2E", "Regression"},
-//            enabled = true)
-//    @Description("Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars А-Я")
-//    @Story("Таблица cars")
-//    @Severity(SeverityLevel.NORMAL)
-//    @TmsLink("TestCaseLink")
-//    @Issue("BugLink")
-//    public void checkSortMarkAZ() {
-    //@Owner("Permyakov Egor")
-//        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
-//        loginStep.successfulAuthorization(validEmail, validPassword);
-//        carsReadAllPage.openPage()
-//                .isPageOpened();
-//        sleep(1500);
-//        String textButton = carsReadAllPage.clickButton("Mark");
-    //    sleep(500);
-//        softAssert.assertEquals(textButton,"↑ Mark ", "Кнопка не в том состоянии");
-//        List<String> actualValues = carsReadAllPage.getAttribute("3");
-//        List<String> sortedValues = new ArrayList<>(actualValues);
-//        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
-//        sortedValues.sort(String.CASE_INSENSITIVE_ORDER);
-//        softAssert.assertEquals(actualValues, sortedValues,
-//                "Значения не отсортированы по алфавиту А-Я");
-//        softAssert.assertAll();
-//    }
-//
-//    @Test(testName = "АТ.03.12.Сортировка Mark по алфавиту Я-А",
-//            description = "Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars Я-А",
-//            priority = 3,
-//            groups = {"Positive", "E2E", "Regression"},
-//            enabled = true)
-//    @Description("Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars Я-А")
-//    @Story("Таблица cars")
-//    @Severity(SeverityLevel.NORMAL)
-//    @TmsLink("TestCaseLink")
-//    @Issue("BugLink")
-    //@Owner("Permyakov Egor")
-//    public void checkSortMarkZA() {
-//        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
-//        loginStep.successfulAuthorization(validEmail, validPassword);
-//        carsReadAllPage.openPage()
-//                .isPageOpened();
-//        sleep(1500);
-//        carsReadAllPage.clickButton("Mark");
-//        sleep(500);
-//        String textButton = carsReadAllPage.clickButton("Mark");
-    //    sleep(500);
-//        softAssert.assertEquals(textButton,"↓ Mark ", "Кнопка не в том состоянии");
-//        List<String> actualValues = carsReadAllPage.getAttribute("3");
-//        List<String> sortedValues = new ArrayList<>(actualValues);
-//        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
-//        sortedValues.sort(String.CASE_INSENSITIVE_ORDER.reversed());
-//        System.out.println(actualValues);
-//        System.out.println(sortedValues);
-//        softAssert.assertEquals(actualValues, sortedValues,
-//                "Значения не отсортированы по алфавиту Я-А");
-//        softAssert.assertAll();
-//    }
-//
-//    @Test(testName = "АТ.03.13.Сортировка Model по алфавиту А-Я",
-//            description = "Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars А-Я",
-//            priority = 3,
-//            groups = {"Positive", "E2E", "Regression"},
-//            enabled = true)
-//    @Description("Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars А-Я")
-//    @Story("Таблица cars")
-//    @Severity(SeverityLevel.NORMAL)
-//    @TmsLink("TestCaseLink")
-//    @Issue("BugLink")
-    //@Owner("Permyakov Egor")
-//    public void checkSortModelAZ() {
-//        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
-//        loginStep.successfulAuthorization(validEmail, validPassword);
-//        carsReadAllPage.openPage()
-//                .isPageOpened();
-//        sleep(1500);
-//        String textButton = carsReadAllPage.clickButton("Model");
-    //    sleep(500);
-//        softAssert.assertEquals(textButton,"↑ Model ", "Кнопка не в том состоянии");
-//        List<String> actualValues = carsReadAllPage.getAttribute("4");
-//        List<String> sortedValues = new ArrayList<>(actualValues);
-//        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
-//        sortedValues.sort(String.CASE_INSENSITIVE_ORDER);
-//        softAssert.assertEquals(actualValues, sortedValues,
-//                "Значения не отсортированы по алфавиту А-Я");
-//        softAssert.assertAll();
-//    }
-//
-//    @Test(testName = "АТ.03.14.Сортировка Model по алфавиту Я-А",
-//            description = "Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars Я-А",
-//            priority = 3,
-//            groups = {"Positive", "E2E", "Regression"},
-//            enabled = true)
-//    @Description("Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars Я-А")
-//    @Story("Таблица cars")
-//    @Severity(SeverityLevel.NORMAL)
-//    @TmsLink("TestCaseLink")
-//    @Issue("BugLink")
-    //@Owner("Permyakov Egor")
-//    public void checkSortModelZA() {
-//        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
-//        loginStep.successfulAuthorization(validEmail, validPassword);
-//        carsReadAllPage.openPage()
-//                .isPageOpened();
-//        sleep(1500);
-//        carsReadAllPage.clickButton("Model");
-//        sleep(500);
-//        String textButton = carsReadAllPage.clickButton("Model");
-    //    sleep(500);
-//        softAssert.assertEquals(textButton,"↓ Model ", "Кнопка не в том состоянии");
-//        List<String> actualValues = carsReadAllPage.getAttribute("4");
-//        List<String> sortedValues = new ArrayList<>(actualValues);
-//        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
-//        sortedValues.sort(String.CASE_INSENSITIVE_ORDER.reversed());
-//        softAssert.assertEquals(actualValues, sortedValues,
-//                "Значения не отсортированы по алфавиту Я-А");
-//        softAssert.assertAll();
-//    }
+    @Test(testName = "АТ.03.11.Сортировка Mark по алфавиту А-Я",
+            description = "Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars А-Я",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars А-Я")
+    @Story("Таблица cars")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void checkSortMarkAZ() {
+        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsReadAllPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        String textButton = carsReadAllPage.clickButton("Mark");
+        sleep(500);
+        softAssert.assertEquals(textButton,"↑ Mark ", "Кнопка не в том состоянии");
+        List<String> actualValues = carsReadAllPage.getAttribute("3");
+        List<String> sortedValues = new ArrayList<>(actualValues);
+        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
+        sortedValues.sort(String.CASE_INSENSITIVE_ORDER);
+        softAssert.assertEquals(actualValues, sortedValues,
+                "Значения не отсортированы по алфавиту А-Я");
+        softAssert.assertAll();
+    }
+
+    @Test(testName = "АТ.03.12.Сортировка Mark по алфавиту Я-А",
+            description = "Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars Я-А",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной сортировки первых 30 значений атрибута Mark таблицы Cars Я-А")
+    @Story("Таблица cars")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void checkSortMarkZA() {
+        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsReadAllPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        carsReadAllPage.clickButton("Mark");
+        sleep(500);
+        String textButton = carsReadAllPage.clickButton("Mark");
+        sleep(500);
+        softAssert.assertEquals(textButton,"↓ Mark ", "Кнопка не в том состоянии");
+        List<String> actualValues = carsReadAllPage.getAttribute("3");
+        List<String> sortedValues = new ArrayList<>(actualValues);
+        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
+        sortedValues.sort(String.CASE_INSENSITIVE_ORDER.reversed());
+        System.out.println(actualValues);
+        System.out.println(sortedValues);
+        softAssert.assertEquals(actualValues, sortedValues,
+                "Значения не отсортированы по алфавиту Я-А");
+        softAssert.assertAll();
+    }
+
+    @Test(testName = "АТ.03.13.Сортировка Model по алфавиту А-Я",
+            description = "Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars А-Я",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars А-Я")
+    @Story("Таблица cars")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void checkSortModelAZ() {
+        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsReadAllPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        String textButton = carsReadAllPage.clickButton("Model");
+        sleep(500);
+        softAssert.assertEquals(textButton,"↑ Model ", "Кнопка не в том состоянии");
+        List<String> actualValues = carsReadAllPage.getAttribute("4");
+        List<String> sortedValues = new ArrayList<>(actualValues);
+        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
+        sortedValues.sort(String.CASE_INSENSITIVE_ORDER);
+        softAssert.assertEquals(actualValues, sortedValues,
+                "Значения не отсортированы по алфавиту А-Я");
+        softAssert.assertAll();
+    }
+
+    @Test(testName = "АТ.03.14.Сортировка Model по алфавиту Я-А",
+            description = "Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars Я-А",
+            priority = 3,
+            groups = {"Positive", "E2E", "Regression"},
+            enabled = true)
+    @Description("Проверка корректной сортировки первых 30 значений атрибута Model таблицы Cars Я-А")
+    @Story("Таблица cars")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("TestCaseLink")
+    @Issue("BugLink")
+    @Owner("Permyakov Egor")
+    public void checkSortModelZA() {
+        log.info("Step 1: Authorizing user and open 'Cars - read all' page");
+        loginStep.successfulAuthorization(validEmail, validPassword);
+        carsReadAllPage.openPage()
+                .isPageOpened();
+        sleep(1500);
+        carsReadAllPage.clickButton("Model");
+        sleep(500);
+        String textButton = carsReadAllPage.clickButton("Model");
+        sleep(500);
+        softAssert.assertEquals(textButton,"↓ Model ", "Кнопка не в том состоянии");
+        List<String> actualValues = carsReadAllPage.getAttribute("4");
+        List<String> sortedValues = new ArrayList<>(actualValues);
+        // Сортируем по алфавиту в порядке А‑Я (по возрастанию)
+        sortedValues.sort(String.CASE_INSENSITIVE_ORDER.reversed());
+        softAssert.assertEquals(actualValues, sortedValues,
+                "Значения не отсортированы по алфавиту Я-А");
+        softAssert.assertAll();
+    }
 
     @Test(testName = "АТ.03.15.Проверка кнопки Reload",
             description = "Проверка, что кнопка Reload на странице Car -> read all, обновляет страницу с таблицей",
@@ -532,7 +531,7 @@ public class CarsTest extends BaseTest{
                         .carId("1").build(),
                         new String[]{"9999999999999999999999999999999999999999999999999999999999999999",
                                 "1"}},
-//                {UserCar.builder().userId("1").carId("0,12").build(), new String[]{"1", "0,12"}}
+                {UserCar.builder().userId("1").carId("0,12").build(), new String[]{"1", "0,12"}}
             };
     }
 
@@ -563,18 +562,18 @@ public class CarsTest extends BaseTest{
     @DataProvider(name = "Тестовые данные для негативного ввода на странице Cars -> Buy or Sell")
     public Object[][] userNegativeCarData() {
         return new Object[][] {
-//                {UserCar.builder().userId("Аолтамывлотыавсоы").carId("ВОЫРАылгоываарывлофы").build(),
-//                        new String[]{"", ""}},
-//                {UserCar.builder().userId("123.22").carId("123.222").build(), new String[]{"123", "123"}},
+                {UserCar.builder().userId("Аолтамывлотыавсоы").carId("ВОЫРАылгоываарывлофы").build(),
+                        new String[]{"", ""}},
+                {UserCar.builder().userId("123.22").carId("123.222").build(), new String[]{"123", "123"}},
                 {UserCar.builder().userId("$%()+=").carId("!%()+=").build(), new String[]{"", ""}},
                 {UserCar.builder().userId("AUJHSDujsdhfjsa").carId("AIJSHDiuaisd").build(), new String[]{"", ""}},
                 {UserCar.builder().userId(".,/!").carId(".,/!").build(), new String[]{"", ""}},
-//                {UserCar.builder().userId("99999999999999999999999999999999999999999999999999999999999999999")
-//                .carId("-100").build(), new String[]{"9999999999999999999999999999999999999999999999999999999999999999",
-//                        "100"}},
-//                {UserCar.builder().userId("-100")
-//                        .carId("99999999999999999999999999999999999999999999999999999999999999999").build(),
-//                        new String[]{"-100", "9999999999999999999999999999999999999999999999999999999999999999"}},
+                {UserCar.builder().userId("99999999999999999999999999999999999999999999999999999999999999999")
+                .carId("-100").build(), new String[]{"9999999999999999999999999999999999999999999999999999999999999999",
+                        "100"}},
+                {UserCar.builder().userId("-100")
+                        .carId("99999999999999999999999999999999999999999999999999999999999999999").build(),
+                        new String[]{"-100", "9999999999999999999999999999999999999999999999999999999999999999"}},
         };
     }
 
