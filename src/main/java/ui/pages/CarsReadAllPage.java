@@ -1,12 +1,11 @@
 package ui.pages;
 
 import io.qameta.allure.Step;
-import ui.steps.wrappers.CarWrapper;
+import ui.wrappers.CarWrapper;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import static com.codeborne.selenide.Selenide.*;
 
 public class CarsReadAllPage extends BasePage{
