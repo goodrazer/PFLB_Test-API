@@ -35,6 +35,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Run API Tests
+        run: mvn clean test -DsuiteXmlFile=src/test/resources/ApiTestSuite.xml -DEmail=$EMAIL -DPassword=$PASSWORD
+
       - name: Setup Latest Firefox
         uses: browser-actions/setup-firefox@v1
         with:
