@@ -2,7 +2,6 @@ package api.tests;
 
 import api.adapters.AuthHelper;
 import api.adapters.CarAdapter;
-import api.adapters.UsersApiAdapter;
 import api.models.*;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
@@ -12,8 +11,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.testng.AssertJUnit.assertEquals;
@@ -59,10 +56,10 @@ public class CarsApiTest {
             .price(7999.55)
             .build();
 
-    @Test(testName = "АТ.03.22.Проверка цикла CRUD авто",
+    @Test(testName = "API.03.01.Проверка цикла CRUD авто",
             description = "API проверка всего цикла CRUD. Создание, получение, изменения и удаление авто",
             priority = 1,
-            groups = {"Positive", "E2E", "Regression", "Smoke"},
+            groups = {"Positive", "Smoke"},
             enabled = true)
     @Description("API проверка всего цикла CRUD. Создание, получение, изменения и удаление авто")
     @Story("API Cars")
@@ -106,10 +103,10 @@ public class CarsApiTest {
         softAssert.assertAll();
     }
 
-    @Test(testName = "АТ.03.23.Проверка списка авто с помощью GET /cars",
+    @Test(testName = "API.03.02.Проверка списка авто с помощью GET /cars",
             description = "API проверка списка всех авто с помощью ручки GET /cars",
             priority = 2,
-            groups = {"Positive", "E2E", "Regression", "Smoke"},
+            groups = {"Positive"},
             enabled = true)
     @Description("API проверка списка всех авто с помощью ручки GET /cars")
     @Story("API Cars")
@@ -161,10 +158,10 @@ public class CarsApiTest {
         };
     }
 
-    @Test(testName = "АТ.03.24.Проверка негативного создания авто через API",
+    @Test(testName = "API.03.03.Проверка негативного создания авто через API",
             description = "API проверка создания авто POST /car с невалидным телом",
             priority = 2,
-            groups = {"Negative", "E2E", "Regression", "Smoke"},
+            groups = {"Negative"},
             enabled = true,
             dataProvider = "negativeCarData")
     @Description("API проверка создания авто POST /car с невалидным телом")
@@ -180,10 +177,10 @@ public class CarsApiTest {
         assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
-    @Test(testName = "AT.03.25.Удаление несуществующего авто с помощью API",
+    @Test(testName = "API.03.04.Удаление несуществующего авто с помощью API",
             description = "Удаление автомобиля с несуществующим id DELETE /car/{carId}",
             priority = 2,
-            groups = {"Negative", "E2E", "Regression", "Smoke"},
+            groups = {"Negative"},
             enabled = true)
     @Description("Удаление автомобиля с несуществующим id DELETE /car/{carId}")
     @Story("API_Cars")
@@ -200,10 +197,10 @@ public class CarsApiTest {
 
     }
 
-    @Test(testName = "AT.03.26.Запрос несуществующего авто с помощью API",
+    @Test(testName = "API.03.05.Запрос несуществующего авто с помощью API",
             description = "Запрос автомобиля с несуществующим id GET /car/{carId}",
             priority = 2,
-            groups = {"Negative", "E2E", "Regression", "Smoke"},
+            groups = {"Negative"},
             enabled = true)
     @Description("Запрос автомобиля с несуществующим id GET /car/{carId}")
     @Story("API_Cars")
@@ -220,10 +217,10 @@ public class CarsApiTest {
 
     }
 
-    @Test(testName = "AT.03.26.Изменение несуществующего авто с помощью API",
+    @Test(testName = "API.03.06.Изменение несуществующего авто с помощью API",
             description = "Изменение автомобиля с несуществующим id GET /car/{carId}",
             priority = 2,
-            groups = {"Negative", "E2E", "Regression", "Smoke"},
+            groups = {"Negative"},
             enabled = true)
     @Description("Изменение автомобиля с несуществующим id GET /car/{carId}")
     @Story("API_Cars")
@@ -262,7 +259,7 @@ public class CarsApiTest {
         };
     }
 
-    @Test(testName = "АТ.03.27.Проверка негативного обновления авто через API",
+    @Test(testName = "API.03.07.Проверка обновления авто через API с невалидным телом",
             description = "API проверка обновления авто POST /car с невалидным телом",
             priority = 2,
             groups = {"Negative", "E2E", "Regression", "Smoke"},
@@ -285,10 +282,10 @@ public class CarsApiTest {
         assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
-    @Test(testName = "АТ.03.28.Получение авто конкретного пользователя",
+    @Test(testName = "API.03.08.Получение авто пользователя",
             description = "API проверка получения авто конкретного пользователя GET /user/{userId}/cars",
             priority = 1,
-            groups = {"Positive", "E2E", "Regression", "Smoke"},
+            groups = {"Positive"},
             enabled = true)
     @Description("API проверка получения авто конкретного пользователя GET /user/{userId}/cars")
     @Story("API Cars")
@@ -310,7 +307,7 @@ public class CarsApiTest {
         softAssert.assertAll();
     }
 
-    @Test(testName = "AT.03.29.Запрос несуществующего пользователя с авто с помощью API",
+    @Test(testName = "API.03.09.Запрос несуществующего пользователя с авто",
             description = "Запрос автомобиля несуществующего пользователя GET /user/{userId}/cars",
             priority = 2,
             groups = {"Negative", "E2E", "Regression", "Smoke"},
