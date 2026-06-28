@@ -6,15 +6,15 @@ import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import java.util.List;
 import static io.restassured.RestAssured.given;
 
-public class CarAdapter extends adapters.BaseAdapter {
+public class CarAdapter extends BaseAdapter {
 
     @Step("Создание автомобиля с помощью POST /car")
-    public static CreateCarRs createCar(CreateCarRq carRq) {
-        return given()
-                .spec(spec)
+    public static CreateCarRs createCar(CreateCarRq carRq, RequestSpecification spec) {
+        return spec
                 .body(gson.toJson(carRq))
                 .log().all()
                 .when()
@@ -28,7 +28,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Проверка авто с помощью Get /car/{carId}")
-    public static GetCarRs getCar(Integer code) {
+    public static GetCarRs getCar(Integer code, RequestSpecification spec) {
         return given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -44,7 +44,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Удаление автомобиля с помощью DELETE /car/{carId}")
-    public static Response deleteCar(Integer code) {
+    public static Response deleteCar(Integer code, RequestSpecification spec) {
         return RestAssured.given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -54,7 +54,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Удаление автомобиля с помощью DELETE /car/{carId} негативный сценарий")
-    public static void deleteNegativeCar(Integer code) {
+    public static void deleteNegativeCar(Integer code, RequestSpecification spec) {
         given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -67,7 +67,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Изменение автомобиля с помощью PUT /car/{carId}")
-    public static UpdateCarRs updateCar(UpdateCarRq updateCarRq, int code) {
+    public static UpdateCarRs updateCar(UpdateCarRq updateCarRq, int code, RequestSpecification spec) {
         return given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -83,18 +83,17 @@ public class CarAdapter extends adapters.BaseAdapter {
                 .as(UpdateCarRs.class);
     }
 
-    public static Response getCarRawResponse(Integer carId) {
-        return given().spec(adapters.BaseAdapter.spec)
+    public static Response getCarRawResponse(Integer carId, RequestSpecification spec) {
+        return spec
                 .when()
                 .get("/car/" + carId);
-        // ВАЖНО: Здесь НЕТ .then().statusCode(...), НЕТ .as(GetCarRs.class)
     }
 
     @Step("Проверка авто с помощью Get /cars")
-    public static List<GetCarRs> getAllCar() {
+    public static List<GetCarRs> getAllCar(RequestSpecification spec) {
         return given()
                 .spec(spec)
-                //.log().all()
+                .log().all()
                 .when()
                 .get("/cars")
                 .then()
@@ -105,8 +104,7 @@ public class CarAdapter extends adapters.BaseAdapter {
                 .as(new TypeRef<List<GetCarRs>>() {});
     }
 
-    // НОВЫЙ МЕТОД для негативных тестов (возвращает Response, не проверяет статус)
-    public static Response createCarRaw(CreateCarRq rq) {
+    public static Response createCarRaw(CreateCarRq rq, RequestSpecification spec) {
         return (Response) RestAssured.given()
                 .spec(spec)
                 .contentType(ContentType.JSON)
@@ -116,7 +114,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Негативная проверка авто с помощью Get /car/{carId}")
-    public static Response getNegativeCar(Integer code) {
+    public static Response getNegativeCar(Integer code, RequestSpecification spec) {
         return RestAssured.given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -126,7 +124,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Изменение автомобиля с помощью PUT /car/{carId}")
-    public static Response NegativeUpdateCar(int code, UpdateCarRq request) {
+    public static Response NegativeUpdateCar(int code, UpdateCarRq request, RequestSpecification spec) {
         return RestAssured.given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -138,7 +136,7 @@ public class CarAdapter extends adapters.BaseAdapter {
 
 
     @Step("Изменение автомобиля (сырой запрос) PUT /car/{carId}")
-    public static Response updateCarRaw(UpdateCarRq updateCarRq, int code) {
+    public static Response updateCarRaw(UpdateCarRq updateCarRq, int code, RequestSpecification spec) {
         return given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -153,7 +151,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Негативная проверка авто с помощью Get /car/{carId}")
-    public static Response getUserCar(Integer code) {
+    public static Response getUserCar(Integer code, RequestSpecification spec) {
         return RestAssured.given()
                 .spec(spec)
                 .pathParam("code", code)
@@ -163,7 +161,7 @@ public class CarAdapter extends adapters.BaseAdapter {
     }
 
     @Step("Проверка авто с помощью Get /cars")
-    public static List<GetUserRs> getAllUser() {
+    public static List<GetUserRs> getAllUser(RequestSpecification spec) {
         return given()
                 .spec(spec)
                 .when()

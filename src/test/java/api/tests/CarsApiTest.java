@@ -1,17 +1,24 @@
 package api.tests;
 
+import api.adapters.AuthHelper;
 import api.adapters.CarAdapter;
+import api.adapters.UsersApiAdapter;
 import api.models.*;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import lombok.extern.log4j.Log4j2;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.testng.AssertJUnit.assertEquals;
 import io.qameta.allure.SeverityLevel;
+import utils.PropertyReader;
 
 @Log4j2
 @Epic("Cars")
@@ -19,6 +26,21 @@ import io.qameta.allure.SeverityLevel;
 @Owner("Egor P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
 public class CarsApiTest {
+
+    private static final String BASE_URL = "http://82.142.167.37:4879";
+    private AuthHelper authHelper;
+    private RequestSpecification authSpec;
+    private final String validEmail = PropertyReader.getProperty("email");
+    private final String validPassword = PropertyReader.getProperty("password");
+
+    @BeforeMethod
+    public void setup() {
+        authHelper = new AuthHelper(BASE_URL);
+        authHelper.loginAsJson(validEmail, validPassword);
+        authSpec = authHelper.getAuthenticatedSpec();
+    }
+
+
     SoftAssert softAssert = new SoftAssert();
 
     //Данные для создания
@@ -51,14 +73,14 @@ public class CarsApiTest {
     public void checkCarsCRUD() {
         //1. СОЗДАНИЕ (POST)
         log.info("Create auto: {} {}", rqCreateCar.getMark(), rqCreateCar.getModel());
-        CreateCarRs rs = CarAdapter.createCar(rqCreateCar);
+        CreateCarRs rs = CarAdapter.createCar(rqCreateCar, authSpec);
         Integer createdId = rs.getId();
         softAssert.assertNotNull(createdId, "Сервер не вернул ID созданного автомобиля");
         softAssert.assertTrue(createdId > 0, "ID должен быть положительным числом");
 
         //2. ЧТЕНИЕ (GET)
         log.info("Check created auto with id: {}", createdId);
-        GetCarRs getCarRs = CarAdapter.getCar(createdId);
+        GetCarRs getCarRs = CarAdapter.getCar(createdId, authSpec);
         softAssert.assertEquals(createdId, getCarRs.getId(),
                 "ID созданного авто должен совпадать с запрошенным");
         softAssert.assertEquals("Wrangler", getCarRs.getModel());
@@ -66,17 +88,17 @@ public class CarsApiTest {
         //3. Обновление (PUT) ---
         log.info("Update auto: {} {}. Then this auto is: {} {}", rqCreateCar.getMark(), rqCreateCar.getModel(),
                 rqUpdateCar.getMark(), rqUpdateCar.getModel());
-        CarAdapter.updateCar(rqUpdateCar, createdId);
+        CarAdapter.updateCar(rqUpdateCar, createdId, authSpec);
         // Проверяем, что обновление применилось через GET
-        GetCarRs updatedCar = CarAdapter.getCar(createdId);
+        GetCarRs updatedCar = CarAdapter.getCar(createdId, authSpec);
         softAssert.assertEquals("Grand Cherokee", updatedCar.getModel());
 
         //4. УДАЛЕНИЕ (DELETE) ---
         log.info("Delete auto with id: {}", createdId);
-        CarAdapter.deleteCar(createdId);
+        CarAdapter.deleteCar(createdId, authSpec);
         // Проверяем, что обновление применилось через GET
         log.info("Check created auto with id: {}, after delete", createdId);
-        Response responseAfterDelete = CarAdapter.getCarRawResponse(createdId);
+        Response responseAfterDelete = CarAdapter.getCarRawResponse(createdId, authSpec);
         responseAfterDelete.then()
                 .assertThat()
                 .statusCode(204);
@@ -97,7 +119,7 @@ public class CarsApiTest {
     @Owner("Permyakov Egor")
     public void checkGetAllCars() {
         log.info("Get all cars");
-        List<GetCarRs> cars = CarAdapter.getAllCar();
+        List<GetCarRs> cars = CarAdapter.getAllCar(authSpec);
         softAssert.assertFalse(cars.isEmpty(), "Список автомобилей пуст");
         //Ищем автомобиль с конкретной моделью (например, "X5")
         Optional<GetCarRs> foundCar = cars.stream()
@@ -154,7 +176,7 @@ public class CarsApiTest {
     public void checkNegativeCreateCar(CreateCarRq request, int expectedStatusCode) {
         log.info("Running negative test. Mark: '{}', Model: '{}', Price: {}",
                 request.getMark(), request.getModel(), request.getPrice());
-        Response response = CarAdapter.createCarRaw(request);
+        Response response = CarAdapter.createCarRaw(request, authSpec);
         assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
@@ -165,13 +187,13 @@ public class CarsApiTest {
             enabled = true)
     @Description("Удаление автомобиля с несуществующим id DELETE /car/{carId}")
     @Story("API_Cars")
-    @Severity(SeverityLevel.NORMAL) // <--- Теперь компилятор видит NORMAL
+    @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     @Owner("Permyakov Egor")
     public void checkNegativeDeleteCar() {
         log.info("Get all cars to calculate non-existing ID");
-        Response response = CarAdapter.deleteCar(0);
+        Response response = CarAdapter.deleteCar(0, authSpec);
         int statusCode = response.getStatusCode();
         assertEquals("Expected status 404 for non-existing car, but got: " + statusCode, statusCode,
                 404);
@@ -185,13 +207,13 @@ public class CarsApiTest {
             enabled = true)
     @Description("Запрос автомобиля с несуществующим id GET /car/{carId}")
     @Story("API_Cars")
-    @Severity(SeverityLevel.NORMAL) // <--- Теперь компилятор видит NORMAL
+    @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     @Owner("Permyakov Egor")
     public void checkNegativeGetCar() {
         log.info("Get all cars to calculate non-existing ID");
-        Response response = CarAdapter.getNegativeCar(0);
+        Response response = CarAdapter.getNegativeCar(0, authSpec);
         int statusCode = response.getStatusCode();
         assertEquals("При запросе с несуществующим id ошибка должна быть: " + statusCode, statusCode,
                 404);
@@ -205,13 +227,13 @@ public class CarsApiTest {
             enabled = true)
     @Description("Изменение автомобиля с несуществующим id GET /car/{carId}")
     @Story("API_Cars")
-    @Severity(SeverityLevel.NORMAL) // <--- Теперь компилятор видит NORMAL
+    @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     @Owner("Permyakov Egor")
     public void checkNegativeUpdateCar() {
         log.info("Get all cars to calculate non-existing ID");
-        Response response = CarAdapter.NegativeUpdateCar(0, rqUpdateCar);
+        Response response = CarAdapter.NegativeUpdateCar(0, rqUpdateCar, authSpec);
         int statusCode = response.getStatusCode();
         assertEquals("При запросе с несуществующим id ошибка должна быть: " + statusCode, statusCode,
                 404);
@@ -257,9 +279,9 @@ public class CarsApiTest {
                 request.getMark(), request.getModel(), request.getPrice());
         //Находим все авто и вытаскиваем первый существующий id
         Response response = null;
-        List<GetCarRs> cars = CarAdapter.getAllCar();
+        List<GetCarRs> cars = CarAdapter.getAllCar(authSpec);
         Integer firstId = cars.get(0).getId();
-        response = CarAdapter.updateCarRaw(request, firstId);
+        response = CarAdapter.updateCarRaw(request, firstId, authSpec);
         assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
@@ -276,9 +298,9 @@ public class CarsApiTest {
     @Owner("Permyakov Egor")
     public void checkUserCar() {
         log.info("");
-        List<GetUserRs> users = CarAdapter.getAllUser();
+        List<GetUserRs> users = CarAdapter.getAllUser(authSpec);
         Integer firstId = users.get(0).getId();
-        Response response = CarAdapter.getUserCar(firstId);
+        Response response = CarAdapter.getUserCar(firstId, authSpec);
         int statusCode = response.getStatusCode();
         softAssert.assertEquals(statusCode,
                 200, "Метод должен был закончиться с кодом 200" + statusCode);
@@ -295,13 +317,13 @@ public class CarsApiTest {
             enabled = true)
     @Description("Запрос автомобиля несуществующего пользователя GET /user/{userId}/cars")
     @Story("API_Cars")
-    @Severity(SeverityLevel.NORMAL) // <--- Теперь компилятор видит NORMAL
+    @Severity(SeverityLevel.NORMAL)
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     @Owner("Permyakov Egor")
     public void checkNegativeUserCar() {
         log.info("Get all cars user's to calculate non-existing ID");
-        Response response = CarAdapter.getUserCar(0);
+        Response response = CarAdapter.getUserCar(0, authSpec);
         int statusCode = response.getStatusCode();
         assertEquals("При запросе с несуществующим id ошибка должна быть: " + statusCode, statusCode,
                 404);

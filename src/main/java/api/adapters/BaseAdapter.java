@@ -1,13 +1,12 @@
-package adapters;
+package api.adapters;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class BaseAdapter {
 
     public static Gson gson = new GsonBuilder()
@@ -15,13 +14,6 @@ public class BaseAdapter {
             .setPrettyPrinting()
             .setVersion(1.0)
             .create();
-
-    public static RequestSpecification spec = new RequestSpecBuilder()
-            .setContentType(ContentType.JSON)
-            .setBaseUri("http://82.142.167.37:4879")
-            //.setBasePath("/v1")
-            .addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHBmbGIucnUiLCJyb2xlcyI6WyJ1c2VyIl0sImlzcyI6Imh0dHA6Ly84Mi4xNDIuMTY3LjM3OjQ4NzkvbG9naW4iLCJleHAiOjE3ODI1NzUzMzB9.lrLeLj-VqQvAFN8TaruilJw9V-1qe9hEAeCBPt4VbBk")
-            .build();
 
     public static ResponseSpecification ok200 = new ResponseSpecBuilder()
             .expectStatusCode(200)
@@ -37,9 +29,5 @@ public class BaseAdapter {
 
     public static ResponseSpecification ok204 = new ResponseSpecBuilder()
             .expectStatusCode(204)
-            .build();
-
-    public static ResponseSpecification error400 = new ResponseSpecBuilder()
-            .expectStatusCode(400)
             .build();
 }
