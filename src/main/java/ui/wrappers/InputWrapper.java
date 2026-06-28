@@ -1,9 +1,10 @@
 package ui.wrappers;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-
+import io.qameta.allure.Step;
+import java.time.Duration;
 import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
 
 //Wrapper для текстовых/числовых полей ввода (возвращает this для цепочки)
 public class InputWrapper {
@@ -13,25 +14,30 @@ public class InputWrapper {
         this.field = $x(xpath);
     }
 
-    //вводит значение
+    //вводит значение с очисткой поля и проверкой.
+    @Step("Ввод значения '{0}' в поле")
     public InputWrapper setValue(String value) {
-        //field.setValue(value);
+        field.shouldBe(Condition.interactable, Duration.ofSeconds(10));
         field.clear();
         field.sendKeys(value);
-        sleep(1000);
+        field.shouldHave(Condition.value(value), Duration.ofSeconds(5));
         return this;
     }
 
-    //вводит числовое значение
+    //вводит числовое значение (алиас для setValue)
+    @Step("Ввод числового значения '{0}' в поле")
     public InputWrapper setNumberValue(String value) {
-        //field.setValue(value);
-        field.clear();
-        field.sendKeys(value);
-        sleep(1000);
-        return this;
+        return setValue(value);
     }
 
+    //получает текущее значения поля
     public String getValue() {
         return field.getValue();
+    }
+
+    //Проверяет, что поле содержит ожидаемое значение.
+    public InputWrapper shouldHaveValue(String expectedValue) {
+        field.shouldHave(Condition.value(expectedValue), Duration.ofSeconds(5));
+        return this;
     }
 }

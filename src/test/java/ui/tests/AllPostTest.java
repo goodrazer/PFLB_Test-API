@@ -1,6 +1,5 @@
 package ui.tests;
 
-import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
 import ui.dto.*;
 import org.testng.Assert;
