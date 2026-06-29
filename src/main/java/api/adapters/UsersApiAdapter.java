@@ -44,7 +44,7 @@ public class UsersApiAdapter {
      * Получает JWT токен и сохраняет его для последующих запросов.
      */
     public String loginAsJson(String email, String password) {
-        log.info("Авторизация через JSON: {}", email);
+        log.info("Авторизация через JSON");
 
         String requestBody = String.format(
                 "{\"username\":\"%s\",\"password\":\"%s\"}",
