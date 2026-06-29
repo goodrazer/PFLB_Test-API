@@ -14,6 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
 import ui.pages.*;
+import ui.pages.UsersAddMoneyPage;
 import ui.steps.LoginStep;
 import ui.utils.PropertyReader;
 import ui.utils.TestListener;
