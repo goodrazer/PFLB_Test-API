@@ -1,0 +1,15 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Build folders
+target/
+build/
+
+# Test reports
+allure/
+.allure/
+
+# OS files
+.DS_Store
+Thumbs.db

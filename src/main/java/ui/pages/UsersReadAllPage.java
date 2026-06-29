@@ -3,14 +3,18 @@ package ui.pages;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.testng.Assert;
 import ui.wrappers.SortButton;
-import utils.Sort;
 
+import java.time.Duration;
 import java.util.List;
 
+import org.testng.Assert;
+import utils.Sort;
+
 import static com.codeborne.selenide.Condition.cssValue;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class UsersReadAllPage extends BasePage {
 
@@ -21,41 +25,48 @@ public class UsersReadAllPage extends BasePage {
         open(BASE_URL + "/#/read/users");
         return this;
     }
+    @Step("Проверка наличия пользователя с ID = {userId} в таблице")
+    public boolean isUserPresentById(String userId) {
+        String xpath = String.format("//table//td[contains(text(), '%s')]", userId);
+        SelenideElement cell = $x(xpath);
 
+        try {
+            cell.shouldBe(visible, Duration.ofSeconds(10));
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
     @Step("Подсчет количества пользователей в таблице")
-    public UsersReadAllPage countNumberUsersInTable() {
+    public UsersReadAllPage countNumberUsersInTable () {
         $$("tbody tr").shouldBe(CollectionCondition.sizeGreaterThan(0));
         int count = $$("tbody tr").size();
         log.info("Table download with {} users", count);
         return this;
     }
-
     @Step("Проверка открытия страницы 'Users Read All Page'.")
-    public UsersReadAllPage isPageOpened() {
+    public UsersReadAllPage isPageOpened () {
         log.info("Checking 'Users Read All Page' page is loaded");
         new SortButton("Reload").find();
         countNumberUsersInTable();
         return this;
     }
-
     @Step("Нажатие на кнопку сортировки {label}")
-    public UsersReadAllPage sortButtonClick(String label) {
+    public UsersReadAllPage sortButtonClick (String label){
         new SortButton(label).find().click();
         log.info("Click sort button \"" + label + "\"");
         return this;
     }
-
     @Step("Нажатие на кнопку Reload")
-    public UsersReadAllPage reloadButtonClick() {
+    public UsersReadAllPage reloadButtonClick () {
         new SortButton("Reload").find().click();
         log.info("Click Reload button");
         sleep(400); // жду обновления таблицы
         countNumberUsersInTable();
         return this;
     }
-
     @Step("Проверка изменения цвета кнопки {label} с цвета {beforeColor} на цвет {afterColor}")
-    public UsersReadAllPage checkChangeColorButton(String label, String beforeColor, String afterColor) {
+    public UsersReadAllPage checkChangeColorButton (String label, String beforeColor, String afterColor){
         SelenideElement button = new SortButton(label).find();
         log.info("Check change color button \""
                 + label + "\" from color \"" + beforeColor + "\" to color \"" + afterColor + "\"");
@@ -64,10 +75,9 @@ public class UsersReadAllPage extends BasePage {
         button.shouldHave(cssValue("background-color", afterColor));
         return this;
     }
-
     // метод для сортировки по числовым данным
     @Step("Проверка сортировки числовых значений по {typeSort}")
-    public UsersReadAllPage CheckSortByNumber(int ColumnNumber, String typeSort) {
+    public UsersReadAllPage CheckSortByNumber ( int ColumnNumber, String typeSort){
         log.info("Check sort column №" + ColumnNumber);
         List<Double> listUsers = $$("tbody tr td:nth-child(" + ColumnNumber + ")")
                 .texts()
@@ -87,10 +97,9 @@ public class UsersReadAllPage extends BasePage {
         }
         return this;
     }
-
     // метод для сортировки по строковым данным
     @Step("Проверка сортировки строковых данных по {typeSort}")
-    public UsersReadAllPage CheckSortByString(int ColumnNumber, String typeSort) {
+    public UsersReadAllPage CheckSortByString ( int ColumnNumber, String typeSort){
         log.info("Check sort column №" + ColumnNumber);
         // получаем значения из указанного столбца таблицы
         List<String> listUsers = $$("tbody tr td:nth-child(" + ColumnNumber + ")")
@@ -124,10 +133,9 @@ public class UsersReadAllPage extends BasePage {
         }
         return this;
     }
-
     @Step("Поиск пользователя в таблице по данным: Id = '{id}', First Name = '{firstName}', Last Name = '{lastName}'," +
             " Age = '{age}', Sex = '{sex}', Money = '{money}'")
-    public UsersReadAllPage checkUserInTable(
+    public UsersReadAllPage checkUserInTable (
             String id,
             String firstName,
             String lastName,
@@ -135,7 +143,7 @@ public class UsersReadAllPage extends BasePage {
             String sex,
             String money,
             boolean shouldExist
-    ) {
+    ){
         log.info("Check that user exist in the table with data: " + (id != null ? "Id = \"" + id + "\", " : "")
                 + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName + "\", Age = \"" + age
                 + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
@@ -186,5 +194,6 @@ public class UsersReadAllPage extends BasePage {
                     + "\", Age = \"" + age + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
         }
         return this;
+
     }
 }
