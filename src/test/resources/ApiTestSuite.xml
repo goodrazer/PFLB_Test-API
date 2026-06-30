@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
 <suite name="API Test Suite">
 
-    <!-- API тесты запускаются без Retry и без браузера -->
+    <listeners>
+        <listener class-name="listeners.RetryTransformer"/>
+    </listeners>
+
     <test name="API Tests">
         <packages>
-            <package name="api.tests"/>
+            <package name="tests.api"/>
         </packages>
     </test>
+
 </suite>

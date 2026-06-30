@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
 <suite name="AllTestSuite" parallel="none" configfailurepolicy="continue">
+
     <groups>
         <define name="AllGroups">
             <include name="Positive"/>
@@ -26,13 +28,14 @@
     <test name="AllTests-Chrome">
         <parameter name="browser" value="chrome"/>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
 
     <test name="AllTests-API">
         <packages>
-            <package name="api.tests"/>
+            <package name="tests.api"/>
         </packages>
     </test>
+
 </suite>

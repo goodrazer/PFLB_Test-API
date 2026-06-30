@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
 <suite name="Positive Test Suite">
 
     <listeners>
@@ -14,7 +15,19 @@
             </run>
         </groups>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
+
+    <test name="Positive Tests Api">
+        <groups>
+            <run>
+                <include name="Positive"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api"/>
+        </packages>
+    </test>
+
 </suite>
