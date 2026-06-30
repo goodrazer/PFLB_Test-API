@@ -26,14 +26,14 @@
     <test name="AllTests-Chrome">
         <parameter name="browser" value="chrome"/>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
 
     <test name="AllTests-Firefox">
         <parameter name="browser" value="firefox"/>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
 </suite>

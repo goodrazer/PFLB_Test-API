@@ -14,7 +14,19 @@
             </run>
         </groups>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
+
+    <test name="Regression Tests Api">
+        <groups>
+            <run>
+                <include name="Regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api"/>
+        </packages>
+    </test>
+
 </suite>

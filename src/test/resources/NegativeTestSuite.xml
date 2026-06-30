@@ -6,7 +6,7 @@
         <listener class-name="listeners.RetryTransformer"/>
     </listeners>
 
-    <test name="Negative Tests">
+    <test name="Negative Tests UI">
         <parameter name="browser" value="chrome"/>
         <groups>
             <run>
@@ -14,7 +14,19 @@
             </run>
         </groups>
         <packages>
-            <package name="ui.tests"/>
+            <package name="tests.ui"/>
         </packages>
     </test>
+
+    <test name="Negative Tests Api">
+        <groups>
+            <run>
+                <include name="Negative"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api"/>
+        </packages>
+    </test>
+
 </suite>
