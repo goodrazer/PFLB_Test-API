@@ -3,7 +3,7 @@
 <suite name="Security Test Suite">
 
     <listeners>
-        <listener class-name="ui.utils.RetryTransformer"/>
+        <listener class-name="listeners.RetryTransformer"/>
     </listeners>
 
     <test name="Security Tests">

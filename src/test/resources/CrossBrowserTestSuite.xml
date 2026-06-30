@@ -20,7 +20,7 @@
     </groups>
 
     <listeners>
-        <listener class-name="ui.utils.RetryTransformer"/>
+        <listener class-name="listeners.RetryTransformer"/>
     </listeners>
 
     <test name="AllTests-Chrome">
