@@ -1,13 +1,14 @@
-package tests.ui;
+package tests.ui.houses;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import tests.ui.BaseTest;
 import ui.dto.houses.House;
 
-public class HousesTest extends BaseTest{
+public class HousesTest extends BaseTest {
 
     @Test(testName = "АТ.04/3.12.Проверка создания дома с заполнением обязательных полей:" +
             " {floors} и {price} валидными кредами",

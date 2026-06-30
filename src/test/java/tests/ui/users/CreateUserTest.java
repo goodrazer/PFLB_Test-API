@@ -1,9 +1,10 @@
-package tests.ui;
+package tests.ui.users;
 
 import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import tests.ui.BaseTest;
 import ui.dto.users.User;
 
 @Epic("Users")

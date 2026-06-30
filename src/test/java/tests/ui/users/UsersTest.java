@@ -1,4 +1,4 @@
-package tests.ui;
+package tests.ui.users;
 
 import io.qameta.allure.*;
 import io.restassured.http.ContentType;
@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import tests.ui.BaseTest;
 import ui.wrappers.SortButton;
 import ui.wrappers.TableColumn;
 import java.util.HashMap;

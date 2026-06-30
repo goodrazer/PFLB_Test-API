@@ -1,4 +1,4 @@
-package tests.api;
+package tests.api.users;
 
 import api.adapters.users.UsersApiAdapter;
 import api.models.users.PersonDto;

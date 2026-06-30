@@ -1,4 +1,4 @@
-package tests.ui;
+package tests.ui.cars;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.*;
@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import tests.ui.BaseTest;
 import ui.dto.cars.Car;
 import ui.dto.users.UserCar;
 import java.util.*;
@@ -19,7 +20,7 @@ import static com.codeborne.selenide.Selenide.sleep;
 @Feature("Cars")
 @Owner("Egor P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
-public class CarsTest extends BaseTest{
+public class CarsTest extends BaseTest {
 
     @DataProvider(name = "Тестовые данные для позитивного создания авто")
     public Object[][] carDataPositive() {

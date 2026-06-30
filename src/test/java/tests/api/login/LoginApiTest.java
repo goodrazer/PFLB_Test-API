@@ -1,4 +1,4 @@
-package tests.api;
+package tests.api.login;
 
 import api.adapters.BaseAdapter;
 import api.adapters.login.LoginAdapter;

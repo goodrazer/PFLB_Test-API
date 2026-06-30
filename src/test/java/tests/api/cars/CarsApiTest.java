@@ -1,4 +1,4 @@
-package tests.api;
+package tests.api.cars;
 
 import api.adapters.login.AuthHelper;
 import api.adapters.cars.CarAdapter;

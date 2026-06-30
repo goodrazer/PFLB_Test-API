@@ -1,8 +1,9 @@
-package tests.ui;
+package tests.ui.allPost;
 
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import tests.ui.BaseTest;
 import ui.dto.cars.Car;
 import ui.dto.cars.Parking;
 import ui.dto.houses.House;
@@ -31,7 +32,7 @@ import ui.steps.LoginStep;
 @Feature("Полный цикл CRUD")
 @Owner("Oleg P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
-public class AllPostTest extends BaseTest{
+public class AllPostTest extends BaseTest {
 
     @Test(testName = "АТ.02.01.Полный цикл: создание, операции и удаление сущностей",
             description = "E2E-сценарий: создание пользователя -> пополнение баланса -> создание авто -> " +
