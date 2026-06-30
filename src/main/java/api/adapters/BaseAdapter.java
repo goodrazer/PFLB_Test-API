@@ -8,10 +8,12 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import lombok.extern.log4j.Log4j2;
-import utils.LogMaskFilter;
+import org.testng.annotations.Listeners;
 import utils.PropertyReader;
+import utils.TestListener;
 
 @Log4j2
+@Listeners(TestListener.class)
 public class BaseAdapter {
 
     public static final String BASE_URL = "http://82.142.167.37:4879";
@@ -24,11 +26,10 @@ public class BaseAdapter {
             .setVersion(1.0)
             .create();
 
-    // Общая спецификация запроса для всех будущих эндпоинтов с маскированием кредов логина и пароля
+    // Накидал общую спецификацию запроса, устанавливает базовый URL и тип данных.
     public static final RequestSpecification baseRequestSpec = new RequestSpecBuilder()
             .setBaseUri(BASE_URL)
             .setContentType(ContentType.JSON)
-            .addFilter(new LogMaskFilter())
             .build();
 
     public static ResponseSpecification ok200 = new ResponseSpecBuilder()
@@ -46,11 +47,4 @@ public class BaseAdapter {
     public static ResponseSpecification ok204 = new ResponseSpecBuilder()
             .expectStatusCode(204)
             .build();
-
-    //Сделал общий метод получения кода, просто подставляйте код в проверки прямо в тестах
-    public static ResponseSpecification checkStatusCode(int statusCode) {
-        return new ResponseSpecBuilder()
-                .expectStatusCode(statusCode)
-                .build();
-    }
 }
