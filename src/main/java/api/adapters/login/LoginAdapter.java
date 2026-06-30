@@ -6,6 +6,7 @@ import api.models.login.LoginResponse;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
+import io.restassured.http.ContentType;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import static io.restassured.RestAssured.given;
 public class LoginAdapter extends BaseAdapter {
 
     @Step("Отправка API-запроса на авторизацию")
-    public Response authorizationWithValidCredentialsApi(
+    public Response authorizationApi(
             @Param(mode = Parameter.Mode.MASKED) String email,
             @Param(mode = Parameter.Mode.MASKED) String password) {
         log.info("Sending an API request for authorization");
@@ -40,5 +41,15 @@ public class LoginAdapter extends BaseAdapter {
                 .body()
                 .as(LoginResponse.class, ObjectMapperType.GSON)
                 .getAccessToken();
+    }
+
+    @Step("Отправка API-запроса на авторизацию c пустым телом запроса")
+    public Response sendingAnAPIAuthorizationRequestWithAnEmptyRequestBody() {
+        log.info("Sending an API authorization request with an empty request body");
+        return given()
+                .spec(baseRequestSpec)
+                .body("")
+                .when()
+                .post("/login");
     }
 }
