@@ -28,14 +28,18 @@
     <test name="AllTests-Chrome">
         <parameter name="browser" value="chrome"/>
         <packages>
-            <package name="tests.ui"/>
+            <package name="tests.ui.allPost"/>
+            <package name="tests.ui.cars"/>
+            <package name="tests.ui.houses"/>
+            <package name="tests.ui.login"/>
+            <package name="tests.ui.users"/>
         </packages>
     </test>
 
-    <test name="AllTests-API">
-        <packages>
-            <package name="tests.api"/>
-        </packages>
-    </test>
+    <packages>
+        <package name="tests.api.cars"/>
+        <package name="tests.api.users"/>
+        <package name="tests.api.login"/>
+    </packages>
 
 </suite>

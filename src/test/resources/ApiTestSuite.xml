@@ -7,9 +7,11 @@
         <listener class-name="listeners.RetryTransformer"/>
     </listeners>
 
-    <test name="API Tests">
+    <test name="AllTests-API">
         <packages>
-            <package name="tests.api"/>
+            <package name="tests.api.cars"/>
+            <package name="tests.api.users"/>
+            <package name="tests.api.login"/>
         </packages>
     </test>
 
