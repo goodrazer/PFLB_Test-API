@@ -4,13 +4,10 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import ui.wrappers.SortButton;
-
 import java.time.Duration;
 import java.util.List;
-
 import org.testng.Assert;
 import utils.Sort;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -194,6 +191,5 @@ public class UsersReadAllPage extends BasePage {
                     + "\", Age = \"" + age + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
         }
         return this;
-
     }
 }

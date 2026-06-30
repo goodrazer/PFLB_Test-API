@@ -5,7 +5,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import ui.dto.User;
-import ui.tests.BaseTest;
 
 @Epic("Users")
 @Feature("Создание пользователя")

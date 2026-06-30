@@ -2,7 +2,6 @@ package ui.wrappers;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebElementCondition;
 import io.qameta.allure.Step;
 import java.time.Duration;
 import static com.codeborne.selenide.Selenide.$x;
@@ -39,6 +38,4 @@ public class ButtonWrapper {
         button.shouldHave(Condition.text(expectedText), Duration.ofSeconds(10));
         return this;
     }
-
 }
-

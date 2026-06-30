@@ -8,10 +8,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ui.wrappers.SortButton;
 import ui.wrappers.TableColumn;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 
 @Log4j2
@@ -776,6 +774,3 @@ public class UsersTest extends BaseTest {
                 .checkTableIsEmpty("tableCars", "машинами");
     }
 }
-
-
-

@@ -6,9 +6,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import ui.wrappers.SortButton;
-
 import java.util.List;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selenide.*;
 

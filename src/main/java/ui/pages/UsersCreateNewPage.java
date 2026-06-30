@@ -7,9 +7,7 @@ import ui.dto.User;
 import ui.wrappers.ButtonWrapper;
 import ui.wrappers.InputWrapper;
 import ui.wrappers.RadioWrapper;
-
 import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;

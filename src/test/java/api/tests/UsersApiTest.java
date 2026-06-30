@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import utils.PropertyReader;
-
 import java.util.ArrayList;
 import java.util.List;
 
