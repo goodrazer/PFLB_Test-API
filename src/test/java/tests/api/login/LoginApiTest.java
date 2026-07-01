@@ -91,14 +91,14 @@ public class LoginApiTest extends BaseAdapter {
                 "Ошибка!!! Ожидался статус-код: 403, но сервер вернул: " + loginResponse.getStatusCode());
     }
 
-    @Test(testName = "API.01.05. Авторизация с невалидным Password",
-            description = "Авторизация с невалидным Password",
+    @Test(testName = "API.01.05. Авторизация с пустым телом запроса",
+            description = "Авторизация с пустым телом запроса",
             priority = 2,
             groups = {"Negative", "Regression"})
-    @Description("Авторизация с невалидным Password")
+    @Description("Авторизация с пустым телом запроса")
     @Epic("Epic01_Авторизация")
     @Feature("Авторизация")
-    @Story("Авторизация с невалидным Password")
+    @Story("Авторизация с пустым телом запроса")
     @Severity(SeverityLevel.BLOCKER)
     @Link(value = "docs.google", name = "Чек-лист PFLB")
     @TmsLink("TestCaseLink")
