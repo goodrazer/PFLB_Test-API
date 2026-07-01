@@ -1,5 +1,6 @@
 package tests.api.users;
 
+import api.adapters.BaseAdapter;
 import api.adapters.users.UsersApiAdapter;
 import api.models.users.PersonDto;
 import io.qameta.allure.*;
@@ -9,7 +10,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import utils.PropertyReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +22,12 @@ import java.util.List;
 @Feature("Users API")
 @Owner("Oleg P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
-public class UsersApiTest {
+public class UsersApiTest extends BaseAdapter {
     // Адаптер для работы с Users API
     private UsersApiAdapter usersApi;
     // Список ID созданных пользователей (для очистки после теста)
     private List<Long> createdUserIds;
     // Креды из config.properties
-    private final String validEmail = PropertyReader.getProperty("email");
-    private final String validPassword = PropertyReader.getProperty("password");
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {

@@ -4,6 +4,8 @@ import api.adapters.BaseAdapter;
 import api.models.login.LoginRequest;
 import api.models.login.LoginResponse;
 import com.google.gson.Gson;
+import io.qameta.allure.Param;
+import io.qameta.allure.model.Parameter;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -11,7 +13,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class AuthHelper {
+public class AuthHelper extends BaseAdapter{
 
     private String jwtToken;
     private final String baseUrl;
@@ -22,11 +24,12 @@ public class AuthHelper {
         RestAssured.baseURI = baseUrl;
     }
 
-    public String loginAsJson(String username, String password) {
+    public String loginAsJson(@Param(mode = Parameter.Mode.MASKED) String email,
+                              @Param(mode = Parameter.Mode.MASKED) String password) {
         log.info("Авторизация пользователя и получение токена");
 
         LoginRequest request = LoginRequest.builder()
-                .username(username)
+                .username(email)
                 .password(password)
                 .build();
         String body = gson.toJson(request);

@@ -1,5 +1,6 @@
 package tests.api.cars;
 
+import api.adapters.BaseAdapter;
 import api.adapters.login.AuthHelper;
 import api.adapters.cars.CarAdapter;
 import api.models.cars.CreateCarRq;
@@ -19,25 +20,23 @@ import java.util.List;
 import java.util.Optional;
 import static org.testng.AssertJUnit.assertEquals;
 import io.qameta.allure.SeverityLevel;
-import utils.PropertyReader;
 
 @Log4j2
 @Epic("Cars")
 @Feature("CarsAPI")
 @Owner("Egor P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
-public class CarsApiTest {
+public class CarsApiTest extends BaseAdapter {
 
     private static final String BASE_URL = "http://82.142.167.37:4879";
     private AuthHelper authHelper;
     private RequestSpecification authSpec;
-    private final String validEmail = PropertyReader.getProperty("email");
-    private final String validPassword = PropertyReader.getProperty("password");
+
 
     @BeforeMethod
     public void setup() {
         authHelper = new AuthHelper(BASE_URL);
-        authHelper.loginAsJson(validEmail, validPassword);
+        authHelper.loginAsJson(validEmail,validPassword);
         authSpec = authHelper.getAuthenticatedSpec();
     }
 

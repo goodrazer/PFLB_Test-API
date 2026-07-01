@@ -6,7 +6,6 @@ import api.models.login.LoginResponse;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
-import io.restassured.http.ContentType;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
