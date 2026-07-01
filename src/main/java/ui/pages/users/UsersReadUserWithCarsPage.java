@@ -1,21 +1,43 @@
 package ui.pages.users;
 
+import api.adapters.cars.CarAdapter;
+import api.adapters.login.AuthHelper;
+import api.adapters.login.LoginAdapter;
+import api.adapters.users.UsersApiAdapter;
+import api.models.cars.CreateCarRq;
+import api.models.cars.CreateCarRs;
+import api.models.users.PersonDto;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import ui.pages.BasePage;
 import ui.wrappers.SortButton;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selenide.*;
+import static io.restassured.RestAssured.given;
 
 public class UsersReadUserWithCarsPage extends BasePage {
 
     public final SelenideElement input = $("#user_input");
     private final SelenideElement status = $("button.status");
     private final SelenideElement inputButton = $("#user_input").parent();
+    public String newUserId;
+    public String newCarId;
+    private UsersApiAdapter usersApi;
+    private AuthHelper authHelper;
+    private RequestSpecification authSpec;
+    private final String BASE_URL_API = "http://82.142.167.37:4879";
+    private LoginAdapter loginAdapter;
 
     @Override
     @Step("Открытие страницы 'Users Read User With Cars Page'.")
@@ -291,6 +313,105 @@ public class UsersReadUserWithCarsPage extends BasePage {
         } else if (tableClass.equals("tableCars")) {
             log.info("Cars table is empty");
         }
+        return this;
+    }
+
+    @Step("Создание нового пользователя через API с данными: First Name = '{firstName}', Last Name = '{lastName}'," +
+            " Age = '{age}', Sex = '{sex}', Money = '{money}'")
+    public UsersReadUserWithCarsPage createUserWithApiAccess(
+            String login,
+            String password,
+            String firstName,
+            String lastName,
+            String age,
+            String sex,
+            String money
+    ) {
+        // Создаём адаптер
+        usersApi = new UsersApiAdapter();
+        // Авторизуемся
+        usersApi.loginAsJson(login, password);
+        // Создаём DTO пользователя
+        PersonDto newUser = PersonDto.builder()
+                .firstName(firstName)
+                .secondName(lastName)
+                .age(Integer.parseInt(age))
+                .sex(sex)
+                .money(Double.parseDouble(money))
+                .build();
+        // создание нового пользователя
+        Response newUserResponse = usersApi.createUser(newUser);
+        newUserId = newUserResponse.jsonPath().getString("id");
+        log.info("New user has been created with id = \"" + newUserId + "\"");
+        return this;
+    }
+
+    @Step("Создание нового автомобиля через API с данными: Engine Type = '{engineType}', Mark = '{mark}'," +
+            " Model = '{model}', Price = '{price}'")
+    public UsersReadUserWithCarsPage createCarWithApiAccess(
+            String login,
+            String password,
+            String engineType,
+            String mark,
+            String model,
+            String price
+    ) {
+        // Авторизуемся
+        authHelper = new AuthHelper(BASE_URL_API);
+        authHelper.loginAsJson(login, password);
+        authSpec = authHelper.getAuthenticatedSpec();
+        // Создаём DTO автомобиля
+        CreateCarRq rqCreateCar = CreateCarRq.builder()
+                .engineType(engineType)
+                .model(model)
+                .mark(mark)
+                .price(Double.parseDouble(price))
+                .build();
+        // создание нового автомобиля
+        log.info("Create new car with data: Engine Type = \"" + engineType + "\"," +
+                " Mark = \"" + mark + "\", Model = \"" + model +
+                "\", Price = \"" + price + "\"; in API");
+        CreateCarRs newCarResponse = CarAdapter.createCar(rqCreateCar, authSpec);
+        newCarId = String.valueOf(newCarResponse.getId());
+        log.info("New car has been created with id = \"" + newCarId + "\"");
+        return this;
+    }
+
+    @Step("Покупка нового автомобиля c Id = '{newCarId}' пользователю с Id = '{newUserId}' через API")
+    public UsersReadUserWithCarsPage buyCarToNewUserWithApiAccess(
+            String login,
+            String password,
+            String newCarId,
+            String newUserId,
+            String firstName,
+            String lastName,
+            String age,
+            String sex,
+            String money
+    ) {
+        loginAdapter = new LoginAdapter();
+        String accessToken = loginAdapter.obtainingATokenAPI(loginAdapter.authorizationApi(login, password));
+        // покупка нового автомобиля новому пользователю
+        log.info("Buy car with id = \"" + newCarId + "\" for user with id = \"" + newUserId + "\"; in API");
+        Map<String, Object> bodyBuyCarForUser = new HashMap<>();
+        bodyBuyCarForUser.put("id", Integer.parseInt(newUserId));
+        bodyBuyCarForUser.put("firstName", firstName);
+        bodyBuyCarForUser.put("secondName", lastName);
+        bodyBuyCarForUser.put("age", Integer.parseInt(age));
+        bodyBuyCarForUser.put("sex", sex);
+        bodyBuyCarForUser.put("money", Integer.parseInt(money));
+        Response buyCarResponse = given()
+                .baseUri("http://82.142.167.37:4879")
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + accessToken)
+                .body(bodyBuyCarForUser)
+                .when()
+                .post("/user/" + newUserId + "/buyCar/" + newCarId)
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+        log.info("Car with id = \"" + newCarId + "\" has been buy by user with id = \"" + newUserId + "\"");
         return this;
     }
 }
