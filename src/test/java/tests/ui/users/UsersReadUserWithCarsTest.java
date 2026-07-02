@@ -4,7 +4,7 @@ import io.qameta.allure.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.ui.BaseTest;
+import tests.ui.base.BaseTest;
 import ui.wrappers.TableColumn;
 
 @Log4j2

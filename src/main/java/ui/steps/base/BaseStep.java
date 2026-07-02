@@ -7,4 +7,6 @@ import utils.PropertyReader;
 public class BaseStep {
     protected static final Logger log = LogManager.getLogger(BaseStep.class);
     protected static final String BASE_URL = PropertyReader.getProperty("baseUrl");
+    protected String validEmail = System.getProperty("Email", PropertyReader.getProperty("email"));
+    protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
 }
