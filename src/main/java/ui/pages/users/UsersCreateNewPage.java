@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import ui.dto.users.User;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.ButtonWrapper;
 import ui.wrappers.InputWrapper;
 import ui.wrappers.RadioWrapper;
@@ -71,13 +71,10 @@ public class UsersCreateNewPage extends BasePage {
         firstNameInput.setValue(user.getFirstName());
         lastNameInput.setValue(user.getLastName());
         ageInput.setValue(String.valueOf(user.getAge()));
-
         selectSex(user.getSex());
-
         moneyInput
                 .setValue(String.valueOf(user.getMoney()))
                 .pressTab();
-
         return this;
     }
 
@@ -85,16 +82,13 @@ public class UsersCreateNewPage extends BasePage {
         if (sex == null) {
             return;
         }
-
         switch (sex.toUpperCase()) {
             case "MALE":
                 maleRadio.select();
                 break;
-
             case "FEMALE":
                 femaleRadio.select();
                 break;
-
             default:
                 log.warn("Unknown sex value: {}", sex);
         }
@@ -103,23 +97,18 @@ public class UsersCreateNewPage extends BasePage {
     @Step("Нажатие кнопки 'Push to Api' и ожидание изменения статуса")
     public UsersCreateNewPage clickButtonPushToApi() {
         log.info("Clicking 'Push to Api' button");
-
         String oldStatus = statusCodeMessage.getText();
-
         pushToApiButton.click();
-
         statusCodeMessage.shouldNotHave(
                 Condition.text(oldStatus),
                 Duration.ofSeconds(15)
         );
-
         return this;
     }
 
     @Step("Получение текста статуса сохранения нового объекта")
     public String getTheTextOfTheConservationStatusOfANewProperty() {
         log.info("Getting final status message");
-
         return statusCodeMessage
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .getText();

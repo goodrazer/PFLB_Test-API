@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.ButtonWrapper;
 import ui.wrappers.InputWrapper;
 import java.time.Duration;
@@ -38,7 +38,6 @@ public class UsersAddMoneyPage extends BasePage {
     @Step("Заполнение формы пополнения баланса")
     public UsersAddMoneyPage fillForm(String userId, String money) {
         userIdInput.setValue(userId);
-
         if (money.matches("[\\d.,]+")) {
             moneyInput.setValue(money);
         } else {
@@ -48,9 +47,7 @@ public class UsersAddMoneyPage extends BasePage {
                     money
             );
         }
-
         moneyInput.pressTab();
-
         return this;
     }
 

@@ -1,7 +1,6 @@
 package ui.pages.houses;
 
-import ui.pages.BasePage;
-
+import ui.pages.base.BasePage;
 import static com.codeborne.selenide.Selenide.open;
 
 public class HousesReadAllPage extends BasePage {

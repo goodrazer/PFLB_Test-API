@@ -2,8 +2,7 @@ package ui.pages.houses;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import ui.pages.BasePage;
-
+import ui.pages.base.BasePage;
 import static com.codeborne.selenide.Selenide.*;
 
 public class HousesReadOneByIdPage extends BasePage {

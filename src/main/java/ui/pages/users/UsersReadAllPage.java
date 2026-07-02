@@ -7,13 +7,11 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
 import utils.SortUtils;
-
 import java.time.Duration;
 import java.util.List;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -35,7 +33,6 @@ public class UsersReadAllPage extends BasePage {
     public boolean isUserPresentById(String userId) {
         String xpath = String.format("//table//td[contains(text(), '%s')]", userId);
         SelenideElement cell = $x(xpath);
-
         try {
             cell.shouldBe(visible, Duration.ofSeconds(10));
             return true;

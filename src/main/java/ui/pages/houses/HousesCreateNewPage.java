@@ -3,7 +3,7 @@ package ui.pages.houses;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import ui.dto.houses.House;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.houses.InputHousesCreateNewOneTable;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;

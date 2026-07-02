@@ -4,13 +4,11 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import ui.dto.users.UserCar;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.cars.CarWrapper;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CarsBuyOrSellCarPage extends BasePage {
-
-    CarsReadAllPage carsReadAllPage = new CarsReadAllPage();
 
     private final String PUSH_TO_API_BUTTON = "//*[@id='root']/div/section/div/div/button[1]";
     private final String INPUT = "//table[contains(@class, 'table-striped')]//input[@id='%s']";

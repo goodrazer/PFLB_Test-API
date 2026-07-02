@@ -1,7 +1,7 @@
 package ui.pages.cars;
 
 import io.qameta.allure.Step;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.cars.CarWrapper;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

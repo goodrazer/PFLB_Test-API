@@ -11,7 +11,7 @@ import ui.dto.users.User;
 import ui.pages.allDelete.AllDeletePage;
 import ui.pages.allPost.AllPostPage;
 import lombok.extern.log4j.Log4j2;
-import ui.steps.LoginStep;
+import ui.steps.login.LoginStep;
 
 /*
 Создать пользователя -> получить ID
@@ -46,6 +46,7 @@ public class AllPostTest extends BaseTest {
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
     public void testFullUserFlow() {
+
         // Авторизация
         log.info("Step 1: Authorizing user\n");
         LoginStep loginStep = new LoginStep();
@@ -61,6 +62,7 @@ public class AllPostTest extends BaseTest {
                 .sex("MALE")
                 .money(100000)
                 .build();
+
         // Данные для создания автомобиля
         Car car = Car.builder()
                 .engineType("Electric")
@@ -68,6 +70,7 @@ public class AllPostTest extends BaseTest {
                 .model("Model Z")
                 .price("5000.00")
                 .build();
+
         // Данные для создания дома (0 - нет такой парковки)
         House house = House.builder()
                 .floors(3)

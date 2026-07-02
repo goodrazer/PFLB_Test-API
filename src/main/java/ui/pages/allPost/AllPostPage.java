@@ -5,7 +5,7 @@ import io.qameta.allure.Step;
 import ui.dto.cars.Car;
 import ui.dto.houses.House;
 import ui.dto.users.User;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.ButtonWrapper;
 import ui.wrappers.InputWrapper;
 import ui.wrappers.RadioWrapper;
@@ -33,7 +33,6 @@ public class AllPostPage extends BasePage {
             "//following-sibling::div/button[contains(@class,'status')]";
     private static final String BTN_ID =
             "//following-sibling::div/button[contains(@class,'newId')]";
-
     //Локаторы для блока User (1-ая таблица)
     private static final String USER_BLOCK = "//section[@class='workspace']/div/div[1]/table";
     private static final String INPUT_USER_FIRST_NAME = USER_BLOCK + "//input[@id='first_name_send']";
@@ -45,7 +44,6 @@ public class AllPostPage extends BasePage {
     private static final String BTN_USER_PUSH = USER_BLOCK + BTN_PUSH;
     private static final String STATUS_USER = USER_BLOCK + BTN_STATUS;
     private static final String NEW_ID_USER = USER_BLOCK + BTN_ID;
-
     // Локаторы для блока Add Money (2-ая таблица)
     private static final String MONEY_BLOCK = "//section[@class='workspace']/div/div[2]/table";
     private static final String INPUT_MONEY_USER_ID = MONEY_BLOCK + "//input[@id='id_send']";
@@ -54,7 +52,6 @@ public class AllPostPage extends BasePage {
     private static final String STATUS_MONEY = MONEY_BLOCK + BTN_STATUS;
     private static final String MONEY_BALANCE = MONEY_BLOCK +
             "//following-sibling::div/button[contains(@class,'money')]";
-
     // Локаторы для блока Settle/Evict (3-я таблица)
     private static final String SETTLE_BLOCK = "//section[@class='workspace']/div/div[3]/table";
     private static final String INPUT_SETTLE_USER_ID = SETTLE_BLOCK + "//input[@id='id_send']";
@@ -63,7 +60,6 @@ public class AllPostPage extends BasePage {
     private static final String RADIO_EVICT = SETTLE_BLOCK + "//input[@name='settleOrEvict' and @value='evict']";
     private static final String BTN_SETTLE_PUSH = SETTLE_BLOCK + BTN_PUSH;
     private static final String STATUS_SETTLE = SETTLE_BLOCK + BTN_STATUS;
-
     // Локаторы для блока Buy/Sell Car (4-ая таблица)
     private static final String CAR_TRADE_BLOCK = "//section[@class='workspace']/div/div[4]/table";
     private static final String INPUT_TRADE_USER_ID = CAR_TRADE_BLOCK + "//input[@id='id_send']";
@@ -72,7 +68,6 @@ public class AllPostPage extends BasePage {
     private static final String RADIO_SELL = CAR_TRADE_BLOCK + "//input[@name='settleOrEvict' and @value='sellCar']";
     private static final String BTN_TRADE_PUSH = CAR_TRADE_BLOCK + BTN_PUSH;
     private static final String STATUS_TRADE = CAR_TRADE_BLOCK + BTN_STATUS;
-
     // Локаторы для блока Car (5-ая таблица)
     private static final String CAR_BLOCK = "//section[@class='workspace']/div/div[5]/table";
     private static final String INPUT_CAR_ENGINE = CAR_BLOCK + "//input[@id='car_engine_type_send']";
@@ -82,7 +77,6 @@ public class AllPostPage extends BasePage {
     private static final String BTN_CAR_PUSH = CAR_BLOCK + BTN_PUSH;
     private static final String STATUS_CAR = CAR_BLOCK + BTN_STATUS;
     private static final String NEW_ID_CAR = CAR_BLOCK + BTN_ID;
-
     //Локаторы для блока House (6-ая таблица)
     private static final String HOUSE_BLOCK = "//section[@class='workspace']/div/div[6]/table[1]";
     private static final String INPUT_HOUSE_FLOORS = HOUSE_BLOCK + "//input[@id='floor_send']";
@@ -96,7 +90,6 @@ public class AllPostPage extends BasePage {
     private static final String NEW_ID_HOUSE = HOUSE_BLOCK + BTN_ID;
 
     public AllPostPage() {super();}
-
     @Override
     @Step("Открытие страницы 'All POST'.")
     public AllPostPage openPage() {
@@ -139,36 +132,29 @@ public class AllPostPage extends BasePage {
     @Step("Создание пользователя: {0}")
     public AllPostPage createUser(User user) {
         log.info("Creating user: {}", user);
-
         $x(USER_BLOCK).shouldBe(visible, Duration.ofSeconds(20));
         sleep(1000); // Даём React время прикрепить обработчики к полям
-
         // Используем InputWrapper для ввода данных (React подход clear + sendKeys + ожидание/проверка)
         new InputWrapper(INPUT_USER_FIRST_NAME).setValue(user.getFirstName());
         new InputWrapper(INPUT_USER_LAST_NAME).setValue(user.getLastName());
         new InputWrapper(INPUT_USER_AGE).setValue(String.valueOf(user.getAge()));
-
         // Выбор пола через RadioWrapper
         if ("MALE".equalsIgnoreCase(user.getSex())) {
             new RadioWrapper(RADIO_USER_MALE).select();
         } else {
             new RadioWrapper(RADIO_USER_FEMALE).select();
         }
-
         new InputWrapper(INPUT_USER_MONEY).setValue(String.valueOf((long) user.getMoney()));
-
         // Логирование значений перед отправкой формы
         log.info("--Верификация полей в форме перед отправкой --");
         log.info("First name: '{}'", new InputWrapper(INPUT_USER_FIRST_NAME).getValue());
         log.info("Last name: '{}'", new InputWrapper(INPUT_USER_LAST_NAME).getValue());
         log.info("Age: '{}'", new InputWrapper(INPUT_USER_AGE).getValue());
         log.info("Money: '{}'", new InputWrapper(INPUT_USER_MONEY).getValue());
-
         // Клик по кнопке и ожидание статуса
         new ButtonWrapper(BTN_USER_PUSH).click();
         log.info("Clicked Push to API");
         new ButtonWrapper(STATUS_USER).shouldHaveText("201");
-
         return this;
     }
 
@@ -182,13 +168,10 @@ public class AllPostPage extends BasePage {
     @Step("Пополнение баланса пользователя {0} на сумму {1}")
     public AllPostPage addMoneyToUser(String userId, double amount) {
         log.info("Adding money {} to user {}", amount, userId);
-
         new InputWrapper(INPUT_MONEY_USER_ID).setValue(userId);
         new InputWrapper(INPUT_MONEY_AMOUNT).setValue(String.valueOf((long) amount));
-
         new ButtonWrapper(BTN_MONEY_PUSH).click();
         new ButtonWrapper(STATUS_MONEY).shouldHaveText("200");
-
         log.info("Money added successfully");
         return this;
     }
@@ -203,15 +186,12 @@ public class AllPostPage extends BasePage {
     @Step("Создание автомобиля: {0}")
     public AllPostPage createCar(Car car) {
         log.info("Creating car: {}", car);
-
         new InputWrapper(INPUT_CAR_ENGINE).setValue(car.getEngineType());
         new InputWrapper(INPUT_CAR_MARK).setValue(car.getMark());
         new InputWrapper(INPUT_CAR_MODEL).setValue(car.getModel());
         new InputWrapper(INPUT_CAR_PRICE).setValue(car.getPrice());
-
         new ButtonWrapper(BTN_CAR_PUSH).click();
         new ButtonWrapper(STATUS_CAR).shouldHaveText("201");
-
         log.info("Car created successfully");
         return this;
     }
@@ -225,14 +205,11 @@ public class AllPostPage extends BasePage {
     @Step("Покупка автомобиля {0} пользователем {1}")
     public AllPostPage buyCar(String userId, String carId) {
         log.info("User {} buying car {}", userId, carId);
-
         new InputWrapper(INPUT_TRADE_USER_ID).setValue(userId);
         new InputWrapper(INPUT_TRADE_CAR_ID).setValue(carId);
         new RadioWrapper(RADIO_BUY).select();
-
         new ButtonWrapper(BTN_TRADE_PUSH).click();
         new ButtonWrapper(STATUS_TRADE).shouldHaveText("200");
-
         log.info("Car purchased successfully");
         return this;
     }
@@ -240,14 +217,11 @@ public class AllPostPage extends BasePage {
     @Step("Продажа автомобиля {0} пользователем {1}")
     public AllPostPage sellCar(String userId, String carId) {
         log.info("User {} selling car {}", userId, carId);
-
         new InputWrapper(INPUT_TRADE_USER_ID).setValue(userId);
         new InputWrapper(INPUT_TRADE_CAR_ID).setValue(carId);
         new RadioWrapper(RADIO_SELL).select();
-
         new ButtonWrapper(BTN_TRADE_PUSH).click();
         new ButtonWrapper(STATUS_TRADE).shouldHaveText("200");
-
         log.info("Car sold successfully");
         return this;
     }
@@ -255,20 +229,16 @@ public class AllPostPage extends BasePage {
     @Step("Создание дома: {0}")
     public AllPostPage createHouse(House house) {
         log.info("Creating house: {}", house);
-
         // Основные поля дома
         new InputWrapper(INPUT_HOUSE_FLOORS).setValue(String.valueOf(house.getFloors()));
         new InputWrapper(INPUT_HOUSE_PRICE).setValue(String.valueOf((long) house.getPrice()));
-
         // Парковки (4 типа)
         new InputWrapper(INPUT_PARKING_1).setValue(String.valueOf(house.getParkingWarmCovered().getPlacesCount()));
         new InputWrapper(INPUT_PARKING_2).setValue(String.valueOf(house.getParkingWarmNotCovered().getPlacesCount()));
         new InputWrapper(INPUT_PARKING_3).setValue(String.valueOf(house.getParkingColdCovered().getPlacesCount()));
         new InputWrapper(INPUT_PARKING_4).setValue(String.valueOf(house.getParkingColdNotCovered().getPlacesCount()));
-
         new ButtonWrapper(BTN_HOUSE_PUSH).click();
         new ButtonWrapper(STATUS_HOUSE).shouldHaveText("201");
-
         log.info("House created successfully");
         return this;
     }
@@ -282,14 +252,11 @@ public class AllPostPage extends BasePage {
     @Step("Заселение пользователя {0} в дом {1}")
     public AllPostPage settleUserInHouse(String userId, String houseId) {
         log.info("Settling user {} in house {}", userId, houseId);
-
         new InputWrapper(INPUT_SETTLE_USER_ID).setValue(userId);
         new InputWrapper(INPUT_SETTLE_HOUSE_ID).setValue(houseId);
         new RadioWrapper(RADIO_SETTLE).select();
-
         new ButtonWrapper(BTN_SETTLE_PUSH).click();
         new ButtonWrapper(STATUS_SETTLE).shouldHaveText("200");
-
         log.info("User settled successfully");
         return this;
     }
@@ -297,14 +264,11 @@ public class AllPostPage extends BasePage {
     @Step("Выселение пользователя {0} из дома {1}")
     public AllPostPage evictUserFromHouse(String userId, String houseId) {
         log.info("Evicting user {} from house {}", userId, houseId);
-
         new InputWrapper(INPUT_SETTLE_USER_ID).setValue(userId);
         new InputWrapper(INPUT_SETTLE_HOUSE_ID).setValue(houseId);
         new RadioWrapper(RADIO_EVICT).select();
-
         new ButtonWrapper(BTN_SETTLE_PUSH).click();
         new ButtonWrapper(STATUS_SETTLE).shouldHaveText("200");
-
         log.info("User evicted successfully");
         return this;
     }

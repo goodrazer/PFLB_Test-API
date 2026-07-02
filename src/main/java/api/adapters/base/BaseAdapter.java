@@ -1,4 +1,4 @@
-package api.adapters;
+package api.adapters.base;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +16,7 @@ import utils.TestListener;
 @Listeners(TestListener.class)
 public class BaseAdapter {
 
-    public static final String BASE_URL = "http://82.142.167.37:4879";
+    public static final String BASE_URL = PropertyReader.getProperty("baseUrl");
     protected String validEmail = System.getProperty("Email", PropertyReader.getProperty("email"));
     protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
 

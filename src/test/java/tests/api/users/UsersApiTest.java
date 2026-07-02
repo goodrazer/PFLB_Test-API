@@ -1,6 +1,6 @@
 package tests.api.users;
 
-import api.adapters.BaseAdapter;
+import api.adapters.base.BaseAdapter;
 import api.adapters.users.UsersApiAdapter;
 import api.models.users.PersonDto;
 import io.qameta.allure.*;
@@ -110,7 +110,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testCreateUserWithValidData() {
         log.info("API.02.01 - Создание пользователя с валидными данными");
         SoftAssert softAssert = new SoftAssert();
-
         // Подготовка тестовых данных
         PersonDto user = PersonDto.builder()
                 .firstName("Oleg")
@@ -131,7 +130,6 @@ public class UsersApiTest extends BaseAdapter {
         // Добавляем ID в список для последующей очистки
         createdUserIds.add(response.jsonPath().getLong("id"));
         log.info("API.02.01 пройден. Создан пользователь с ID: {}", response.jsonPath().getLong("id"));
-
         softAssert.assertAll();
     }
 
@@ -148,7 +146,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testGetUserById() {
         log.info("API.02.02 - Получение пользователя по ID");
         SoftAssert softAssert = new SoftAssert();
-
         // Создаём тестового пользователя
         long userId = createTestUser();
         // Получаем пользователя по ID
@@ -158,7 +155,6 @@ public class UsersApiTest extends BaseAdapter {
         softAssert.assertEquals(response.jsonPath().getLong("id"), userId, "ID должен совпадать");
         softAssert.assertNotNull(response.jsonPath().getString("firstName"), "Имя не должно быть null");
         log.info("API.02.02 пройден");
-
         softAssert.assertAll();
     }
 
@@ -175,7 +171,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testGetAllUsers() {
         log.info("API.02.03 - Получение списка всех пользователей");
         SoftAssert softAssert = new SoftAssert();
-
         // Создаём нескольких тестовых пользователей
         createTestUser("User1", "Test1", 25, "MALE", 10000);
         createTestUser("User2", "Test2", 28, "FEMALE", 20000);
@@ -186,7 +181,6 @@ public class UsersApiTest extends BaseAdapter {
         int usersCount = response.jsonPath().getList("$").size();
         softAssert.assertTrue(usersCount >= 2, "В списке должно быть минимум 2 пользователя");
         log.info("API.02.03 пройден. Всего пользователей: {}", usersCount);
-
         softAssert.assertAll();
     }
 
@@ -203,7 +197,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testGetUserInfoWithHouseAndCars() {
         log.info("API.02.04 - Получение информации о пользователе с имуществом");
         SoftAssert softAssert = new SoftAssert();
-
         // Создаём тестового пользователя
         long userId = createTestUser();
         // Получаем информацию о пользователе с имуществом
@@ -221,7 +214,6 @@ public class UsersApiTest extends BaseAdapter {
         softAssert.assertTrue(response.jsonPath().getList("cars").size() >= 0,
                 "Поле 'cars' должно быть массивом");
         log.info("API.02.04 пройден");
-
         softAssert.assertAll();
     }
 
@@ -238,7 +230,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testUpdateUser() {
         log.info("API.02.05 - Обновление данных пользователя");
         SoftAssert softAssert = new SoftAssert();
-
         // Создаём тестового пользователя
         long userId = createTestUser();
         // Подготавливаем обновленные данные
@@ -257,7 +248,6 @@ public class UsersApiTest extends BaseAdapter {
         softAssert.assertEquals(response.jsonPath().getString("secondName"), "Man", "Фамилия должна обновиться");
         softAssert.assertEquals(response.jsonPath().getInt("age"), 50, "Возраст должен обновиться");
         log.info("API.02.05 пройден");
-
         softAssert.assertAll();
     }
 
@@ -274,7 +264,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testDeleteUser() {
         log.info("API.02.06 - Удаление пользователя");
         SoftAssert softAssert = new SoftAssert();
-
         // Создаём отдельного пользователя для удаления (не добавляем в createdUserIds)
         PersonDto user = PersonDto.builder()
                 .firstName("Delete")
@@ -295,7 +284,6 @@ public class UsersApiTest extends BaseAdapter {
         Response getResponse = usersApi.getUserById(userId);
         softAssert.assertTrue(getResponse.statusCode() == 204,"Пользователь должен быть удалён");
         log.info("API.02.06 пройден");
-
         softAssert.assertAll();
     }
 
@@ -313,7 +301,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testCreateUserWithInvalidData() {
         log.info("API.02.07 - Создание пользователя с невалидными данными");
         SoftAssert softAssert = new SoftAssert();
-
         // Пользователь с пустыми обязательными полями
         PersonDto invalidUser = PersonDto.builder()
                 .firstName("")
@@ -330,7 +317,6 @@ public class UsersApiTest extends BaseAdapter {
                 "Ожидался статус ошибки (400), но получен: " + response.statusCode()
         );
         log.info("API.02.07 пройден. Получен статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 
@@ -347,7 +333,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testGetNonExistentUser() {
         log.info("API.02.08 - Получение несуществующего пользователя");
         SoftAssert softAssert = new SoftAssert();
-
         // Пытаемся получить пользователя с несуществующим ID
         long nonExistentId = 999999;
         Response response = usersApi.getUserById(nonExistentId);
@@ -356,7 +341,6 @@ public class UsersApiTest extends BaseAdapter {
                 "Статус должен быть 204 No Content"
         );
         log.info("API.02.08 пройден. Статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 
@@ -373,7 +357,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testUpdateNonExistentUser() {
         log.info("API.02.09 - Обновление несуществующего пользователя");
         SoftAssert softAssert = new SoftAssert();
-
         long nonExistentId = 999999;
         PersonDto updatedData = PersonDto.builder()
                 .firstName("Nonexistent")
@@ -390,7 +373,6 @@ public class UsersApiTest extends BaseAdapter {
                 "Ожидался статус ошибки (404), но получен: " + response.statusCode()
         );
         log.info("API.02.09 пройден. Статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 
@@ -407,13 +389,11 @@ public class UsersApiTest extends BaseAdapter {
     public void testDeleteNonExistentUser() {
         log.info("API.02.10 - Удаление несуществующего пользователя");
         SoftAssert softAssert = new SoftAssert();
-
         long nonExistentId = 999999;
         Response response = usersApi.deleteUser(nonExistentId);
         // Проверки
         softAssert.assertTrue(response.statusCode() == 404, "Статус должен быть 404 Not Found");
         log.info("API.02.10 пройден. Статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 
@@ -430,7 +410,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testCreateUserWithoutRequiredFields() {
         log.info("API.02.11 - Создание пользователя без обязательных полей");
         SoftAssert softAssert = new SoftAssert();
-
         // Пустой объект
         PersonDto emptyUser = PersonDto.builder().build();
         Response response = usersApi.createUser(emptyUser);
@@ -438,7 +417,6 @@ public class UsersApiTest extends BaseAdapter {
         softAssert.assertTrue(response.statusCode() == 400,
                 "Ожидался статус ошибки (400), но получен: " + response.statusCode());
         log.info("API.02.11 пройден. Статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 
@@ -455,7 +433,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testCreateUserWithInvalidAge() {
         log.info("API.02.12 - Создание пользователя с невалидным возрастом");
         SoftAssert softAssert = new SoftAssert();
-
         // Отрицательный возраст
         log.info("Создание пользователя с отрицательным возрастом");
         PersonDto userWithNegativeAge = PersonDto.builder()
@@ -483,7 +460,6 @@ public class UsersApiTest extends BaseAdapter {
                 "Ожидался статус 400 для нулевого возраста, но получен: " + response2.statusCode()
         );
         log.info("API.02.12 пройден");
-
         softAssert.assertAll();
     }
 
@@ -500,7 +476,6 @@ public class UsersApiTest extends BaseAdapter {
     public void testCreateUserWithNegativeBalance() {
         log.info("API.02.13 - Создание пользователя с отрицательным балансом");
         SoftAssert softAssert = new SoftAssert();
-
         PersonDto userWithNegativeBalance = PersonDto.builder()
                 .firstName("Test")
                 .secondName("User")
@@ -516,7 +491,6 @@ public class UsersApiTest extends BaseAdapter {
                 "Ожидался статус ошибки (400), но получен: " + response.statusCode()
         );
         log.info("API.02.13 пройден. Статус: {}", response.statusCode());
-
         softAssert.assertAll();
     }
 }

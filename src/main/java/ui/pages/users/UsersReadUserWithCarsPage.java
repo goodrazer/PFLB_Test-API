@@ -15,13 +15,11 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selenide.*;
 import static io.restassured.RestAssured.given;

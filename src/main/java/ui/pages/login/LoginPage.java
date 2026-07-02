@@ -8,8 +8,7 @@ import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
 import io.qameta.allure.selenide.AllureSelenide;
-import ui.pages.BasePage;
-
+import ui.pages.base.BasePage;
 import static com.codeborne.selenide.Condition.clickable;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -28,30 +27,11 @@ public class LoginPage extends BasePage {
             "'email cannot be empty']");
     private final SelenideElement ERROR_MASSAGE_PASSWORD_CANNOT_BE_EMPTY = $x("//div[text()=" +
             "'password cannot be empty']");
-    //Локаторы для дропдаунов Users, Cars, Houses:
     //Дропдаун Users:
     private final SelenideElement DROPDOWN_USERS = $("#basic-nav-dropdown");
     //Опции дропдауна Users:
     private final SelenideElement DROPDOWN_USERS_ITEM_READ_ALL = $("a[href='#/read/users']");
-    private final SelenideElement DROPDOWN_USERS_ITEM_READ_USER_WITH_CARS = $("a[href='#/read/userInfo']");
     private final SelenideElement DROPDOWN_USERS_ITEM_CREATE_NEW = $("a[href='#/create/user']");
-    private final SelenideElement DROPDOWN_USERS_ITEM_ADD_MONEY = $("a[href='#/update/users/plusMoney']");
-    private final SelenideElement DROPDOWN_USERS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
-    private final SelenideElement DROPDOWN_USERS_ITEM_SETTLE_TO_HOUSE = $("a[href='#/update/houseAndUser']");
-    private final SelenideElement DROPDOWN_USERS_ITEM_ISSUE_A_LOAN = $("a[href='#/update/Issue_A_Loan']");
-    //Дропдаун Cars:
-    private final SelenideElement DROPDOWN_CARS = $("basic-nav-dropdown");
-    //Опции дропдауна Users:
-    private final SelenideElement DROPDOWN_CARS_ITEM_READ_ALL = $("a[href='#/read/cars']");
-    private final SelenideElement DROPDOWN_CARS_ITEM_CREATE_NEW = $("a[href='#/create/cars']");
-    private final SelenideElement DROPDOWN_CARS_ITEM_BUY_OR_SELL_CAR = $("a[href='#/update/users/buyCar']");
-    //Дропдаун Houses:
-    private final SelenideElement DROPDOWN_HOUSES = $("#basic-nav-dropdown");
-    //Опции дропдауна Users:
-    private final SelenideElement DROPDOWN_HOUSES_ITEM_READ_ALL = $("a[href='#/read/houses']");
-    private final SelenideElement DROPDOWN_HOUSES_READ_ONE_BY_ID = $("a[href='#/read/house']");
-    private final SelenideElement DROPDOWN_HOUSES_CREATE_NEW = $("a[href='#/create/house']");
-    private final SelenideElement DROPDOWN_HOUSES_SETTLE_OR_EVICT_USER = $("a[href='#/update/houseAndUser']");
 
     @Override
     @Step("Открытие страницы авторизации.")

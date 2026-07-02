@@ -1,9 +1,10 @@
-package ui.steps;
+package ui.steps.base;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.PropertyReader;
 
 public class BaseStep {
     protected static final Logger log = LogManager.getLogger(BaseStep.class);
-    protected static final String BASE_URL = "http://82.142.167.37:4881";
+    protected static final String BASE_URL = PropertyReader.getProperty("baseUrl");
 }

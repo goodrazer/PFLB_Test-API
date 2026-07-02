@@ -45,12 +45,10 @@ public class UsersApiAdapter {
      */
     public String loginAsJson(String email, String password) {
         log.info("Авторизация через JSON");
-
         String requestBody = String.format(
                 "{\"username\":\"%s\",\"password\":\"%s\"}",
                 email, password
         );
-
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -60,12 +58,10 @@ public class UsersApiAdapter {
                 .statusCode(202)
                 .extract()
                 .response();
-
         LoginResponse loginResponse = gson.fromJson(
                 response.asString(),
                 LoginResponse.class
         );
-
         this.jwtToken = loginResponse.getAccessToken();
         log.info("Успешная авторизация (получен токен)");
         return this.jwtToken;
@@ -89,11 +85,9 @@ public class UsersApiAdapter {
     private RequestSpecification givenAuthenticated() {
         RequestSpecification spec = RestAssured.given()
                 .contentType(ContentType.JSON);
-
         if (jwtToken != null && !jwtToken.isEmpty()) {
             spec.header("Authorization", "Bearer " + jwtToken);
         }
-
         return spec;
     }
 
@@ -105,7 +99,6 @@ public class UsersApiAdapter {
      */
     public Response createUser(PersonDto user) {
         log.info("Создание пользователя: {} {}", user.getFirstName(), user.getSecondName());
-
         return givenAuthenticated()
                 .body(gson.toJson(user))
                 .when()
@@ -122,7 +115,6 @@ public class UsersApiAdapter {
      */
     public Response getUserById(long userId) {
         log.info("Получение пользователя по ID: {}", userId);
-
         return givenAuthenticated()
                 .when()
                 .get(USER_ENDPOINT + "/" + userId)
@@ -137,7 +129,6 @@ public class UsersApiAdapter {
      */
     public Response getAllUsers() {
         log.info("Получение списка всех пользователей");
-
         return givenAuthenticated()
                 .when()
                 .get(USERS_ENDPOINT)
@@ -153,7 +144,6 @@ public class UsersApiAdapter {
      */
     public Response getUserInfo(long userId) {
         log.info("Получение информации о пользователе с имуществом: {}", userId);
-
         return givenAuthenticated()
                 .when()
                 .get(USER_INFO_ENDPOINT, userId)
@@ -170,7 +160,6 @@ public class UsersApiAdapter {
      */
     public Response updateUser(long userId, PersonDto updatedUser) {
         log.info("Обновление пользователя с ID: {}", userId);
-
         return givenAuthenticated()
                 .body(gson.toJson(updatedUser))
                 .when()
@@ -187,7 +176,6 @@ public class UsersApiAdapter {
      */
     public Response deleteUser(long userId) {
         log.info("Удаление пользователя с ID: {}", userId);
-
         return givenAuthenticated()
                 .when()
                 .delete(USER_ENDPOINT + "/" + userId)
@@ -205,7 +193,6 @@ public class UsersApiAdapter {
      */
     public Response addMoney(long userId, double amount) {
         log.info("Начисление {} денег пользователю с ID: {}", amount, userId);
-
         return givenAuthenticated()
                 .when()
                 .post(USER_MONEY_ENDPOINT, userId, amount)

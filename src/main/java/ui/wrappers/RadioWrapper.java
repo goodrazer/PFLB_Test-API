@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.$x;
 
 //Wrapper для radio button
 public class RadioWrapper {
+
     private final SelenideElement radio;
 
     public RadioWrapper(String xpath) {

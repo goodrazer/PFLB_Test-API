@@ -2,7 +2,7 @@ package ui.pages.cars;
 
 import io.qameta.allure.Step;
 import ui.dto.cars.Car;
-import ui.pages.BasePage;
+import ui.pages.base.BasePage;
 import ui.wrappers.cars.CarWrapper;
 import static com.codeborne.selenide.Selenide.*;
 

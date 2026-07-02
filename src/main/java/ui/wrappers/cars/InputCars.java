@@ -1,13 +1,11 @@
 package ui.wrappers.cars;
 
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.WebDriver;
 import static com.codeborne.selenide.Selenide.$x;
 
 @Log4j2
 public class InputCars {
 
-    WebDriver driver;
     String label;
 
     public InputCars(String label) {

@@ -7,7 +7,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.ui.BaseTest;
-
 import static com.codeborne.selenide.Selenide.switchTo;
 import static org.testng.Assert.*;
 

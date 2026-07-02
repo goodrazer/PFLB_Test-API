@@ -1,4 +1,4 @@
-package ui.steps;
+package ui.steps.login;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
@@ -7,10 +7,11 @@ import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Parameter;
 import io.qameta.allure.selenide.AllureSelenide;
+import ui.steps.base.BaseStep;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
 
-public class LoginStep extends BaseStep{
+public class LoginStep extends BaseStep {
 
     private final SelenideElement INPUT_EMAIL = $x("//input[@name='email']");
     private final SelenideElement INPUT_PASSWORD = $x("//input[@name='password']");

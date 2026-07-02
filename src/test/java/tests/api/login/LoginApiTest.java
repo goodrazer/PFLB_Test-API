@@ -1,6 +1,6 @@
 package tests.api.login;
 
-import api.adapters.BaseAdapter;
+import api.adapters.base.BaseAdapter;
 import api.adapters.login.LoginAdapter;
 import io.qameta.allure.*;
 import io.restassured.response.Response;

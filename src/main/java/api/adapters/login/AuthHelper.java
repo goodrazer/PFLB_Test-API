@@ -1,6 +1,6 @@
 package api.adapters.login;
 
-import api.adapters.BaseAdapter;
+import api.adapters.base.BaseAdapter;
 import api.models.login.LoginRequest;
 import api.models.login.LoginResponse;
 import com.google.gson.Gson;
@@ -27,7 +27,6 @@ public class AuthHelper extends BaseAdapter{
     public String loginAsJson(@Param(mode = Parameter.Mode.MASKED) String email,
                               @Param(mode = Parameter.Mode.MASKED) String password) {
         log.info("Авторизация пользователя и получение токена");
-
         LoginRequest request = LoginRequest.builder()
                 .username(email)
                 .password(password)

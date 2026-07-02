@@ -1,6 +1,6 @@
 package api.adapters.cars;
 
-import api.adapters.BaseAdapter;
+import api.adapters.base.BaseAdapter;
 import api.models.cars.*;
 import api.models.users.GetUserRs;
 import io.qameta.allure.Step;
@@ -135,7 +135,6 @@ public class CarAdapter extends BaseAdapter {
                 .when()
                 .put("/car/{code}");
     }
-
 
     @Step("Изменение автомобиля (сырой запрос) PUT /car/{carId}")
     public static Response updateCarRaw(UpdateCarRq updateCarRq, int code, RequestSpecification spec) {

@@ -27,7 +27,7 @@ import ui.pages.swaggers.SwaggerDevJsDeprecatedPage;
 import ui.pages.swaggers.SwaggerDevMvcPage;
 import ui.pages.swaggers.SwaggerMasterMvcPage;
 import ui.pages.users.*;
-import ui.steps.LoginStep;
+import ui.steps.login.LoginStep;
 import utils.PropertyReader;
 import listeners.TestListener;
 

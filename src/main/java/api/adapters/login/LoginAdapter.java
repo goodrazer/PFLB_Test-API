@@ -1,6 +1,6 @@
 package api.adapters.login;
 
-import api.adapters.BaseAdapter;
+import api.adapters.base.BaseAdapter;
 import api.models.login.LoginRequest;
 import api.models.login.LoginResponse;
 import io.qameta.allure.Param;
