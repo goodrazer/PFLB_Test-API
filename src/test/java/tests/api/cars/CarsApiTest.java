@@ -31,14 +31,12 @@ public class CarsApiTest extends BaseAdapter {
     private AuthHelper authHelper;
     private RequestSpecification authSpec;
 
-
     @BeforeMethod
     public void setup() {
         authHelper = new AuthHelper(BASE_API_URL);
         authHelper.loginAsJson(validEmail,validPassword);
         authSpec = authHelper.getAuthenticatedSpec();
     }
-
 
     SoftAssert softAssert = new SoftAssert();
 
