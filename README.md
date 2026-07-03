@@ -73,113 +73,172 @@ http://82.142.167.37:4881/
 | Генерация данных   | JavaFaker   | 1.0.2   |
 | Валидация JSON     | GSON        | 2.14.0  |
 
+
+## Плагины
+| Плагин                  |  Версия  |
+|-------------------------|---------|
+| maven-surefire-plugin   | 3.5.5     |
+| maven-compiler-plugin   | 1.18.42   |
+| allure-maven   | 2.29.0     |
+
 ---
 ## Структура проекта
 
 ```text
 PFLB_Test-API/
 │
-├── pom.xml # Конфигурация Maven
-├── README.md # Документация проекта
-├── logo.png
+├── pom.xml                                                                   # Конфигурация Maven
+├── README.md                                                                 # Документация проекта
+├── logo.png                                                                  # Лого проекта
 ├── src/
 │ ├── main/
 │ │ ├── java/
-│ │ │ ├── api/ # API-часть фреймворка
-│ │ │ │ ├── adapters/
-│ │ │ │ │ AuthHelper.java # Хелпер для авторизации
-│ │ │ │ │ BaseAdapter.java # Базовый адаптер для API-запросов
-│ │ │ │ │ CarAdapter.java # Адаптер для тестов Car
+│ │ │ ├── api/                                                                # API-часть фреймворка
+│ │ │ │ ├── adapters/                                                         # Адаптеры фреймворка
+│ │ │ │ │ ├── base/                                                           # Базовые конфигурации адаптера фреймворка
+│ │ │ │ │ │ └── BaseAdapter.java                                              # Базовый адаптер для API-запросов
+│ │ │ │ │ ├── cars/                                                           # Адаптеры автомобилей
+│ │ │ │ │ │ └── CarAdapter.java                                               # Адаптер для тестов Car
+│ │ │ │ │ ├── login/                                                          # Адаптеры для авторизации
+│ │ │ │ │ │ ├── LoginAdapter.java                                             # Адаптер для тестов с авторизацией
+│ │ │ │ │ │ └── AuthHelper.java                                               # Хелпер для авторизации
+│ │ │ │ │ └── users/                                                          # Адаптеры для пользователей
+│ │ │ │ │   └── UserApiAdapter.java                                           # Адаптер для тестов User
+│ │ │ │ │ 
+│ │ │ │ └── models/                                                           # Модели фреймворка
+│ │ │ │   ├── cars/                                                           # Модели для тестов cars
+│ │ │ │   │ ├── CreateCarRq.java                                              # Модель запроса при создании авто
+│ │ │ │   │ ├── CreateCarRs.java                                              # Модель ответа при создании авто
+│ │ │ │   │ ├── GetCarRs.java                                                 # Модель ответа при запросе авто
+│ │ │ │   │ ├── UpdateCarRq.java                                              # Модель запроса на обновление авто
+│ │ │ │   │ └── UpdateCarRs.java                                              # Модель ответа на обновление авто
+│ │ │ │   ├── login/                                                          # Модели для авторизации
+│ │ │ │   │ ├──LoginRequest.java                                              # Модель запроса при логин
+│ │ │ │   │ └── LoginResponse.java                                            # Модель ответа при логине
+│ │ │ │   └── users/                                                          # Модели для тестов users
+│ │ │ │     ├── GetUserRs.java                                                # Модель ответа при запросе пользователя
+│ │ │ │     └── PersonDTO.java                                                # DTO пользователя для API
+│ │ │ │ 
+│ │ │ ├── ui/                                                                 # UI-часть фреймворка
+│ │ │ │ ├── dto/                                                              # Value Objects (DTO)
+│ │ │ │ │ ├── cars/                                                           # DTO для автомобилей
+│ │ │ │ │ │ ├── Car.java                                                      # DTO автомобиля
+│ │ │ │ │ │ └── Parking.java                                                  # DTO парковки
+│ │ │ │ │ ├── houses/                                                         # DTO для домов
+│ │ │ │ │ │ └── House.java                                                    # DTO дома
+│ │ │ │ │ └── users/                                                          # DTO для пользователей
+│ │ │ │ │   ├── User.java                                                     # DTO пользователя
+│ │ │ │ │   └── UserCar.java                                                  # DTO связи User-Car
 │ │ │ │ │
-│ │ │ │ └── models/
-│ │ │ │ CreateCarRq.java # Модель запроса при создании авто
-│ │ │ │ CreateCarRs.java # Модель ответа при создании авто
-│ │ │ │ GetCarRs.java # Модель ответа при запросе авто
-│ │ │ │ GetUserRs.java # Модель ответа при запросе пользователя
-│ │ │ │ LoginRequest.java # Модель запроса при логине
-│ │ │ │ LoginResponse.java # Модель ответа при логине
-│ │ │ │ PersonDTO.java # DTO пользователя для API
-│ │ │ │ Result.java # Модель результата API-ответа
-│ │ │ │ UpdateCarRq.java # Модель запроса на обновление авто
-│ │ │ │ UpdateCarRs.java # Модель ответа на обновление авто
-│ │ │ │
-│ │ │ └── ui/ # UI-часть фреймворка
-│ │ │ ├── dto/ # Value Objects (DTO)
-│ │ │ │ Car.java # DTO автомобиля
-│ │ │ │ House.java # DTO дома
-│ │ │ │ Parking.java # DTO парковки
-│ │ │ │ User.java # DTO пользователя
-│ │ │ │ UserCar.java # DTO связи User-Car
-│ │ │ │
-│ │ │ ├── pages/ # Page Objects
-│ │ │ │ AllDeletePage.java # Страница "All DELETE"
-│ │ │ │ AllPostPage.java # Страница "All POST"
-│ │ │ │ BasePage.java # Базовая страница
-│ │ │ │ CarsBuyOrSellCarPage.java # Покупка/продажа авто
-│ │ │ │ CarsCreateNewPage.java # Создание авто
-│ │ │ │ CarsReadAllPage.java # Список всех авто
-│ │ │ │ HousesCreateNewPage.java # Создание дома
-│ │ │ │ HousesReadAllPage.java # Список всех домов
-│ │ │ │ HousesReadOneByIdPage.java # Просмотр дома по ID
-│ │ │ │ HousesSettleOrEvictUser.java # Заселение/выселение
-│ │ │ │ LoginPage.java # Страница авторизации
-│ │ │ │ SwaggerDevJsDeprecatedPage.java
-│ │ │ │ SwaggerDevMvcPage.java
-│ │ │ │ SwaggerMasterMvcPage.java
-│ │ │ │ UsersAddMoneyPage.java # Пополнение баланса
-│ │ │ │ UsersBuyOrSellCarPage.java # Покупка/продажа авто
-│ │ │ │ UsersCreateNewPage.java # Создание пользователя
-│ │ │ │ UsersIssueALoanPage.java # Выдача кредита
-│ │ │ │ UsersReadAllPage.java # Список всех пользователей
-│ │ │ │ UsersReadUserWithCarsPage.java
-│ │ │ │ UsersSettleToHousePage.java # Заселение в дом
-│ │ │ │
-│ │ │ ├── steps/ # Step-классы
-│ │ │ │ BaseStep.java # Базовый шаг
-│ │ │ │ LoginStep.java # Шаг авторизации
-│ │ │ │
-│ │ │ └── wrappers/ # UI Wrappers
-│ │ │ ButtonWrapper.java # Wrapper для кнопок
-│ │ │ CarWrapper.java # Wrapper для авто
-│ │ │ InputCars.java # Wrapper для полей авто
-│ │ │ InputHousesCreateNewOneTable.java
-│ │ │ InputWrapper.java # Универсальный wrapper ввода
-│ │ │ RadioWrapper.java # Wrapper для radio-кнопок
-│ │ │
-│ │ └── resources/
-│ │ └── schema/
+│ │ │ │ ├── pages/                                                            # Page Objects фреймворка
+│ │ │ │ │ ├── allDelete/                                                      # Страницы All Delete
+│ │ │ │ │ │ └── AllDeletePage.java                                            # Страница "All DELETE"
+│ │ │ │ │ ├── allPost/                                                        # Страницы All Post
+│ │ │ │ │ │ └── AllPostPage.java                                              # Страница "All POST"
+│ │ │ │ │ ├── base/                                                           # Базовые страницы фреймворка
+│ │ │ │ │ │ └── BasePage.java                                                 # Базовая страница фреймворка
+│ │ │ │ │ ├── cars/                                                           # Страницы автомобилей
+│ │ │ │ │ │ ├── CarsBuyOrSellCarPage.java                                     # Страница покупки/продажи авто
+│ │ │ │ │ │ ├── CarsCreateNewPage.java                                        # Страница создания авто
+│ │ │ │ │ │ └── CarsReadAllPage.java                                          # Страница со списком всех авто
+│ │ │ │ │ ├── houses/                                                         # Страницы домов
+│ │ │ │ │ │ ├── HousesCreateNewPage.java                                      # Страница создания дома
+│ │ │ │ │ │ ├── HousesReadAllPage.java                                        # Страница со списком всех домов
+│ │ │ │ │ │ ├── HousesReadOneByIdPage.java                                    # Страница с просмотром дома по ID
+│ │ │ │ │ │ └── HousesSettleOrEvictUser.java                                  # Страница заселения/выселения
+│ │ │ │ │ ├── login/                                                          # Страницы авторизации
+│ │ │ │ │ │ └── LoginPage.java                                                # Страница авторизации
+│ │ │ │ │ ├── swaggers/                                                       # Страницы swagger
+│ │ │ │ │ │ ├── SwaggerDevJsDeprecatedPage.java                               # Устаревшая страница "Swagger Dev Js"
+│ │ │ │ │ │ ├── SwaggerDevMvcPage.java                                        # Страница "Swagger Dev MVC"
+│ │ │ │ │ │ └── SwaggerMasterMvcPage.java                                     # Страница "Swagger Master Mvc"
+│ │ │ │ │ └──  users/                                                         # Страницы пользователей
+│ │ │ │ │   ├── UsersAddMoneyPage.java                                        # Страница пополнения баланса
+│ │ │ │ │   ├── UsersBuyOrSellCarPage.java                                    # Страница покупки/продажи авто
+│ │ │ │ │   ├── UsersCreateNewPage.java                                       # Страница создания пользователя
+│ │ │ │ │   ├── UsersIssueALoanPage.java                                      # Страница выдачи кредита
+│ │ │ │ │   ├── UsersReadAllPage.java                                         # Страница списка всех пользователей
+│ │ │ │ │   ├── UsersReadUserWithCarsPage.java                                # Страница списка всех пользователей с авто
+│ │ │ │ │   └── UsersSettleToHousePage.java                                   # Страница заселения в дом
+│ │ │ │ │
+│ │ │ │ ├── steps/                                                            # Общие шаги
+│ │ │ │ │ ├── base/                                                           # Базовые шаги
+│ │ │ │ │ │ └── BaseStep.java                                                 # Базовый шаг
+│ │ │ │ │ └── login/                                                          # Шаги авторизации
+│ │ │ │ │   └── LoginStep.java                                                # Шаг авторизации
+│ │ │ │ │ 
+│ │ │ │ └── wrappers/                                                         # Обертки фреймворка
+│ │ │ │   ├── cars/                                                           # Обертки для автомобилей            
+│ │ │ │   │ ├── CarWrapper.java                                               # Обертка для авто
+│ │ │ │   │ └── InputCars.java                                                # Обертка для полей авто
+│ │ │ │   ├── houses/                                                         # Обертки для домов
+│ │ │ │   │ └── InputHousesCreateNewOneTable.java                             # Обертка для создания дома
+│ │ │ │   ├── ButtonWrapper.java                                              # Обертка для кнопок
+│ │ │ │   ├── InputWrapper.java                                               # Универсальная обертка для полей ввода
+│ │ │ │   ├── RadioWrapper.java                                               # Обертка для radio-кнопок
+│ │ │ │   ├── SortButton.java                                                 # Обертка для кнопок сортировки
+│ │ │ │   └── TableColumn.java                                                # Обертка поиска по столбцу таблицы
+│ │ │ │   
+│ │ │ └── utils/                                                              # Утилиты фреймворка
+│ │ │   │── PropertyReader.java                                               # Утилита чтения настроек конфигурации       
+│ │ │   │── SortUtils.java                                                    # Утилита для сортировки
+│ │ │   └── TestListener.java                                                 # Утилита слушатель тестов 
+│ │ │ 
+│ │ └── resources/                                                            # Пакет с ресурсами фреймворка 
+│ │     └── config.properties                                                 # Настройки конфигурации
 │ │
-│ └── test/
-│ ├── java/
-│ │ ├── api/
-│ │ │ └── tests/
-│ │ │ CarsApiTest.java # API-тесты для Cars
-│ │ │ UsersApiTest.java # API-тесты для Users
-│ │ │
-│ │ └── ui/
-│ │ ├── tests/ # UI-тесты
-│ │ │ AllPostTest.java # E2E-тест полного цикла
-│ │ │ BaseTest.java # Базовый тестовый класс
-│ │ │ CarsTest.java # Тесты для Cars
-│ │ │ HousesTest.java # Тесты для Houses
-│ │ │ LoginTest.java # Тесты авторизации
-│ │ │
-│ │ └── utils/ # Утилиты
-│ │ PropertyReader.java # Чтение config.properties
-│ │ RetryAnalyzer.java # Повторный запуск тестов
-│ │ RetryTransformer.java # Трансформер для Retry
-│ │ TestListener.java # Слушатель событий TestNG
 │ │
-│ └── resources/
-│ allure.properties # Настройки Allure
-│ config.properties # Конфигурация (email, password)
-│ CrossBrowserTestSuite.xml # Suite для кросс-браузерных тестов
-│ log4j2.xml # Конфигурация логирования
-│ NegativeTestSuite.xml # Suite для негативных тестов
-│ PositiveTestSuite.xml # Suite для позитивных тестов
-│ RegressionTestSuite.xml # Suite для регрессионных тестов
-│ SecurityTestSuite.xml # Suite для тестов безопасности
-│ SmokeTestSuite.xml # Suite для smoke-тестов
+│ │
+│ │
+│ └── test/                                                                   
+│   ├── java/
+│   │ ├── listeners/                                                          # Пакет для слушателей фреймворка
+│   │ │ ├── RetryTransformer.java                                             # Утилита перезапуска тестов при падении
+│   │ │ └── TestListener.java                                                 # Утилита слушатель тестов 
+│   │ │ 
+│   │ ├── tests/                                                              # Пакет с тестами фреймворка 
+│   │ │ ├── api/                                                              # Пакет с API тестами 
+│   │ │ │ ├── cars/                                                           # Пакет с API тестами по авто
+│   │ │ │ │ └── CarsApiTest.java                                              # API-тесты для Cars
+│   │ │ │ ├── login/                                                          # Пакет с API тестами авторизации
+│   │ │ │ │ └── LoginApiTest.java                                             # API-тесты авторизации
+│   │ │ │ └── users/                                                          # Пакет с API тестами по пользователям
+│   │ │ │   └── UsersApiTest.java                                             # API-тесты для Users
+│   │ │ └── ui/                                                               # Пакет с UI тестами 
+│   │ │   ├── allPost/                                                        # Пакет с UI тестами "all Post"
+│   │ │   │ └── AllPostTest.java                                              # UI тесты "AllPost"
+│   │ │   ├── base/                                                           # Пакет с базовыми UI тестами
+│   │ │   │ └── BaseTest.java                                                 # Универсальный базовый UI тест
+│   │ │   ├── cars/                                                           # Пакет с UI тестами по авто
+│   │ │   │ └── CarsTest.java                                                 # UI тесты по авто
+│   │ │   ├── houses/                                                         # Пакет с UI тестами по домам
+│   │ │   │ └── HousesTest.java                                               # UI тесты по домам
+│   │ │   ├── login/                                                          # Пакет с UI тестами по авторизации
+│   │ │   │ └── LoginTest.java                                                # UI тесты авторизации
+│   │ │   └── users/                                                          # Пакет с UI тестами по пользователям
+│   │ │     ├── CreateUserTest.java                                           # UI тесты по созданию дома
+│   │ │     ├── UsersAddMoneyTest.java                                        # UI тесты по пополнению баланса
+│   │ │     ├── UsersReadAllTest.java                                         # UI тесты поиска пользователя по ID
+│   │ │     └── UsersReadUserWithCarsTest.java                                # UI тесты поиска пользователя с авто
+│   │ │ 
+│   │ └── utils/                                                              # Утилиты фреймворка
+│   │   ├── PropertyReader.java                                               # Утилита чтения настроек конфигурации 
+│   │   └── RetryAnalyzer.java                                                # Утилита перезапуска тестов при падении
+│   │
+│   └── resources/                                                            # Пакет с ресурсами фреймворка
+│     ├── AllTestSuite.xml                                                    # Сюит для запуска всех тестов
+│     ├── allure.properties                                                   # Настройки Allure
+│     ├── ApiTestSuite.xml                                                    # Сюит для запуска API тестов
+│     ├── config.properties                                                   # Настройки конфигураций
+│     ├── CrossBrowserTestSuite.xml                                           # Сюит для запуска кросс-браузерного тестирования
+│     ├── log4j2.xml                                                          # Логгер
+│     ├── NegativeTestSuite.xml                                               # Сюит для запуска негативных тестов
+│     ├── PositiveTestSuite.xml                                               # Сюит для запуска позитивных тестов
+│     ├── RegressionTestSuite.xml                                             # Сюит для запуска регрессионного тестирования
+│     ├── SecurityTestSuite.xml                                               # Сюит для запуска тестирования безопасности
+│     └── SmokeTestSuite.xml                                                  # Сюит для запуска дымового тестирования
+│
+
 ```
 ---
 
@@ -189,21 +248,74 @@ PFLB_Test-API/
 
 Каждая страница представлена отдельным классом, инкапсулирующим локаторы и действия:
 
-- `LoginPage` - страница авторизации
-- `AllPostPage` - агрегированная страница создания сущностей
-- `AllDeletePage` - страница удаления сущностей
-- `Users*Page`, `Cars*Page`, `Houses*Page` — специализированные страницы модулей
+- `BasePage` - специализированная страница с базовыми конфигурациями для всех страниц.
+- `LoginPage` - страница авторизации.
+- `AllPostPage` - агрегированная страница создания сущностей.
+- `AllDeletePage` - страница удаления сущностей.
+- `CarsBuyOrSellCarPage` - страница покупки/продажи авто.
+- `CarsCreateNewPage` - страница создания авто.
+- `CarsReadAllPage` - страница поиска авто.
+- `HousesCreateNewPage` - страница создания дома.
+- `HousesReadAllPage` - страница поиска дома.
+- `HousesReadOneByIdPage` - страница поиска дома по ID.
+- `HousesSettleOrEvictUser` - страница урегулирование спора или выселение пользователя.
+- `SwaggerDevJsDeprecatedPage` - страница "Swagger Dev Js Deprecated".
+- `SwaggerDevMvcPage` - страница "Swagger Dev Mvc".
+- `SwaggerMasterMvcPage` страница "Swagger Master Mvc".
+- `UsersAddMoneyPage` - страница пополнения ДС.
+- `UsersBuyOrSellCarPage` - страница пользователей, покупающих или продающих автомобили.
+- `UsersCreateNewPage` - страница создания нового пользователя.
+- `UsersIssueALoanPage` - страница оформления займа пользователями.
+- `UsersReadAllPage` - страница редактирования пользователя.
+- `UsersReadUserWithCarsPage` - страница поиска пользователя с авто.
+- `UsersSettleToHousePage` - Страница перехода к дому через пользователя.
+
+```java
+public class HousesReadOneByIdPage extends BasePage {
+    private final SelenideElement HOUSE_INPUT = $("#house_input");
+    private final SelenideElement READ = $x(" //button[@class='tableButton btn btn-primary']");
+    private final SelenideElement ID_FOUND_HOUSE = $x("//table[1]//tbody//td[1]");
+
+    @Override
+    @Step("Открытие страницы 'Houses -> Read one by ID'")
+    public HousesReadOneByIdPage openPage() {
+        log.info("Opening the 'Houses -> Read one by ID' start page");
+        open(BASE_URL + "/#/read/house");
+        return this;
+    }
+
+    @Step("Заполнение поля поиска объекта недвижимости по ID на странице 'Houses -> Read one by ID'")
+    public HousesReadOneByIdPage fillingInTheHouseInputSearchField(String houseInputSearch) {
+        log.info("Filling in the {house_input} search field");
+        HOUSE_INPUT.setValue(houseInputSearch);
+        return this;
+    }
+}
+```
 
 ### Chain of Invocations
 
 Методы возвращают `this` для построения цепочек вызовов:
 
 ```java
-allPostPage.openPage()
-           .isPageOpened()
-           .createUser(user)
-           .addMoneyToUser(userId, 10000)
-           .createCar(car);
+@Step("Заполнение поля 'Password' значением: ******")
+public LoginPage enterPassword(@Param(mode = Parameter.Mode.MASKED) String password) {
+  log.info("Filling in the 'Password' field");
+  SelenideLogger.removeListener("AllureSelenide");
+  INPUT_PASSWORD.setValue(password);
+  SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+          .screenshots(true)
+          .savePageSource(false));
+  return this;
+}
+
+
+public void checkForTheEmailField() {
+  loginPage.openPage()
+          .enterEmail("notemail.com")
+          .enterPassword("12345");
+  assertEquals(loginPage.getErrorMessageEmail(), "incorrect Email");
+}
 ```
 
 ### Value Object (DTO)
@@ -229,19 +341,152 @@ User user = User.builder()
 - **CarsWrapper** - специализированный wrapper для операций с авто
 - **InputCars** - специализированный wrapper для операций с авто
 - **InputHousesCreatedNewOneTable** - специализированный wrapper для операций с домами
+- **SortButton** - специализированный wrapper для сортировки
+- **TableColumn** - специализированный wrapper для столбцов таблиц
+
+```java
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j2
+public class InputHousesCreateNewOneTable {
+  private String fieldName;
+  private String id;
+  private static final String INPUT_PATTERN_XPATH_ON_HOUSES_CREATE_NEW =
+          "//*[contains(text(), '%s')]/ancestor::section[@class='workspace']//parent::div//input[@id='%s']";
+
+  @Step("Заполнение полей 'Input' первой таблицы в зависимости параметров наименования поля и id на странице:" +
+          " 'Houses --> CreateNew'")
+  public void writeInputHousesCreateNewOneTable(String text) {
+    log.info("Filling the 'Input' fields of the first table depending on the field name '{}' and id '{}' " +
+            "parameters on the page: 'Houses --> CreateNew'", fieldName, id);
+    String formattedXpath = String.format(INPUT_PATTERN_XPATH_ON_HOUSES_CREATE_NEW, fieldName, id);
+    $x(formattedXpath).setValue(text);
+  }
+}
+```
 
 ### Steps
 Часть бизнес-логики вынесена в Step-классы (LoginStep, BaseStep) для переиспользования между тестами.
 
+```java
+public class LoginStep extends BaseStep {
+
+  LoginPage loginPage = new LoginPage();
+
+  @Step("Авторизация пользователя с валидными данными логина: ****** и пароля: ****** с кликом по кнопке 'GO'")
+  public LoginStep successfulAuthorization(
+          @Param(mode = Parameter.Mode.MASKED) String email,
+          @Param(mode = Parameter.Mode.MASKED) String password){
+    loginPage.successfulAuthorizationSwitchToAlert(email,password);
+    loginPage = new LoginPage();
+    return this;
+  }
+}
+```
+
 ### Loadable Page
-Каждая страница проверяет свою загрузку через метод isPageOpened() с retry-логикой до нескольких попыток.
+Страница проверяет свою загрузку через метод openPage() с retry-логикой до нескольких попыток.
+
+```java
+public AllDeletePage() {super();}
+@Override
+@Step("Открытие страницы 'All DELETE'.")
+public AllDeletePage openPage() {
+  log.info("Opening 'All DELETE' page");
+  String targetUrl = BASE_URL + "/#/delete/all";
+
+  // Пытаемся открыть страницу до 3 раз
+  for (int attempt = 1; attempt <= 3; attempt++) {
+    log.info("Attempt {} to open page: {}", attempt, targetUrl);
+    com.codeborne.selenide.WebDriverRunner.getWebDriver().get(targetUrl);
+    try {
+      $x(BTN_DELETE_USER).shouldBe(visible, java.time.Duration.ofSeconds(15));
+      log.info("Page loaded successfully on attempt {}", attempt);
+      return this;
+    } catch (Exception e) {
+      log.warn("Attempt {} failed, retrying...", attempt);
+      if (attempt == 3) {
+        throw e;
+      }
+      sleep(1000);
+    }
+  }
+  return this;
+}
+```
 
 ### Retry Mechanism
 Автоматический перезапуск упавших тестов через RetryAnalyzer + RetryTransformer
 
+```java
+public class RetryAnalyzer implements IRetryAnalyzer {
+  private static final org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(RetryAnalyzer.class);
+  private int count = 0;
+  private static int maxTry = 3;
+  @Override
+  public boolean retry(ITestResult iTestResult) {
+    if (!iTestResult.isSuccess()) {
+      if (count < maxTry) {
+        count++;
+        iTestResult.setStatus(ITestResult.FAILURE);
+        log.warn("The test is repeated!!!");
+        return true;
+      } else {
+        iTestResult.setStatus(ITestResult.FAILURE);
+      }
+    } else {
+      iTestResult.setStatus(ITestResult.SUCCESS);
+    }
+    return false;
+  }
+}
+```
+
+```java
+public class RetryTransformer implements IAnnotationTransformer {
+  @Override
+  public void transform(ITestAnnotation annotation, Class testClass,
+                        Constructor testConstructor, Method testMethod) {
+    annotation.setRetryAnalyzer(RetryAnalyzer.class);
+  }
+}
+```
+
 ### DataProvider Pattern
 Использование TestNG @DataProvider для параметризации тестов с различными наборами данных (позитивные/негативные
 сценарии).
+
+```java
+@DataProvider(name = "Тестовые данные для негативного создания авто")
+public Object[][] carDataNegative() {
+  return new Object[][] {
+          //Пустой тип двигателя
+          {Car.builder().engineType("").mark("Hyundai").model("Solaris").price("4999.99").build(),
+                  "Status: Invalid request data"},
+          //Тип двигателя не соответствует допустимому значению
+          {Car.builder().engineType("Trash").mark("Hyundai").model("Solaris").price("4999.99").build(),
+                  "Status: Invalid request data"},
+          //Пустая марка
+          {Car.builder().engineType("Diesel").mark("").model("Discovery").price("10999.99").build(),
+                  "Status: Invalid request data"},
+          //Пустая модель
+          {Car.builder().engineType("Electric").mark("Tesla").model("").price("9999999.99").build(),
+                  "Status: Invalid request data"},
+          //Отрицательная стоимость
+          {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("-5000.00").build(),
+                  "Status: Invalid request data"},
+          //Нулевая стоимость
+          {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("0.00").build(),
+                  "Status: Invalid request data"},
+          //Слишком высокая стоимость
+          {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("100000000000000000.00").
+                  build(), "Status: Invalid request data"},
+          //Нечисловое значение в атрибуте стоимость
+          {Car.builder().engineType("Electric").mark("Hyundai").model("Solaris").price("Жига").build(),
+                  "Status: Invalid request data"},
+  };
+}
+```
 
 ---
 

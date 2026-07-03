@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import tests.ui.BaseTest;
+import tests.ui.base.BaseTest;
 import ui.dto.cars.Car;
 import ui.dto.users.UserCar;
 import java.util.*;

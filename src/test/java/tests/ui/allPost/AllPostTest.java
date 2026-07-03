@@ -3,7 +3,7 @@ package tests.ui.allPost;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import tests.ui.BaseTest;
+import tests.ui.base.BaseTest;
 import ui.dto.cars.Car;
 import ui.dto.cars.Parking;
 import ui.dto.houses.House;

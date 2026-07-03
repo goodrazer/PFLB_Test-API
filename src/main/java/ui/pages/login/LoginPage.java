@@ -2,6 +2,7 @@ package ui.pages.login;
 
 import com.codeborne.selenide.ClickMethod;
 import com.codeborne.selenide.ClickOptions;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Param;
@@ -53,6 +54,26 @@ public class LoginPage extends BasePage {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(false));
+        return this;
+    }
+
+    @Step("Авторизация пользователя с валидными данными логина: ****** и пароля: ****** с кликом по кнопке 'GO' с " +
+            "переходом на алерт")
+    public LoginPage successfulAuthorizationSwitchToAlert(
+            @Param(mode = Parameter.Mode.MASKED) String email,
+            @Param(mode = Parameter.Mode.MASKED) String password) {
+        log.info("User authorization with valid data switch to alert");
+        SelenideLogger.removeListener("AllureSelenide");
+        open(BASE_URL);
+        INPUT_EMAIL.setValue(email);
+        INPUT_PASSWORD.setValue(password);
+        GO_BUTTON.click();
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(false));
+        Selenide.sleep(2000);
+        Selenide.confirm("Successful authorization");
+        Selenide.sleep(1000);
         return this;
     }
 

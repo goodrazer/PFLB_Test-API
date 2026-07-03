@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import static org.testng.AssertJUnit.assertEquals;
 import io.qameta.allure.SeverityLevel;
-import utils.PropertyReader;
 
 @Log4j2
 @Epic("Cars")
@@ -29,16 +28,18 @@ import utils.PropertyReader;
 @Link(value = "docs.google", name = "Чек-лист PFLB")
 public class CarsApiTest extends BaseAdapter {
 
-    private static final String BASE_URL = PropertyReader.getProperty("baseUrl");
+    private static final String CARS_URL = "http://82.142.167.37:4879";
     private AuthHelper authHelper;
     private RequestSpecification authSpec;
 
+
     @BeforeMethod
     public void setup() {
-        authHelper = new AuthHelper(BASE_URL);
+        authHelper = new AuthHelper(CARS_URL);
         authHelper.loginAsJson(validEmail,validPassword);
         authSpec = authHelper.getAuthenticatedSpec();
     }
+
 
     SoftAssert softAssert = new SoftAssert();
 
@@ -76,12 +77,14 @@ public class CarsApiTest extends BaseAdapter {
         Integer createdId = rs.getId();
         softAssert.assertNotNull(createdId, "Сервер не вернул ID созданного автомобиля");
         softAssert.assertTrue(createdId > 0, "ID должен быть положительным числом");
+
         //2. ЧТЕНИЕ (GET)
         log.info("Check created auto with id: {}", createdId);
         GetCarRs getCarRs = CarAdapter.getCar(createdId, authSpec);
         softAssert.assertEquals(createdId, getCarRs.getId(),
                 "ID созданного авто должен совпадать с запрошенным");
         softAssert.assertEquals("Wrangler", getCarRs.getModel());
+
         //3. Обновление (PUT) ---
         log.info("Update auto: {} {}. Then this auto is: {} {}", rqCreateCar.getMark(), rqCreateCar.getModel(),
                 rqUpdateCar.getMark(), rqUpdateCar.getModel());
@@ -89,6 +92,7 @@ public class CarsApiTest extends BaseAdapter {
         // Проверяем, что обновление применилось через GET
         GetCarRs updatedCar = CarAdapter.getCar(createdId, authSpec);
         softAssert.assertEquals("Grand Cherokee", updatedCar.getModel());
+
         //4. УДАЛЕНИЕ (DELETE) ---
         log.info("Delete auto with id: {}", createdId);
         CarAdapter.deleteCar(createdId, authSpec);
@@ -98,6 +102,7 @@ public class CarsApiTest extends BaseAdapter {
         responseAfterDelete.then()
                 .assertThat()
                 .statusCode(204);
+
         softAssert.assertAll();
     }
 
@@ -130,6 +135,7 @@ public class CarsApiTest extends BaseAdapter {
         //Можно проверить что автомобилей больше 100 - Опционально
         softAssert.assertTrue(cars.size() > 100,
                 "Количество автомобилей должно быть больше 100, но найдено: " + cars.size());
+
         softAssert.assertAll();
     }
 

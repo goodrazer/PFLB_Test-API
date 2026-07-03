@@ -4,7 +4,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import tests.ui.BaseTest;
+import tests.ui.base.BaseTest;
 import ui.dto.users.User;
 
 @Epic("Users")
@@ -72,6 +72,7 @@ public class CreateUserTest extends BaseTest {
      6. Проверка генерации ID
      7. Проверка наличия пользователя в списке
      */
+
     @Test(
             testName = "АТ.02/3.1. Создание пользователя с валидными данными",
             description = "Проверка успешного создания пользователя и его отображения в системе",
