@@ -43,7 +43,6 @@ public class LoginApiTest extends BaseAdapter {
     @Link(value = "docs.google", name = "Чек-лист PFLB")
     @TmsLink("TestCaseLink")
     @Issue("BugLink")
-    @Flaky
     @Owner("Malevaniy Anton")
     public void checkingWhetherAnAccessTokenInTheLoginResponseAPI() {
         Response loginResponse = loginAdapter.authorizationApi(validEmail, validPassword);

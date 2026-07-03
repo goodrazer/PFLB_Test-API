@@ -24,7 +24,7 @@ public class LoginAdapter extends BaseAdapter {
                 .password(password)
                 .build();
         return given()
-                .spec(baseRequestSpec)
+                .spec(baseRequestSpecMasked)
                 .body(loginRequest)
                 .when()
                 .post("/login");
@@ -46,7 +46,7 @@ public class LoginAdapter extends BaseAdapter {
     public Response sendingAnAPIAuthorizationRequestWithAnEmptyRequestBody() {
         log.info("Sending an API authorization request with an empty request body");
         return given()
-                .spec(baseRequestSpec)
+                .spec(baseRequestSpecMasked)
                 .body("")
                 .when()
                 .post("/login");
