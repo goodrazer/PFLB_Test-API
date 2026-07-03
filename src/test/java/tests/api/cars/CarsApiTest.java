@@ -28,14 +28,13 @@ import io.qameta.allure.SeverityLevel;
 @Link(value = "docs.google", name = "Чек-лист PFLB")
 public class CarsApiTest extends BaseAdapter {
 
-    private static final String CARS_URL = "http://82.142.167.37:4879";
     private AuthHelper authHelper;
     private RequestSpecification authSpec;
 
 
     @BeforeMethod
     public void setup() {
-        authHelper = new AuthHelper(CARS_URL);
+        authHelper = new AuthHelper(BASE_API_URL);
         authHelper.loginAsJson(validEmail,validPassword);
         authSpec = authHelper.getAuthenticatedSpec();
     }

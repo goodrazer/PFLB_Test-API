@@ -16,7 +16,7 @@ import utils.TestListener;
 @Listeners(TestListener.class)
 public class BaseAdapter {
 
-    public static final String BASE_URL = PropertyReader.getProperty("baseUrl");
+    public static final String BASE_API_URL = PropertyReader.getProperty("baseAPIUrl");
     protected String validEmail = System.getProperty("Email", PropertyReader.getProperty("email"));
     protected String validPassword = System.getProperty("Password", PropertyReader.getProperty("password"));
 
@@ -28,9 +28,10 @@ public class BaseAdapter {
 
     // Накидал общую спецификацию запроса, устанавливает базовый URL и тип данных.
     public static final RequestSpecification baseRequestSpec = new RequestSpecBuilder()
-            .setBaseUri(BASE_URL)
+            .setBaseUri(BASE_API_URL)
             .setContentType(ContentType.JSON)
             .build();
+
 
     public static ResponseSpecification ok200 = new ResponseSpecBuilder()
             .expectStatusCode(200)

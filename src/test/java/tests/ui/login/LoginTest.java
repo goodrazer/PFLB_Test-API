@@ -183,7 +183,7 @@ public class LoginTest extends BaseTest {
         Selenide.sleep(3000);
         loginPage.clickUsersButton()
                 .clickCreateNewButton();
-        assertTrue(usersCreateNewPage.isVisibleElementIDWillBeGenerated(), "Ошибка!!! Операции доступны для неавторизованного пользователя");
+        assertFalse(usersCreateNewPage.isVisibleElementIDWillBeGenerated(), "Ошибка!!! Операции доступны для неавторизованного пользователя");
     }
 
     @Test(testName = "АТ.01.08.Проверка отображения сообщений об ошибке при пустых значениях 'Email' и 'Password'",
