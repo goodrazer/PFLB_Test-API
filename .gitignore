@@ -13,3 +13,6 @@ allure/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Config files with sensitive data
+config.properties

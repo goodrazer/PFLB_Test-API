@@ -1,13 +1,16 @@
 package tests.ui.users;
 
 import io.qameta.allure.*;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.ui.base.BaseTest;
 import ui.dto.users.User;
+
 import static org.testng.Assert.assertEquals;
 
+@Slf4j
 @Epic("Users")
 @Feature("Пополнение баланса")
 @Owner("Zvezdina Aleksandra")
@@ -30,6 +33,7 @@ public class UsersAddMoneyTest extends BaseTest {
                 {999999.99}
         };
     }
+
     @DataProvider(name = "invalidAddMoneyData")
     public Object[][] invalidAddMoneyData() {
         return new Object[][]{
@@ -39,6 +43,7 @@ public class UsersAddMoneyTest extends BaseTest {
                 {"1", "abc", INCORRECT_INPUT_STATUS}
         };
     }
+
     private String createTestUser() {
         usersCreateNewPage.openPage();
         User user = User.builder()
@@ -72,23 +77,30 @@ public class UsersAddMoneyTest extends BaseTest {
 
         loginStep.successfulAuthorization(validEmail, validPassword);
         String userId = createTestUser();
+        // Проверяем, что пользователь существует в UI до пополнения
         usersReadAllPage.openPage();
         boolean userExistsBefore = usersReadAllPage.isUserPresentById(userId);
+        // Пополняем баланс
         usersAddMoneyPage.openPage();
         String oldStatus = usersAddMoneyPage.getStatusMessage();
         usersAddMoneyPage
                 .fillForm(userId, String.valueOf(amount))
                 .clickPushToApi();
         String actualStatus = usersAddMoneyPage.waitForStatusChange(oldStatus);
+        // Получаем отображаемый баланс из UI
         String balanceText = usersAddMoneyPage.getMoneyDisplayText();
         double actualBalance = Double.parseDouble(
                 balanceText.replaceAll("[^\\d.]", "")
         );
+
         usersReadAllPage.openPage();
         boolean userExistsAfter = usersReadAllPage.isUserPresentById(userId);
+
         double initialBalance = 100.0;
         double expectedBalance = initialBalance + amount;
+
         SoftAssert softAssert = new SoftAssert();
+        // Проверки UI
         softAssert.assertEquals(
                 actualStatus,
                 SUCCESS_ADD_MONEY_STATUS,
@@ -108,6 +120,42 @@ public class UsersAddMoneyTest extends BaseTest {
                 userExistsAfter,
                 "Пользователь не найден в таблице ПОСЛЕ пополнения"
         );
+        // Проверка в БД
+        int userIdInt = Integer.parseInt(userId);
+        User dbUser = null;
+        // Делаем несколько попыток на случай задержки синхронизации
+        for (int attempt = 0; attempt < 5; attempt++) {
+            try {
+                dbUser = dbHelper.getUserById(userIdInt);
+                if (dbUser != null) {
+                    break;
+                }
+            } catch (Exception e) {
+                log.warn("Попытка {} получить пользователя из БД не удалась: {}", attempt + 1, e.getMessage());
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        softAssert.assertNotNull(dbUser, "Пользователь не найден в БД после пополнения");
+        if (dbUser != null) {
+            log.info("=== Баланс в БД ===");
+            log.info("ID: {}", userIdInt);
+            log.info("Баланс из БД: {}", dbUser.getMoney());
+            log.info("Ожидаемый баланс: {}", expectedBalance);
+
+            softAssert.assertEquals(
+                    dbUser.getMoney(),
+                    expectedBalance,
+                    0.001,
+                    "Баланс в БД не совпадает с ожидаемым"
+            );
+        }
+
         softAssert.assertAll();
     }
 
@@ -130,6 +178,7 @@ public class UsersAddMoneyTest extends BaseTest {
                 .fillForm(userId, money)
                 .clickPushToApi();
         String actualStatus = usersAddMoneyPage.waitForStatusChange(oldStatus);
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(
                 actualStatus,
