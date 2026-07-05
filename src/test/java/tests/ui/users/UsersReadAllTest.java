@@ -1,9 +1,12 @@
 package tests.ui.users;
 
+import api.services.user.UserService;
 import io.qameta.allure.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.Test;
 import tests.ui.base.BaseTest;
+import ui.dto.users.UserGenerated;
+import ui.helpers.UserFactory;
 import ui.wrappers.SortButton;
 import ui.wrappers.TableColumn;
 
@@ -11,11 +14,8 @@ import ui.wrappers.TableColumn;
 @Epic("Users")
 public class UsersReadAllTest extends BaseTest {
 
-    private final String NEW_USER_FIRST_NAME = "A";
-    private final String NEW_USER_LAST_NAME = "B";
-    private final String NEW_USER_AGE = "10";
-    private final String NEW_USER_SEX = "MALE";
-    private final String NEW_USER_MONEY = "59";
+    private final UserService userService = new UserService();
+    UserGenerated userGenerated = UserFactory.getUserGenerated();
 
     @Test(testName = "АТ.05.01. Проверка открытия страницы \"Users -> Read all\" со всеми атрибутами",
             description = "Проверка открытия страницы \"Users -> Read all\" со всеми атрибутами",
@@ -393,23 +393,15 @@ public class UsersReadAllTest extends BaseTest {
                 .isPageOpened()
                 // проверка, что будущего пользователя нет в таблице
                 .checkUserInTable(null,
-                        NEW_USER_FIRST_NAME,
-                        NEW_USER_LAST_NAME,
-                        NEW_USER_AGE,
-                        NEW_USER_SEX,
-                        NEW_USER_MONEY,
-                        false)
-                // создание нового пользователя через API
-                .createUserWithApiAccess(validEmail, validPassword, NEW_USER_FIRST_NAME, NEW_USER_LAST_NAME, NEW_USER_AGE, NEW_USER_SEX, NEW_USER_MONEY)
-                // нажатие на кнопку обновления таблицы
-                .reloadButtonClick()
+                        userGenerated,
+                        false);
+        // создание нового пользователя через API
+        userService.createUserWithApiAccess(userGenerated);
+        // нажатие на кнопку обновления таблицы
+        usersReadAllPage.reloadButtonClick()
                 // проверка, что новый пользователь есть в таблице
                 .checkUserInTable(usersReadAllPage.newUserId,
-                        NEW_USER_FIRST_NAME,
-                        NEW_USER_LAST_NAME,
-                        NEW_USER_AGE,
-                        NEW_USER_SEX,
-                        NEW_USER_MONEY,
+                        userGenerated,
                         true);
     }
 }

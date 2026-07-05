@@ -24,6 +24,7 @@ public class UsersApiAdapter {
     private static final String USERS_ENDPOINT = "/users";
     private static final String USER_INFO_ENDPOINT = "/user/{userId}/info";
     private static final String USER_MONEY_ENDPOINT = "/user/{userId}/money/{amount}";
+    private static final String USER_BUY_CAR_ENDPOINT = "/user/{userId}/buyCar/{carId}";
     // Gson для сериализации/десериализации JSON
     private final Gson gson;
     // JWT токен для авторизации
@@ -201,6 +202,25 @@ public class UsersApiAdapter {
                 .response();
     }
 
+    /**
+     * Покупка машины пользователю (POST /user/{userId}/money/{amount}).
+     * @param userId ID пользователя
+     * @param carId  ID пользователя
+     * @return Ответ сервера
+     */
+    public Response buyCar(String userId, String carId, PersonDto user) {
+        log.info("Buy car with id = \"" + carId + "\" for user with id = \"" + userId + "\"; in API");
+        return givenAuthenticated()
+                .body(user)
+                .when()
+                .post(USER_BUY_CAR_ENDPOINT, userId, carId)
+                .then()
+                .extract()
+                .response();
+    }
+
     // Getters
-    public String getJwtToken() {return jwtToken;}
+    public String getJwtToken() {
+        return jwtToken;
+    }
 }

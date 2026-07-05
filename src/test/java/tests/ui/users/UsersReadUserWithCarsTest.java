@@ -1,26 +1,27 @@
 package tests.ui.users;
 
+import api.services.car.CarService;
+import api.services.user.UserService;
 import io.qameta.allure.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.ui.base.BaseTest;
+import ui.dto.cars.CarGenerated;
+import ui.dto.users.UserGenerated;
+import ui.helpers.CarFactory;
+import ui.helpers.UserFactory;
 import ui.wrappers.TableColumn;
 
 @Log4j2
 @Epic("Users")
 public class UsersReadUserWithCarsTest extends BaseTest {
 
-    public static String NEW_CAR_ENGINE_TYPE = "PHEV";
-    public static String NEW_CAR_MARK = "Известная";
-    public static String NEW_CAR_MODEL = "Популярная";
-    public static String NEW_CAR_PRICE = "6";
     private final String NEW_USER_ID = "9988775";
-    private final String NEW_USER_FIRST_NAME = "A";
-    private final String NEW_USER_LAST_NAME = "B";
-    private final String NEW_USER_AGE = "10";
-    private final String NEW_USER_SEX = "MALE";
-    private final String NEW_USER_MONEY = "64";
+    private final UserService userService = new UserService();
+    private final CarService carService = new CarService();
+    UserGenerated userGenerated = UserFactory.getUserGenerated();
+    CarGenerated carGenerated = CarFactory.getCarGenerated();
 
     @Test(testName = "АТ.06.01. Проверка открытия страницы \"Users -> Read user with cars\" со всеми атрибутами",
             description = "Проверка открытия страницы \"Users -> Read user with cars\" со всеми атрибутами",
@@ -116,23 +117,18 @@ public class UsersReadUserWithCarsTest extends BaseTest {
     public void checkDataInTableUserWithoutCar() {
         loginStep.successfulAuthorization(validEmail, validPassword);
         usersReadUserWithCarsPage.openPage()
-                .isPageOpened()
+                .isPageOpened();
                 /* авторизация на прямую в API для создания нового пользователя не уходя со страницы по получению данных
                 по пользователям с машинами
                 */
-                .createUserWithApiAccess(validEmail, validPassword, NEW_USER_FIRST_NAME, NEW_USER_LAST_NAME,
-                        NEW_USER_AGE, NEW_USER_SEX, NEW_USER_MONEY)
-                // вызов данных по новому пользователю без автомобилей
-                .callDataNewUser(usersReadUserWithCarsPage.newUserId)
+        userService.createUserWithApiAccess(userGenerated);
+        // вызов данных по новому пользователю без автомобилей
+        usersReadUserWithCarsPage.callDataNewUser(userService.newUserId)
                 // проверка появления сообщения "Status: 200 ok"
                 .checkStatus("Status: 200 ok")
                 // проверка, что все данные по новому пользователю есть в таблице
-                .checkUserInTable(usersReadUserWithCarsPage.newUserId,
-                        NEW_USER_FIRST_NAME,
-                        NEW_USER_LAST_NAME,
-                        NEW_USER_AGE,
-                        NEW_USER_SEX,
-                        NEW_USER_MONEY,
+                .checkUserInTable(userService.newUserId,
+                        userGenerated,
                         null,
                         true)
                 // проверка, что таблица с машинами пустая
@@ -155,39 +151,29 @@ public class UsersReadUserWithCarsTest extends BaseTest {
     public void checkDataInTableUserWithOneCar() {
         loginStep.successfulAuthorization(validEmail, validPassword);
         usersReadUserWithCarsPage.openPage()
-                .isPageOpened()
+                .isPageOpened();
                 /* создание нового пользователя на прямую в API не уходя со страницы по получению данных
                 по пользователям с машинами
                 */
-                .createUserWithApiAccess(validEmail, validPassword, NEW_USER_FIRST_NAME, NEW_USER_LAST_NAME,
-                        NEW_USER_AGE, NEW_USER_SEX, NEW_USER_MONEY)
-                // создание нового автомобиля
-                .createCarWithApiAccess(validEmail, validPassword, NEW_CAR_ENGINE_TYPE, NEW_CAR_MARK, NEW_CAR_MODEL,
-                        NEW_CAR_PRICE)
-                // покупка нового автомобиля пользователю
-                .buyCarToNewUserWithApiAccess(validEmail, validPassword, usersReadUserWithCarsPage.newCarId,
-                        usersReadUserWithCarsPage.newUserId, NEW_USER_FIRST_NAME, NEW_USER_LAST_NAME, NEW_USER_AGE,
-                        NEW_USER_SEX, NEW_USER_MONEY)
-                // вызов данных по новому пользователю c одним автомобилем
-                .callDataNewUser(usersReadUserWithCarsPage.newUserId)
+        userService.createUserWithApiAccess(userGenerated);
+        // создание нового автомобиля
+        carService.createCarWithApiAccess(carGenerated);
+        // покупка нового автомобиля пользователю
+        userService.buyCarToNewUserWithApiAccess(carService.newCarId, userService.newUserId, userGenerated,
+                carGenerated);
+        // вызов данных по новому пользователю c одним автомобилем
+        usersReadUserWithCarsPage.callDataNewUser(userService.newUserId)
                 // проверка появления сообщения "Status: 200 ok"
                 .checkStatus("Status: 200 ok")
                 // проверка, что все данные по новому пользователю есть в таблице
-                .checkUserInTable(usersReadUserWithCarsPage.newUserId,
-                        NEW_USER_FIRST_NAME,
-                        NEW_USER_LAST_NAME,
-                        NEW_USER_AGE,
-                        NEW_USER_SEX,
-                        String.valueOf((Integer.parseInt(NEW_USER_MONEY) - Integer.parseInt(NEW_CAR_PRICE))),
+                .checkUserInTable(userService.newUserId,
+                        userService.userAfterBuy,
                         "1",
                         true)
                 // проверка, что в таблице с машинами есть купленный автомобиль
                 .checkCarsInTable(
-                        usersReadUserWithCarsPage.newCarId,
-                        NEW_CAR_ENGINE_TYPE,
-                        NEW_CAR_MARK,
-                        NEW_CAR_MODEL,
-                        NEW_CAR_PRICE,
+                        carService.newCarId,
+                        carGenerated,
                         true);
     }
 

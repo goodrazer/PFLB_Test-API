@@ -1,41 +1,25 @@
 package ui.pages.users;
 
-import api.adapters.cars.CarAdapter;
-import api.adapters.login.AuthHelper;
-import api.adapters.login.LoginAdapter;
-import api.adapters.users.UsersApiAdapter;
-import api.models.cars.CreateCarRq;
-import api.models.cars.CreateCarRs;
-import api.models.users.PersonDto;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import ui.dto.cars.CarGenerated;
+import ui.dto.users.UserGenerated;
 import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selenide.*;
-import static io.restassured.RestAssured.given;
 
 public class UsersReadUserWithCarsPage extends BasePage {
 
     public final SelenideElement input = $("#user_input");
     private final SelenideElement status = $("button.status");
     private final SelenideElement inputButton = $("#user_input").parent();
-    public String newUserId;
-    public String newCarId;
-    private UsersApiAdapter usersApi;
-    private AuthHelper authHelper;
-    private RequestSpecification authSpec;
-    private final String BASE_URL_API = "http://82.142.167.37:4879";
-    private LoginAdapter loginAdapter;
 
     @Override
     @Step("Открытие страницы 'Users Read User With Cars Page'.")
@@ -135,25 +119,20 @@ public class UsersReadUserWithCarsPage extends BasePage {
         return this;
     }
 
-    @Step("Поиск пользователя в таблице по данным: Id = '{id}', First Name = '{firstName}'," +
-            " Last Name = '{lastName}', Age = '{age}', Sex = '{sex}', Money = '{money}', Cars = '{numberCars}'")
+    @Step("Поиск пользователя в таблице по данным: {userGenerated}")
     public UsersReadUserWithCarsPage checkUserInTable(
             String id,
-            String firstName,
-            String lastName,
-            String age,
-            String sex,
-            String money,
+            UserGenerated userGenerated,
             String numberCars,
             boolean shouldExist
     ) {
         log.info("Check that user exist in the table with data: "
                 + (id != null ? "Id = \"" + id + "\", " : "")
-                + "First Name = \"" + firstName
-                + "\", Last Name = \"" + lastName
-                + "\", Age = \"" + age +
-                "\", Sex = \"" + sex +
-                "\", Money = \"" + money
+                + "First Name = \"" + userGenerated.getFirstName()
+                + "\", Last Name = \"" + userGenerated.getLastName()
+                + "\", Age = \"" + userGenerated.getAge() +
+                "\", Sex = \"" + userGenerated.getSex() +
+                "\", Money = \"" + userGenerated.getMoney()
                 + "\"" + (numberCars != null ? ", Cars = \"" + numberCars + "\"" : ""));
         // загружаем данные из таблицы
         List<String> ids = $$("table.tableUser tbody tr td:nth-child(1)").texts();
@@ -167,11 +146,11 @@ public class UsersReadUserWithCarsPage extends BasePage {
         boolean found = false;
         for (int i = 0; i < ids.size(); i++) {
             boolean match = ids.get(i).equals(id) &&
-                    firstNames.get(i).equals(firstName) &&
-                    lastNames.get(i).equals(lastName) &&
-                    ages.get(i).equals(age) &&
-                    sexes.get(i).equals(sex) &&
-                    moneys.get(i).equals(money);
+                    firstNames.get(i).equals(userGenerated.getFirstName()) &&
+                    lastNames.get(i).equals(userGenerated.getLastName()) &&
+                    ages.get(i).equals(userGenerated.getAge()) &&
+                    sexes.get(i).equals(userGenerated.getSex()) &&
+                    moneys.get(i).equals(userGenerated.getMoney());
             // если передан ай-ди, то ищем и по нему
             if (numberCars == null) {
                 // если передан null, то в таблице ищем в столбце Cars пустое значение
@@ -185,11 +164,11 @@ public class UsersReadUserWithCarsPage extends BasePage {
                 found = true;
                 log.info("Found user in the table with data: "
                         + (id != null ? "Id = \"" + id + "\", " : "")
-                        + "First Name = \"" + firstName
-                        + "\", Last Name = \"" + lastName
-                        + "\", Age = \"" + age +
-                        "\", Sex = \"" + sex +
-                        "\", Money = \"" + money
+                        + "First Name = \"" + userGenerated.getFirstName()
+                        + "\", Last Name = \"" + userGenerated.getLastName()
+                        + "\", Age = \"" + userGenerated.getAge() +
+                        "\", Sex = \"" + userGenerated.getSex() +
+                        "\", Money = \"" + userGenerated.getMoney()
                         + "\"" + (numberCars != null ? ", Cars = \"" + numberCars + "\"" : ""));
                 break;
             }
@@ -198,11 +177,11 @@ public class UsersReadUserWithCarsPage extends BasePage {
         if (!found) {
             log.info("User not exist in the table with data: "
                     + (id != null ? "Id = \"" + id + "\", " : "")
-                    + "First Name = \"" + firstName
-                    + "\", Last Name = \"" + lastName
-                    + "\", Age = \"" + age +
-                    "\", Sex = \"" + sex +
-                    "\", Money = \"" + money
+                    + "First Name = \"" + userGenerated.getFirstName()
+                    + "\", Last Name = \"" + userGenerated.getLastName()
+                    + "\", Age = \"" + userGenerated.getAge() +
+                    "\", Sex = \"" + userGenerated.getSex() +
+                    "\", Money = \"" + userGenerated.getMoney()
                     + "\"" + (numberCars != null ? ", Cars = \"" + numberCars + "\"" : ""));
         }
         // проверка результата поиска
@@ -210,39 +189,35 @@ public class UsersReadUserWithCarsPage extends BasePage {
             // если пользователь должен быть найден
             Assert.assertTrue(found, "В таблице не найден пользователь с данными: "
                     + (id != null ? "Id = \"" + id + "\", " : "")
-                    + "First Name = \"" + firstName
-                    + "\", Last Name = \"" + lastName
-                    + "\", Age = \"" + age +
-                    "\", Sex = \"" + sex +
-                    "\", Money = \"" + money
+                    + "First Name = \"" + userGenerated.getFirstName()
+                    + "\", Last Name = \"" + userGenerated.getLastName()
+                    + "\", Age = \"" + userGenerated.getAge() +
+                    "\", Sex = \"" + userGenerated.getSex() +
+                    "\", Money = \"" + userGenerated.getMoney()
                     + "\"" + (numberCars != null ? ", Cars = \"" + numberCars + "\"" : ""));
         } else {
             // если пользователь не должен быть найден
             Assert.assertFalse(found, "В таблице найден пользователь с данными: "
                     + (id != null ? "Id = \"" + id + "\", " : "")
-                    + "First Name = \"" + firstName
-                    + "\", Last Name = \"" + lastName
-                    + "\", Age = \"" + age +
-                    "\", Sex = \"" + sex +
-                    "\", Money = \"" + money
+                    + "First Name = \"" + userGenerated.getFirstName()
+                    + "\", Last Name = \"" + userGenerated.getLastName()
+                    + "\", Age = \"" + userGenerated.getAge() +
+                    "\", Sex = \"" + userGenerated.getSex() +
+                    "\", Money = \"" + userGenerated.getMoney()
                     + "\"" + (numberCars != null ? ", Cars = \"" + numberCars + "\"" : ""));
         }
         return this;
     }
 
-    @Step("Поиск автомобиля в таблице по данным: Id = '{id}', Engine Name = '{engineType}'," +
-            " Mark = '{mark}', Model = '{model}', Price = '{price}'")
+    @Step("Поиск автомобиля в таблице по данным: {carGenerated}")
     public UsersReadUserWithCarsPage checkCarsInTable(
             String id,
-            String engineType,
-            String mark,
-            String model,
-            String price,
+            CarGenerated carGenerated,
             boolean shouldExist
     ) {
         log.info("Check that car exist in the table with data: Id = \"" + id
-                + "\", Engine Type = \"" + engineType + "\", Mark = \"" + mark + "\", Model = \"" + model
-                + "\", Price = \"" + price + "\"");
+                + "\", Engine Type = \"" + carGenerated.getEngineType() + "\", Mark = \"" + carGenerated.getMark()
+                + "\", Model = \"" + carGenerated.getModel() + "\", Price = \"" + carGenerated.getPrice() + "\"");
         // загружаем данные из таблицы
         List<String> ids = $$("table.tableCars tbody tr td:nth-child(1)").texts();
         List<String> engineTypes = $$("table.tableCars tbody tr td:nth-child(2)").texts();
@@ -253,36 +228,37 @@ public class UsersReadUserWithCarsPage extends BasePage {
         boolean found = false;
         for (int i = 0; i < ids.size(); i++) {
             boolean match = ids.get(i).equals(id) &&
-                    engineTypes.get(i).equals(engineType) &&
-                    marks.get(i).equals(mark) &&
-                    models.get(i).equals(model) &&
-                    prices.get(i).equals(price);
+                    engineTypes.get(i).equals(carGenerated.getEngineType()) &&
+                    marks.get(i).equals(carGenerated.getMark()) &&
+                    models.get(i).equals(carGenerated.getModel()) &&
+                    prices.get(i).equals(carGenerated.getPrice());
             // если все данные совпали присваем переменной found значение true
             if (match) {
                 found = true;
                 log.info("Found car in the table with data: Id = \"" + id
-                        + "\", Engine Type = \"" + engineType + "\", Mark = \"" + mark + "\", Model = \"" + model
-                        + "\", Price = \"" + price + "\"");
+                        + "\", Engine Type = \"" + carGenerated.getEngineType() + "\", Mark = \""
+                        + carGenerated.getMark() + "\", Model = \"" + carGenerated.getModel() + "\", Price = \""
+                        + carGenerated.getPrice() + "\"");
                 break;
             }
         }
         // если совпадений не найдено пишем об этом в лог
         if (!found) {
             log.info("Car not exist in the table with data: Id = \"" + id
-                    + "\", Engine Type = \"" + engineType + "\", Mark = \"" + mark + "\", Model = \"" + model
-                    + "\", Price = \"" + price + "\"");
+                    + "\", Engine Type = \"" + carGenerated.getEngineType() + "\", Mark = \"" + carGenerated.getMark()
+                    + "\", Model = \"" + carGenerated.getModel() + "\", Price = \"" + carGenerated.getPrice() + "\"");
         }
         // проверка результата поиска
         if (shouldExist) {
             // если машина должна быть найдена
             Assert.assertTrue(found, "В таблице не найден автомобиль с данными: Id = \"" + id
-                    + "\", Engine Type = \"" + engineType + "\", Mark = \"" + mark + "\", Model = \"" + model
-                    + "\", Price = \"" + price + "\"");
+                    + "\", Engine Type = \"" + carGenerated.getEngineType() + "\", Mark = \"" + carGenerated.getMark()
+                    + "\", Model = \"" + carGenerated.getModel() + "\", Price = \"" + carGenerated.getPrice() + "\"");
         } else {
             // если машина не должна быть найдена
             Assert.assertFalse(found, "В таблице найден автомобиль с данными: Id = \"" + id
-                    + "\", Engine Type = \"" + engineType + "\", Mark = \"" + mark + "\", Model = \"" + model
-                    + "\", Price = \"" + price + "\"");
+                    + "\", Engine Type = \"" + carGenerated.getEngineType() + "\", Mark = \"" + carGenerated.getMark()
+                    + "\", Model = \"" + carGenerated.getModel() + "\", Price = \"" + carGenerated.getPrice() + "\"");
         }
         return this;
     }
@@ -311,105 +287,6 @@ public class UsersReadUserWithCarsPage extends BasePage {
         } else if (tableClass.equals("tableCars")) {
             log.info("Cars table is empty");
         }
-        return this;
-    }
-
-    @Step("Создание нового пользователя через API с данными: First Name = '{firstName}', Last Name = '{lastName}'," +
-            " Age = '{age}', Sex = '{sex}', Money = '{money}'")
-    public UsersReadUserWithCarsPage createUserWithApiAccess(
-            String login,
-            String password,
-            String firstName,
-            String lastName,
-            String age,
-            String sex,
-            String money
-    ) {
-        // Создаём адаптер
-        usersApi = new UsersApiAdapter();
-        // Авторизуемся
-        usersApi.loginAsJson(login, password);
-        // Создаём DTO пользователя
-        PersonDto newUser = PersonDto.builder()
-                .firstName(firstName)
-                .secondName(lastName)
-                .age(Integer.parseInt(age))
-                .sex(sex)
-                .money(Double.parseDouble(money))
-                .build();
-        // создание нового пользователя
-        Response newUserResponse = usersApi.createUser(newUser);
-        newUserId = newUserResponse.jsonPath().getString("id");
-        log.info("New user has been created with id = \"" + newUserId + "\"");
-        return this;
-    }
-
-    @Step("Создание нового автомобиля через API с данными: Engine Type = '{engineType}', Mark = '{mark}'," +
-            " Model = '{model}', Price = '{price}'")
-    public UsersReadUserWithCarsPage createCarWithApiAccess(
-            String login,
-            String password,
-            String engineType,
-            String mark,
-            String model,
-            String price
-    ) {
-        // Авторизуемся
-        authHelper = new AuthHelper(BASE_URL_API);
-        authHelper.loginAsJson(login, password);
-        authSpec = authHelper.getAuthenticatedSpec();
-        // Создаём DTO автомобиля
-        CreateCarRq rqCreateCar = CreateCarRq.builder()
-                .engineType(engineType)
-                .model(model)
-                .mark(mark)
-                .price(Double.parseDouble(price))
-                .build();
-        // создание нового автомобиля
-        log.info("Create new car with data: Engine Type = \"" + engineType + "\"," +
-                " Mark = \"" + mark + "\", Model = \"" + model +
-                "\", Price = \"" + price + "\"; in API");
-        CreateCarRs newCarResponse = CarAdapter.createCar(rqCreateCar, authSpec);
-        newCarId = String.valueOf(newCarResponse.getId());
-        log.info("New car has been created with id = \"" + newCarId + "\"");
-        return this;
-    }
-
-    @Step("Покупка нового автомобиля c Id = '{newCarId}' пользователю с Id = '{newUserId}' через API")
-    public UsersReadUserWithCarsPage buyCarToNewUserWithApiAccess(
-            String login,
-            String password,
-            String newCarId,
-            String newUserId,
-            String firstName,
-            String lastName,
-            String age,
-            String sex,
-            String money
-    ) {
-        loginAdapter = new LoginAdapter();
-        String accessToken = loginAdapter.obtainingATokenAPI(loginAdapter.authorizationApi(login, password));
-        // покупка нового автомобиля новому пользователю
-        log.info("Buy car with id = \"" + newCarId + "\" for user with id = \"" + newUserId + "\"; in API");
-        Map<String, Object> bodyBuyCarForUser = new HashMap<>();
-        bodyBuyCarForUser.put("id", Integer.parseInt(newUserId));
-        bodyBuyCarForUser.put("firstName", firstName);
-        bodyBuyCarForUser.put("secondName", lastName);
-        bodyBuyCarForUser.put("age", Integer.parseInt(age));
-        bodyBuyCarForUser.put("sex", sex);
-        bodyBuyCarForUser.put("money", Integer.parseInt(money));
-        Response buyCarResponse = given()
-                .baseUri("http://82.142.167.37:4879")
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-                .body(bodyBuyCarForUser)
-                .when()
-                .post("/user/" + newUserId + "/buyCar/" + newCarId)
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();
-        log.info("Car with id = \"" + newCarId + "\" has been buy by user with id = \"" + newUserId + "\"");
         return this;
     }
 }
