@@ -84,8 +84,9 @@ public class BaseTest {
             FirefoxOptions options = new FirefoxOptions();
             options.addPreference("dom.webnotifications.enabled", false);
             options.addPreference("privacy.popups.showBrowserMessage", false);
-            options.addArguments("--no-sandbo");
+            options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
 
             if (Configuration.headless) {
                 options.addArguments("-headless");
@@ -95,6 +96,10 @@ public class BaseTest {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-popup-blocking");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+
             if (Configuration.headless) {
                 options.addArguments("--headless=new");
             }
