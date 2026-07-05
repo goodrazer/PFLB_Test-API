@@ -1,17 +1,17 @@
 package ui.pages.users;
 
-import api.adapters.users.UsersApiAdapter;
-import api.models.users.PersonDto;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import io.restassured.response.Response;
 import org.testng.Assert;
+import ui.dto.users.UserGenerated;
 import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
 import utils.SortUtils;
+
 import java.time.Duration;
 import java.util.List;
+
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -19,7 +19,6 @@ import static com.codeborne.selenide.Selenide.*;
 public class UsersReadAllPage extends BasePage {
 
     public String newUserId;
-    private UsersApiAdapter usersApi;
 
     @Override
     @Step("Открытие страницы 'Users Read All Page'.")
@@ -144,20 +143,16 @@ public class UsersReadAllPage extends BasePage {
         return this;
     }
 
-    @Step("Поиск пользователя в таблице по данным: Id = '{id}', First Name = '{firstName}', Last Name = '{lastName}'," +
-            " Age = '{age}', Sex = '{sex}', Money = '{money}'")
+    @Step("Поиск пользователя в таблице по данным: {userGenerated}")
     public UsersReadAllPage checkUserInTable(
             String id,
-            String firstName,
-            String lastName,
-            String age,
-            String sex,
-            String money,
+            UserGenerated userGenerated,
             boolean shouldExist
     ) {
         log.info("Check that user exist in the table with data: " + (id != null ? "Id = \"" + id + "\", " : "")
-                + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName + "\", Age = \"" + age
-                + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
+                + "First Name = \"" + userGenerated.getFirstName() + "\"," + " Last Name = \""
+                + userGenerated.getLastName() + "\", Age = \"" + userGenerated.getAge() + "\", Sex = \""
+                + userGenerated.getSex() + "\", Money = \"" + userGenerated.getMoney() + "\"");
         // загружаем данные из таблицы
         List<String> ids = $$("tbody tr td:nth-child(1)").texts();
         List<String> firstNames = $$("tbody tr td:nth-child(2)").texts();
@@ -168,11 +163,11 @@ public class UsersReadAllPage extends BasePage {
         // поиск пользователями соответствующего введенным данным в метод
         boolean found = false;
         for (int i = 0; i < firstNames.size(); i++) {
-            boolean match = firstNames.get(i).equals(firstName) &&
-                    lastNames.get(i).equals(lastName) &&
-                    ages.get(i).equals(age) &&
-                    sexes.get(i).equals(sex) &&
-                    moneys.get(i).equals(money);
+            boolean match = firstNames.get(i).equals(userGenerated.getFirstName()) &&
+                    lastNames.get(i).equals(userGenerated.getLastName()) &&
+                    ages.get(i).equals(userGenerated.getAge()) &&
+                    sexes.get(i).equals(userGenerated.getSex()) &&
+                    moneys.get(i).equals(userGenerated.getMoney());
             // если передан ай-ди, то ищем и по нему
             if (id != null) {
                 match = match && ids.get(i).equals(id);
@@ -181,59 +176,33 @@ public class UsersReadAllPage extends BasePage {
             if (match) {
                 found = true;
                 log.info("Found user in the table with data: " + (id != null ? "Id = \"" + id + "\", " : "")
-                        + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName + "\", Age = \"" + age
-                        + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
+                        + "First Name = \"" + userGenerated.getFirstName() + "\"," + " Last Name = \""
+                        + userGenerated.getLastName() + "\", Age = \"" + userGenerated.getAge() + "\", Sex = \""
+                        + userGenerated.getSex() + "\", Money = \"" + userGenerated.getMoney() + "\"");
                 break;
             }
         }
         // если совпадений не найдено пишем об этом в лог
         if (!found) {
             log.info("User not exist in the table with data: " + (id != null ? "Id = \"" + id + "\", " : "")
-                    + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName + "\", Age = \"" + age
-                    + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
+                    + "First Name = \"" + userGenerated.getFirstName() + "\"," + " Last Name = \""
+                    + userGenerated.getLastName() + "\", Age = \"" + userGenerated.getAge() + "\", Sex = \""
+                    + userGenerated.getSex() + "\", Money = \"" + userGenerated.getMoney() + "\"");
         }
         // проверка результата поиска
         if (shouldExist) {
             // если пользователь должен быть найден
             Assert.assertTrue(found, "В таблице не найден пользователь с данными: " + (id != null ? "Id = \""
-                    + id + "\", " : "") + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName
-                    + "\", Age = \"" + age + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
+                    + id + "\", " : "") + "First Name = \"" + userGenerated.getFirstName() + "\"," + " Last Name = \""
+                    + userGenerated.getLastName() + "\", Age = \"" + userGenerated.getAge() + "\", Sex = \""
+                    + userGenerated.getSex() + "\", Money = \"" + userGenerated.getMoney() + "\"");
         } else {
             // если пользователь не должен быть найден
             Assert.assertFalse(found, "В таблице найден пользователь с данными: " + (id != null ? "Id = \""
-                    + id + "\", " : "") + "First Name = \"" + firstName + "\"," + " Last Name = \"" + lastName
-                    + "\", Age = \"" + age + "\", Sex = \"" + sex + "\", Money = \"" + money + "\"");
+                    + id + "\", " : "") + "First Name = \"" + userGenerated.getFirstName() + "\"," + " Last Name = \""
+                    + userGenerated.getLastName() + "\", Age = \"" + userGenerated.getAge() + "\", Sex = \""
+                    + userGenerated.getSex() + "\", Money = \"" + userGenerated.getMoney() + "\"");
         }
-        return this;
-    }
-
-    @Step("Создание нового пользователя через API с данными: First Name = '{firstName}', Last Name = '{lastName}'," +
-            " Age = '{age}', Sex = '{sex}', Money = '{money}'")
-    public UsersReadAllPage createUserWithApiAccess(
-            String login,
-            String password,
-            String firstName,
-            String lastName,
-            String age,
-            String sex,
-            String money
-    ) {
-        // Создаём адаптер
-        usersApi = new UsersApiAdapter();
-        // Авторизуемся
-        usersApi.loginAsJson(login, password);
-        // Создаём DTO пользователя
-        PersonDto newUser = PersonDto.builder()
-                .firstName(firstName)
-                .secondName(lastName)
-                .age(Integer.parseInt(age))
-                .sex(sex)
-                .money(Double.parseDouble(money))
-                .build();
-        // создание нового пользователя
-        Response newUserResponse = usersApi.createUser(newUser);
-        newUserId = newUserResponse.jsonPath().getString("id");
-        log.info("New user has been created with id = \"" + newUserId + "\"");
         return this;
     }
 }
