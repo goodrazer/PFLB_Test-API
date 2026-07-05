@@ -1,12 +1,14 @@
 package tests.ui.users;
 
 import io.qameta.allure.*;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.ui.base.BaseTest;
 import ui.dto.users.User;
 
+@Slf4j
 @Epic("Users")
 @Feature("Создание пользователя")
 @Owner("Zvezdina Aleksandra")
@@ -14,10 +16,8 @@ public class CreateUserTest extends BaseTest {
 
     private static final String SUCCESS_STATUS =
             "Status: Successfully pushed, code: 201";
-
     private static final String INVALID_STATUS =
             "Status: Invalid request data";
-
     //Позитивные данные для проверки успешного создания пользователя.
     @DataProvider(name = "validUserData")
     public Object[][] validUserData() {
@@ -35,17 +35,13 @@ public class CreateUserTest extends BaseTest {
                 {"", "Petrov", 34, "MALE", 123.0, INVALID_STATUS},
                 {" ", "Petrov", 34, "MALE", 123.0, INVALID_STATUS},
                 {"!@#$%", "Petrov", 34, "MALE", 123.0, INVALID_STATUS},
-
                 {"Petr", "", 34, "MALE", 123.0, INVALID_STATUS},
                 {"Petr", " ", 34, "MALE", 123.0, INVALID_STATUS},
                 {"Petr", "!@#$%", 34, "MALE", 123.0, INVALID_STATUS},
-
                 {"Petr", "Petrov", 0, "MALE", 123.0, INVALID_STATUS},
                 {"Petr", "Petrov", 200, "MALE", 123.0, INVALID_STATUS},
                 {"Petr", "Petrov", -5, "MALE", 123.0, INVALID_STATUS},
-
                 {"Petr", "Petrov", 34, null, 123.0, INVALID_STATUS},
-
                 {"Petr", "Petrov", 34, "MALE", -1.0, INVALID_STATUS},
                 {"Petr", "Petrov", 34, "MALE", -0.01, INVALID_STATUS}
         };
@@ -60,6 +56,22 @@ public class CreateUserTest extends BaseTest {
                 .money(money)
                 .build();
     }
+    /**
+     * Нормализует значение пола из БД к формату MALE / FEMALE.
+     * В БД пол хранится как true/false (или t/f), поэтому приводим.
+     */
+    private String normalizeSexFromDb(String dbSex) {
+        if (dbSex == null) return null;
+        String lower = dbSex.trim().toLowerCase();
+        // Хранится как true/false или их сокращения
+        if (lower.equals("true") || lower.equals("t") || lower.equals("1")) return "MALE";
+        if (lower.equals("false") || lower.equals("f") || lower.equals("0")) return "FEMALE";
+        // Если вдруг пришло MALE/FEMALE в другом регистре
+        if (lower.equals("male") || lower.equals("m")) return "MALE";
+        if (lower.equals("female") || lower.equals("woman")) return "FEMALE";
+        // Если что-то совсем другое – оставляем как есть (для отладки)
+        return lower.toUpperCase();
+    }
     /*
      Позитивный тест:
      Проверяет успешное создание пользователя и его появление в системе.
@@ -72,7 +84,6 @@ public class CreateUserTest extends BaseTest {
      6. Проверка генерации ID
      7. Проверка наличия пользователя в списке
      */
-
     @Test(
             testName = "АТ.02/3.1. Создание пользователя с валидными данными",
             description = "Проверка успешного создания пользователя и его отображения в системе",
@@ -115,6 +126,47 @@ public class CreateUserTest extends BaseTest {
         );
         String actualIdText = usersCreateNewPage.getUserIdText();
         String userId = actualIdText.replaceAll("\\D+", "");
+        //Проверка в БД
+        int userIdInt = Integer.parseInt(userId);
+
+        boolean userFound = false;
+        User dbUser = null;
+        // Повторяем запрос несколько раз, т.к. запись может появиться не мгновенно
+        for (int attempt = 0; attempt < 5; attempt++) {
+            try {
+                dbUser = dbHelper.getUserById(userIdInt);
+                if (dbUser != null) {
+                    userFound = true;
+                    break;
+                }
+            } catch (Exception e) {
+                log.warn("Попытка {} получить пользователя из БД не удалась: {}", attempt + 1, e.getMessage());
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        softAssert.assertTrue(userFound, "Пользователь с ID " + userId + " не найден в БД");
+        if (dbUser != null) {
+            // Логируем полученные данные для отладки
+            log.info("=== Данные из БД ===");
+            log.info("first_name: {}", dbUser.getFirstName());
+            log.info("second_name: {}", dbUser.getLastName());
+            log.info("age: {}", dbUser.getAge());
+            log.info("sex (оригинал): {}", dbUser.getSex());
+            log.info("money: {}", dbUser.getMoney());
+            // Нормализуем пол из БД для сравнения
+            String normalizedDbSex = normalizeSexFromDb(dbUser.getSex());
+            softAssert.assertEquals(dbUser.getFirstName(), firstName, "Имя в БД не совпадает");
+            softAssert.assertEquals(dbUser.getLastName(), lastName, "Фамилия в БД не совпадает");
+            softAssert.assertEquals(dbUser.getAge(), age, "Возраст в БД не совпадает");
+            softAssert.assertEquals(normalizedDbSex, sex, "Пол в БД не совпадает (нормализовано)");
+            softAssert.assertEquals(dbUser.getMoney(), money, 0.01, "Деньги в БД не совпадают");
+        }
         // Шаг 7: Проверка наличия пользователя в списке всех пользователей
         usersReadAllPage.openPage();
         softAssert.assertTrue(

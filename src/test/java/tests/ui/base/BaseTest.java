@@ -30,6 +30,7 @@ import ui.pages.users.*;
 import ui.steps.login.LoginStep;
 import utils.PropertyReader;
 import listeners.TestListener;
+import db.DBHelper;
 
 @Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {
@@ -57,6 +58,7 @@ public class BaseTest {
     protected SwaggerDevMvcPage swaggerDevMvcPage;
     protected SwaggerMasterMvcPage swaggerMasterMvcPage;
     protected CarsBuyOrSellCarPage carsBuyOrSellCarPage;
+    protected DBHelper dbHelper;
 
     @BeforeSuite(alwaysRun = true)
     public void initSuite() {
@@ -120,11 +122,14 @@ public class BaseTest {
         swaggerDevMvcPage = new SwaggerDevMvcPage();
         swaggerMasterMvcPage = new SwaggerMasterMvcPage();
         carsBuyOrSellCarPage = new CarsBuyOrSellCarPage();
+        dbHelper = new DBHelper();
     }
 
     @AfterMethod(alwaysRun = true, description = "Закрытие браузера")
     @io.qameta.allure.Description("Закрытие браузера")
     public void tearDown() {
-        Selenide.closeWebDriver();
+        if (dbHelper != null) {
+            Selenide.closeWebDriver();
+        }
     }
 }
