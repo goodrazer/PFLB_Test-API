@@ -9,6 +9,11 @@ on:
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
+    inputs:
+      test_name:
+        description: 'AllPostTest'
+        required: false
+        default: ''
 
   schedule:
     - cron: '00 12 * * *'
@@ -46,7 +51,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD -DUserDb=$USER_DB -DPasswordDb=$PASSWORD_DB test
+        # Если input пустой, запустятся все тесты. Если заполнен — только указанный.
+        run: |
+          if [ -z "${{ github.event.inputs.test_name }}" ]; then
+            mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD -DUserDb=$USER_DB -DPasswordDb=$PASSWORD_DB test
+          else
+            mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD -DUserDb=$USER_DB -DPasswordDb=$PASSWORD_DB test -Dtest="${{ github.event.inputs.test_name }}"
+          fi
 
       - name: Get Allure history
         uses: actions/checkout@v6
