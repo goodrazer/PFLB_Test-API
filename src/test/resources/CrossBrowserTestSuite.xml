@@ -29,7 +29,6 @@
         <parameter name="browser" value="chrome"/>
         <packages>
             <package name="tests.ui.allPost"/>
-            <package name="tests.ui.base"/>
             <package name="tests.ui.cars"/>
             <package name="tests.ui.houses"/>
             <package name="tests.ui.login"/>
@@ -41,7 +40,6 @@
         <parameter name="browser" value="firefox"/>
         <packages>
             <package name="tests.ui.allPost"/>
-            <package name="tests.ui.base"/>
             <package name="tests.ui.cars"/>
             <package name="tests.ui.houses"/>
             <package name="tests.ui.login"/>
