@@ -12,6 +12,7 @@
             <package name="tests.api.cars"/>
             <package name="tests.api.users"/>
             <package name="tests.api.login"/>
+            <package name="tests.api.houses"/>
         </packages>
     </test>
 
