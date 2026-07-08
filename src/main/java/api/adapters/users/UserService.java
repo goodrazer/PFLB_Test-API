@@ -1,7 +1,6 @@
-package api.services.user;
+package api.adapters.users;
 
 import api.adapters.base.BaseAdapter;
-import api.adapters.users.UsersApiAdapter;
 import api.models.users.PersonDto;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -9,7 +8,6 @@ import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
 import ui.dto.cars.CarGenerated;
 import ui.dto.users.UserGenerated;
-
 import static com.codeborne.selenide.Selenide.$;
 
 @Log4j2

@@ -2,7 +2,6 @@ package db;
 
 import lombok.extern.slf4j.Slf4j;
 import ui.dto.users.User;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

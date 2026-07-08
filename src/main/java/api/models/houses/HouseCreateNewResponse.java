@@ -1,6 +1,6 @@
 package api.models.houses;
 
-import api.adapters.houses.ParkingAdapter;
+import api.models.parking.ParkingRequest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -29,5 +29,5 @@ public class HouseCreateNewResponse {
 
     @SerializedName("parkingPlaces")
     @Expose
-    private List<ParkingAdapter> parkingPlaces;
+    private List<ParkingRequest> parkingPlaces;
 }

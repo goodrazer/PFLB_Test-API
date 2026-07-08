@@ -1,7 +1,7 @@
 package tests.ui.users;
 
-import api.services.car.CarService;
-import api.services.user.UserService;
+import api.adapters.cars.CarService;
+import api.adapters.users.UserService;
 import io.qameta.allure.*;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.DataProvider;

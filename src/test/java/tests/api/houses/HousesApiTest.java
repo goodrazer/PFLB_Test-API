@@ -1,10 +1,8 @@
 package tests.api.houses;
 
-import api.adapters.houses.HouseAdapter;
-import api.adapters.login.LoginAdapter;
 import api.models.houses.HouseCreateNewRequest;
 import api.models.houses.HouseCreateNewResponse;
-import api.adapters.houses.ParkingAdapter;
+import api.models.parking.ParkingRequest;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -37,7 +35,7 @@ public class HousesApiTest extends BaseApiTest {
                 "Токен авторизации равен null");
         softAssert.assertFalse(accessToken.trim().isEmpty(),
                 "Токен авторизации пустой");
-        ParkingAdapter expectedParking = ParkingAdapter.builder()
+        ParkingRequest expectedParking = ParkingRequest.builder()
                 .isCovered(true)
                 .isWarm(true)
                 .placesCount(24)
@@ -56,7 +54,7 @@ public class HousesApiTest extends BaseApiTest {
                 "Ошибка!!! Стоимость дома не совпадает!");
         softAssert.assertFalse(actualResponse.getParkingPlaces().isEmpty(),
                 "Ошибка!!! Список парковок в ответе пуст!");
-        ParkingAdapter actualParking = actualResponse.getParkingPlaces().get(0);
+        ParkingRequest actualParking = actualResponse.getParkingPlaces().get(0);
         softAssert.assertNotNull(actualParking.getId(),
                 "Ошибка!!! ID для парковки созданного дома не сгенерирован!");
         softAssert.assertEquals(actualParking.getIsCovered(), expectedParking.getIsCovered(),

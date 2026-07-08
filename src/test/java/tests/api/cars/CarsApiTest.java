@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Optional;
 import static org.testng.AssertJUnit.assertEquals;
 import io.qameta.allure.SeverityLevel;
+import tests.api.base.BaseApiTest;
 
 @Log4j2
 @Epic("Cars")
 @Feature("CarsAPI")
 @Owner("Egor P.")
 @Link(value = "docs.google", name = "Чек-лист PFLB")
-public class CarsApiTest extends BaseAdapter {
+public class CarsApiTest extends BaseApiTest {
 
     private AuthHelper authHelper;
     private RequestSpecification authSpec;

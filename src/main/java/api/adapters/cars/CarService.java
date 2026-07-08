@@ -1,7 +1,6 @@
-package api.services.car;
+package api.adapters.cars;
 
 import api.adapters.base.BaseAdapter;
-import api.adapters.cars.CarAdapter;
 import api.adapters.login.AuthHelper;
 import api.models.cars.CreateCarRq;
 import api.models.cars.CreateCarRs;
@@ -10,7 +9,6 @@ import io.qameta.allure.Step;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.log4j.Log4j2;
 import ui.dto.cars.CarGenerated;
-
 import static com.codeborne.selenide.Selenide.$;
 
 @Log4j2

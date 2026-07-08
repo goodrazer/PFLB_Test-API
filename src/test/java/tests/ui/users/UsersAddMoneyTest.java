@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import tests.ui.base.BaseTest;
 import ui.dto.users.User;
-
 import static org.testng.Assert.assertEquals;
 
 @Slf4j
@@ -43,7 +42,6 @@ public class UsersAddMoneyTest extends BaseTest {
                 {"1", "abc", INCORRECT_INPUT_STATUS}
         };
     }
-
     private String createTestUser() {
         usersCreateNewPage.openPage();
         User user = User.builder()
@@ -61,7 +59,6 @@ public class UsersAddMoneyTest extends BaseTest {
                 SUCCESS_CREATE_STATUS,
                 "Пользователь не был создан"
         );
-
         return usersCreateNewPage.getUserIdText()
                 .replaceAll("\\D+", "");
     }
@@ -92,13 +89,10 @@ public class UsersAddMoneyTest extends BaseTest {
         double actualBalance = Double.parseDouble(
                 balanceText.replaceAll("[^\\d.]", "")
         );
-
         usersReadAllPage.openPage();
         boolean userExistsAfter = usersReadAllPage.isUserPresentById(userId);
-
         double initialBalance = 100.0;
         double expectedBalance = initialBalance + amount;
-
         SoftAssert softAssert = new SoftAssert();
         // Проверки UI
         softAssert.assertEquals(
@@ -155,7 +149,6 @@ public class UsersAddMoneyTest extends BaseTest {
                     "Баланс в БД не совпадает с ожидаемым"
             );
         }
-
         softAssert.assertAll();
     }
 

@@ -98,15 +98,16 @@ PFLB_Test-API/
 │ │ │ │ │ ├── base/                                                           # Базовые конфигурации адаптера фреймворка
 │ │ │ │ │ │ └── BaseAdapter.java                                              # Базовый адаптер для API-запросов
 │ │ │ │ │ ├── cars/                                                           # Адаптеры автомобилей
-│ │ │ │ │ │ └── CarAdapter.java                                               # Адаптер для тестов Car
+│ │ │ │ │ │ ├── CarAdapter.java                                               # Адаптер для тестов Car
+│ │ │ │ │ │ └── CarService.java                                               # Адаптер для создания авто
 │ │ │ │ │ ├── houses/                                                         # Адаптеры домов
 │ │ │ │ │ │ └── HouseAdapter.java                                             # Адаптер для тестов House
-│ │ │ │ │ │ └── ParkingAdapter.java                                           # Адаптер для парковок
 │ │ │ │ │ ├── login/                                                          # Адаптеры для авторизации
 │ │ │ │ │ │ ├── LoginAdapter.java                                             # Адаптер для тестов с авторизацией
 │ │ │ │ │ │ └── AuthHelper.java                                               # Хелпер для авторизации
 │ │ │ │ │ └── users/                                                          # Адаптеры для пользователей
-│ │ │ │ │   └── UserApiAdapter.java                                           # Адаптер для тестов User
+│ │ │ │ │   ├── UserApiAdapter.java                                           # Адаптер для тестов User
+│ │ │ │ │   └── UserService.java                                               # Адаптер для создания пользователя
 │ │ │ │ │ 
 │ │ │ │ └── models/                                                           # Модели фреймворка
 │ │ │ │   ├── cars/                                                           # Модели для тестов cars
@@ -119,23 +120,32 @@ PFLB_Test-API/
 │ │ │ │   │ ├── HouseCreateNewRequest.java                                    # Модель запроса при создании авто
 │ │ │ │   │ └── HouseCreateNewResponse.java                                   # Модель ответа при создании авто
 │ │ │ │   ├── login/                                                          # Модели для авторизации
-│ │ │ │   │ ├──LoginRequest.java                                              # Модель запроса при логин
+│ │ │ │   │ ├── LoginRequest.java                                             # Модель запроса при логин
 │ │ │ │   │ └── LoginResponse.java                                            # Модель ответа при логине
+│ │ │ │   ├── parking/                                                        # Модели для парковок
+│ │ │ │   │ └── ParkingResponse.java                                          # Модель запроса создания парковки
 │ │ │ │   └── users/                                                          # Модели для тестов users
 │ │ │ │     ├── GetUserRs.java                                                # Модель ответа при запросе пользователя
 │ │ │ │     └── PersonDTO.java                                                # DTO пользователя для API
+│ │ │ ├── db/                                                                 # Пакет к классами подключения к БД
+│ │ │ │ ├── DBConnection.java                                                 # Подключение к БД
+│ │ │ │ └── DBHelper.java                                                     # Получение пользователей из БД
 │ │ │ │ 
 │ │ │ ├── ui/                                                                 # UI-часть фреймворка
 │ │ │ │ ├── dto/                                                              # Value Objects (DTO)
 │ │ │ │ │ ├── cars/                                                           # DTO для автомобилей
 │ │ │ │ │ │ ├── Car.java                                                      # DTO автомобиля
+│ │ │ │ │ │ ├── CarGenerated.java                                             # DTO для создания авто
 │ │ │ │ │ │ └── Parking.java                                                  # DTO парковки
 │ │ │ │ │ ├── houses/                                                         # DTO для домов
 │ │ │ │ │ │ └── House.java                                                    # DTO дома
 │ │ │ │ │ └── users/                                                          # DTO для пользователей
 │ │ │ │ │   ├── User.java                                                     # DTO пользователя
-│ │ │ │ │   └── UserCar.java                                                  # DTO связи User-Car
-│ │ │ │ │
+│ │ │ │ │   ├── UserCar.java                                                  # DTO связи User-Car
+│ │ │ │ │   └── UserGenerated.java                                            # DTO создания пользователя
+│ │ │ │ ├── helpers/                                                          # DTO для генерации сущностей
+│ │ │ │ │ ├── CarFactory                                                      # DTO для генерации автомобилей
+│ │ │ │ │ └── UserFactory                                                     # DTO для генерации пользователей
 │ │ │ │ ├── pages/                                                            # Page Objects фреймворка
 │ │ │ │ │ ├── allDelete/                                                      # Страницы All Delete
 │ │ │ │ │ │ └── AllDeletePage.java                                            # Страница "All DELETE"

@@ -175,6 +175,7 @@ public class CreateUserTest extends BaseTest {
         );
         softAssert.assertAll();
     }
+
     /*
      Негативный тест:
      Проверяет, что система корректно обрабатывает невалидные данные

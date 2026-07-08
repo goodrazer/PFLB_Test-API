@@ -1,4 +1,4 @@
-package api.adapters.houses;
+package api.models.parking;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ParkingAdapter {
+public class ParkingRequest {
 
     @SerializedName("id")
     @Expose

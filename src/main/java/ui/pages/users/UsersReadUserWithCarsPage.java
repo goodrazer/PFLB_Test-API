@@ -9,9 +9,7 @@ import ui.dto.cars.CarGenerated;
 import ui.dto.users.UserGenerated;
 import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
-
 import java.util.List;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selenide.*;
 

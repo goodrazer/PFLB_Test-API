@@ -1,7 +1,6 @@
 package ui.pages.swaggers;
 
 import ui.pages.base.BasePage;
-
 import static com.codeborne.selenide.Selenide.open;
 
 public class SwaggerMasterMvcPage extends BasePage {

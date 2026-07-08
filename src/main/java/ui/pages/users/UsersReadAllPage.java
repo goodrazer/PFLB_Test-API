@@ -8,10 +8,8 @@ import ui.dto.users.UserGenerated;
 import ui.pages.base.BasePage;
 import ui.wrappers.SortButton;
 import utils.SortUtils;
-
 import java.time.Duration;
 import java.util.List;
-
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
