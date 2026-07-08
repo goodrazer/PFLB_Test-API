@@ -256,8 +256,8 @@ PFLB_Test-API/
 │     ├── PositiveTestSuite.xml                                               # Сюит для запуска позитивных тестов
 │     ├── RegressionTestSuite.xml                                             # Сюит для запуска регрессионного тестирования
 │     ├── SecurityTestSuite.xml                                               # Сюит для запуска тестирования безопасности
-│     └── SmokeTestSuite.xml                                                  # Сюит для запуска дымового тестирования
-│
+│     ├── SmokeTestSuite.xml                                                  # Сюит для запуска дымового тестирования
+│     └── UITestSuite.xml                                                     # Сюит для запуска UI тестирования
 
 ```
 ---
