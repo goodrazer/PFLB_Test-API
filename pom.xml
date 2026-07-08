@@ -131,7 +131,7 @@
                 <version>${maven-surefire.version}</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/ApiTestSuite.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/UITestSuite.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
