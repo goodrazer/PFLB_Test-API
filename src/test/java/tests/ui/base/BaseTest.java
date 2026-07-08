@@ -84,7 +84,7 @@ public class BaseTest {
             FirefoxOptions options = new FirefoxOptions();
             options.addPreference("dom.webnotifications.enabled", false);
             options.addPreference("privacy.popups.showBrowserMessage", false);
-            options.addArguments("--no-sandbo");
+            options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
 
             if (Configuration.headless) {

@@ -46,7 +46,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD test
+        run: mvn clean -DEmail=$EMAIL -DPassword=$PASSWORD -DUserDb=$USER_DB -DPasswordDb=$PASSWORD_DB test
 
       - name: Get Allure history
         uses: actions/checkout@v6
